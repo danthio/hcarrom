@@ -867,6 +867,7 @@ def can_b3(e):
 
 def get_pos(cx,cy,r_,ang,con_mv,con):
 	global boundary
+	global striker_r
 
 
 	# colliding
@@ -1096,8 +1097,9 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 			y=_r_*math.cos(math.radians(ang))+cy
 
 
+			r=math.sqrt((x-(boundary[1][0]+1))**2+(y-y)**2)
 
-			if x<boundary[1][0]:
+			if r<=striker_r:
 				if boundary[1][1]<=y<=boundary[1][3]:
 
 					print(5)
@@ -1119,7 +1121,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 					print(_a_)
 
-					con_mv=[5,_a_]
+					con_mv=[5,_a_,_r_]
 
 					break
 
@@ -1144,8 +1146,10 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 
 
+		r=math.sqrt((x-(boundary[1][0]+1))**2+(y-y)**2)
 
-		if x+striker_r+1<boundary[1][0]:
+
+		if r_==con_mv[2]:
 			if boundary[1][1]<=y<=boundary[1][3]:
 
 				return 2
@@ -1170,8 +1174,9 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 
 
+			r=math.sqrt((x-(boundary[1][2]-1))**2+(y-y)**2)
 
-			if x>boundary[1][2]:
+			if r<=striker_r:
 
 				if boundary[1][1]<=y<=boundary[1][3]:
 					print(6)
@@ -1190,7 +1195,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 
 
-					con_mv=[6,_a_]
+					con_mv=[6,_a_,_r_]
 
 					break
 
@@ -1210,8 +1215,12 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 		x=r_*math.sin(math.radians(ang))+cx
 		y=r_*math.cos(math.radians(ang))+cy
 
+		#print(r_)
 
-		if x+striker_r+1>boundary[1][2]:
+
+		r=math.sqrt((x-(boundary[1][2]-1))**2+(y-y)**2)
+
+		if r_==con_mv[2]:
 
 			if boundary[1][1]<=y<=boundary[1][3]:
 
@@ -1237,7 +1246,11 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 
 
-			if y<boundary[1][1]:
+			r=math.sqrt(((x-x)**2+(y-(boundary[1][1]+1))**2))
+
+
+			if r<=striker_r:
+				#print(_r_)
 				if boundary[1][0]<=x<=boundary[1][2]:
 
 					print(7)
@@ -1254,7 +1267,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 						o=cx-x
 						_a_=270+math.degrees(math.atan(o/a))
 
-					con_mv=[7,_a_]
+					con_mv=[7,_a_,_r_]
 
 					break
 	conx=0
@@ -1271,7 +1284,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 		x=r_*math.sin(math.radians(ang))+cx
 		y=r_*math.cos(math.radians(ang))+cy
 
-		if y+striker_r+1<boundary[1][1]:
+		if r_==con_mv[2]:
 			if boundary[1][0]<=x<=boundary[1][2]:
 
 				return 2
@@ -1295,11 +1308,13 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 			y=_r_*math.cos(math.radians(ang))+cy
 
 
+			r=math.sqrt(((x-x)**2+(y-(boundary[1][3]-1))**2))
 
-			if y>boundary[1][3]:
+
+			if r<=striker_r:
 				if boundary[1][0]<=x<=boundary[1][2]:
 
-					print(8)
+					print(8,_r_)
 
 					if cx<=x:
 
@@ -1318,7 +1333,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 
 
-					con_mv=[8,_a_]
+					con_mv=[8,_a_,_r_]
 
 					break
 
@@ -1339,7 +1354,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 		y=r_*math.cos(math.radians(ang))+cy
 
 
-		if y+striker+1>boundary[1][3]:
+		if r_==con_mv[2]:
 			if boundary[1][0]<=x<=boundary[1][2]:
 
 				return 2
@@ -1350,13 +1365,14 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 
 
-striker_speed=100
+striker_speed=4
 move_striker_st=0
 move_striker_data=[]
 proj_ang=None
 striker_ang=0
+striker_coord_=[0,0]
 def move_striker():
-	global striker_coord,xrng,yv1,turn,boundary,force
+	global striker_coord,striker_coord_,xrng,yv1,turn,boundary,force
 	global game_st
 	global striker_ang
 	global move_striker_st
@@ -1369,12 +1385,15 @@ def move_striker():
 
 			#print(proj_ang)
 
+			striker_coord_=striker_coord
 			if proj_ang!=None:
 				move_striker_data=get_pos(striker_coord[0],striker_coord[1],0,proj_ang,0,0)
 				proj_ang=None
 			else:
+
 				move_striker_data=get_pos(striker_coord[0],striker_coord[1],0,striker_ang,0,0)
 			
+			#print(move_striker_data)
 			striker_coord=[move_striker_data[0],move_striker_data[1]]
 			striker_ang=move_striker_data[3]
 
@@ -1383,7 +1402,7 @@ def move_striker():
 			move_striker_st=1
 		elif move_striker_st==1:
 
-			move_striker_data=get_pos(striker_coord[0],striker_coord[1],move_striker_data[2],striker_ang,move_striker_data[4],1)
+			move_striker_data=get_pos(striker_coord_[0],striker_coord_[1],move_striker_data[2],striker_ang,move_striker_data[4],1)
 
 
 			if move_striker_data==1:
@@ -1394,13 +1413,15 @@ def move_striker():
 				move_striker_st=0
 				force=0
 
-
+				"""
 				if turn==0:
 					turn=1
 					striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
 				elif turn==1:
 					turn=0
-					striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+				"""
+				striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+
 
 
 				draw_striker()		
@@ -1425,7 +1446,8 @@ def move_striker():
 				try:
 
 
-					if len(move_striker_data[4])==2:
+					if len(move_striker_data[4])==3:
+
 
 
 						proj_ang=move_striker_data[4][1]
