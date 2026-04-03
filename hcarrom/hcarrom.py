@@ -127,7 +127,7 @@ def can_b1(e):
 	global striker_coord,striker_r
 	global force
 
-	if game_st==1:
+	if game_st==0:
 
 		x,y=striker_coord
 
@@ -1109,12 +1109,28 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 						o=cx-x
 						a=y-cy
+
+
+						if o<0:
+							o=-o
+						if a<0:
+							a=-a
+
+
 						_a_=math.degrees(math.atan(o/a))
 
 					else:
 
 						o=cx-x
 						a=cy-y
+
+
+						if o<0:
+							o=-o
+						if a<0:
+							a=-a
+
+
 						_a_=180-math.degrees(math.atan(o/a))
 
 
@@ -1185,13 +1201,29 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 						o=x-cx
 						a=y-cy
+
+
+						if o<0:
+							o=-o
+						if a<0:
+							a=-a
+
+
 						_a_=360-math.degrees(math.atan(o/a))
 					else:
 
 
 						o=x-cx
 						a=cy-y
-						_a_=180-math.degrees(math.atan(o/a))
+
+
+						if o<0:
+							o=-o
+						if a<0:
+							a=-a
+
+
+						_a_=180+math.degrees(math.atan(o/a))
 
 
 
@@ -1259,12 +1291,28 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 						o=cy-y
 						a=x-cx
+
+
+						if o<0:
+							o=-o
+						if a<0:
+							a=-a
+
+
 						_a_=90-math.degrees(math.atan(o/a))
 					else:
 
 
-						a=cy-y
-						o=cx-x
+						o=cy-y
+						a=cx-x
+
+
+						if o<0:
+							o=-o
+						if a<0:
+							a=-a
+
+
 						_a_=270+math.degrees(math.atan(o/a))
 
 					con_mv=[7,_a_,_r_]
@@ -1321,12 +1369,23 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 						o=y-cy
 						a=x-cx
 
-						_a_=90-math.degrees(math.atan(o/a))
+						if o<0:
+							o=-o
+						if a<0:
+							a=-a
+
+
+						_a_=90+math.degrees(math.atan(o/a))
 
 					else:
 
 						o=y-cy
 						a=cx-x
+
+						if o<0:
+							o=-o
+						if a<0:
+							a=-a
 
 
 						_a_=270-math.degrees(math.atan(o/a))
@@ -1365,7 +1424,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 
 
-striker_speed=4
+striker_speed=2
 move_striker_st=0
 move_striker_data=[]
 proj_ang=None
@@ -1413,14 +1472,13 @@ def move_striker():
 				move_striker_st=0
 				force=0
 
-				"""
+				
 				if turn==0:
 					turn=1
 					striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
 				elif turn==1:
-					turn=0
-				"""
-				striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+					turn=0				
+					striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
 
 
 
@@ -1516,7 +1574,7 @@ striker_r=7*w/500
 piece_r=5*w/500
 
 
-turn=0
+turn=1
 
 yv1,yv2=82,404
 
