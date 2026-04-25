@@ -4,9 +4,11 @@ import math
 
 
 bg=0
+circle=0
+bg2=0
 def load_im():
 	global w,h
-	global bg
+	global bg,bg2,circle
 
 
 
@@ -74,14 +76,75 @@ def load_im():
 
 	bg=ImageTk.PhotoImage(im) 
 
+	im=Image.new("RGBA",(500,500),(0,0,0,0))
+	draw=ImageDraw.Draw(im)
+
+	draw.ellipse((0,0,500,500),fill=(255,0,0,255),outline=(255,0,0,255))
+
+	im=im.resize((30,30))
+
+	circle=ImageTk.PhotoImage(im)
+
+	im=Image.new("RGBA",(w,h),(0,0,0,160))
+	bg2=ImageTk.PhotoImage(im)
+
+
+st=""
+pos_intro=[]
+def intro():
+	global bg2,circle
+	global st
+	global w,h
+	global pos_intro
+
+	pos_intro=[]
+
+	st="intro"
+
+	can.delete("all")
+
+	can.create_image(0,0,image=bg,anchor="nw")
+
+	can.create_image(0,0,image=bg2,anchor="nw")
+
+	x=200
+
+	y=(h-90)/2
+
+	can.create_image(w/2-x/2,y,image=circle,anchor="nw")
+	can.create_image(w/2+x/2-30,y,image=circle,anchor="nw")
+
+	can.create_rectangle(w/2-x/2+15,y, w/2+x/2-15,y+30-1,fill="#ff0000",outline="#ff0000")
+
+	can.create_text(w/2,y+15,text="Carrom",font=("FreeMono",13),fill="#000000",anchor="c")
+
+	pos_intro.append([w/2-x/2+15,y, w/2+x/2-15,y+30-1])
+
+
+	y+=60
+
+
+	can.create_image(w/2-x/2,y,image=circle,anchor="nw")
+	can.create_image(w/2+x/2-30,y,image=circle,anchor="nw")
+
+	can.create_rectangle(w/2-x/2+15,y, w/2+x/2-15,y+30-1,fill="#ff0000",outline="#ff0000")
+
+	can.create_text(w/2,y+15,text="Disk Pool",font=("FreeMono",13),fill="#000000",anchor="c")
+
+	pos_intro.append([w/2-x/2+15,y, w/2+x/2-15,y+30-1])
 
 def main():
 	global bg
+	global st
+
+	st="main"
 
 	can.delete("all")
 
 
 	can.create_image(0,0,image=bg,anchor="nw")
+
+	draw_striker()
 
 p=0
 #r=30
@@ -101,19 +164,22 @@ def force_():
 
 	global force
 	global game_st
+	global st
 
-	if game_st==1:
+	if st=="main":
 
-		if not force+1>20:
+		if game_st==1:
 
-			force+=1
+			if not force+1>20:
 
-
-			draw_move_()
-	elif game_st==2:
+				force+=1
 
 
-		draw_move_(1)
+				draw_move_()
+		elif game_st==2:
+
+
+			draw_move_(1)
 
 
 
@@ -121,28 +187,190 @@ def force_():
 
 drag_st=0
 game_st=0
-
+game=""
 def can_b1(e):
+	global st
 	global drag_st,game_st
 	global striker_coord,striker_r
 	global force
+	global pos_intro
+	global game
 
-	if game_st==0:
+	#global r
 
-		x,y=striker_coord
 
-		r=math.sqrt((e.x-x)**2+(e.y-y)**2)
+	#draw_piece(e.x,e.x,r)
 
-		if r<=striker_r:
-			drag_st=1
+
+	if st=="intro":
+
+		#carrom
+		
+		cx,cy=pos_intro[0][0],pos_intro[0][1]+15
+
+		r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+		if r<=15:
+
+			game="carrom"
+
+			main()
+
 			return
 
 
+		cx,cy=pos_intro[0][2],pos_intro[0][1]+15
+
+		r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+		if r<=15:
+			game="carrom"
+
+			main()
+
+			return
+
+		if pos_intro[0][0]<=e.x<=pos_intro[0][2]:
+
+			if pos_intro[0][1]<=e.y<=pos_intro[0][3]:
+
+				game="carrom"
+				
+
+				main()
+
+				return
 
 
-	if game_st==0:
-		game_st=1
 
+		#disk pool
+
+
+
+		cx,cy=pos_intro[1][0],pos_intro[1][1]+15
+
+		r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+		if r<=15:
+
+			game="disk pool"
+
+			main()
+
+			return
+
+
+		cx,cy=pos_intro[1][2],pos_intro[1][1]+15
+
+		r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+		if r<=15:
+
+			game="disk pool"
+
+			main()
+
+			return
+
+		if pos_intro[1][0]<=e.x<=pos_intro[1][2]:
+
+			if pos_intro[1][1]<=e.y<=pos_intro[1][3]:
+				
+				game="disk pool"
+
+				main()
+
+
+				return
+
+
+
+	elif st=="main":
+
+
+
+		if game_st==0:
+
+			x,y=striker_coord
+
+			r=math.sqrt((e.x-x)**2+(e.y-y)**2)
+
+			if r<=striker_r:
+				drag_st=1
+				return
+
+			else:
+
+
+				if turn==0:
+
+					if 102<=e.x<=383:
+						if 82-10.36<=e.y<=82+10.36:
+							striker_coord[0]=e.x
+
+							draw_striker(1)
+
+							return
+
+
+					cx,cy=102,82
+
+					r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+					if r<=10.36:
+						striker_coord[0]=xrng[0]
+						draw_striker(1)
+						return
+
+					cx,cy=383,82
+
+					r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+					if r<=10.36:
+						striker_coord[0]=xrng[1]
+						draw_striker(1)
+						return
+
+
+
+				elif turn==1:
+
+					if 102<=e.x<=383:
+						if 404-10.36<=e.y<=404+10.36:
+							striker_coord[0]=e.x
+
+							draw_striker(1)
+
+							return
+
+
+					cx,cy=102,404
+
+					r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+					if r<=10.36:
+						striker_coord[0]=xrng[0]
+						draw_striker(1)
+						return
+
+					cx,cy=383,404
+
+					r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+					if r<=10.36:
+						striker_coord[0]=xrng[1]
+						draw_striker(1)
+						return
+
+
+
+
+
+		if game_st==0:
+			game_st=1
+
+
+	print(st)
 
 
 
@@ -159,37 +387,54 @@ def drag(e):
 	global drag_st
 	global striker_coord,striker_r,xrng
 	global dm_vs
+	global st
 
-	if drag_st==1:
+	if st=="main":
 
-		x,y=striker_coord
+		if drag_st==1:
 
-		r=math.sqrt((e.x-x)**2+(e.y-y)**2)
+			x,y=striker_coord
 
-		if r<=striker_r:
-			if xrng[0]<=e.x<=xrng[1]:
-				striker_coord[0]=e.x
+			r=math.sqrt((e.x-x)**2+(e.y-y)**2)
+
+			if r<=striker_r:
+				if xrng[0]<=e.x<=xrng[1]:
+					striker_coord[0]=e.x
 
 
-				for i in dm_vs:
+					for i in dm_vs:
 
-					can.delete(i)
-				draw_striker()
+						can.delete(i)
+					draw_striker(1)
 
 
 
 def can_b1_release(e):
 	global drag_st,game_st
+	global st
+	global reset_st
+	global force
+
+
+	if st=="main":
+
+		if reset_st==1:
+
+			reset_st=0
+			game_st=0
+			force=0
+
+			return
 
 
 
 
-	drag_st=0
+		drag_st=0
 
 
 
-	if game_st==1:
-		game_st=2
+		if game_st==1:
+			game_st=2
 
 
 
@@ -200,264 +445,405 @@ def draw_move(e):
 	global dm_vs
 	global boundary
 	global striker_ang
+	global st
+
+
+
+	if st=="main":
 
 
 
 
 
 
-	if drag_st==1:
-		return
+		if drag_st==1:
+			return
 
-	if game_st==2:
-		return
+		if game_st==2:
+			return
 
-	try:
+		try:
 
-		cx,cy=striker_coord
-
-
-		if e.x>=cx:
-
-			if e.y>=cy:
-
-				a=e.x-cx
-				o=e.y-cy
-
-				ang=math.degrees(math.atan(o/a))
-
-				ang=90-ang
-
-				#print(ang)
-			else:
-
-				a=cy-e.y
-				o=e.x-cx
+			cx,cy=striker_coord
 
 
-				ang=math.degrees(math.atan(o/a))
+			if e.x>=cx:
 
-				ang=90-ang
+				if e.y>=cy:
 
-				ang+=90
+					a=e.x-cx
+					o=e.y-cy
 
-				#print(ang)
+					ang=math.degrees(math.atan(o/a))
 
-		else:
+					ang=90-ang
 
+					#print(ang)
+				else:
 
-
-			if e.y>=cy:
-
-				a=cx-e.x
-				o=e.y-cy
-
-				ang=math.degrees(math.atan(o/a))
-
-				ang+=270
-
-				#print(ang)
+					a=cy-e.y
+					o=e.x-cx
 
 
+					ang=math.degrees(math.atan(o/a))
+
+					ang=90-ang
+
+					ang+=90
+
+					#print(ang)
 
 			else:
 
-				a=cx-e.x
-				o=cy-e.y
 
 
-				ang=math.degrees(math.atan(o/a))
+				if e.y>=cy:
 
-				ang=90-ang
+					a=cx-e.x
+					o=e.y-cy
 
-				ang+=180
+					ang=math.degrees(math.atan(o/a))
 
+					ang+=270
 
-
-
-				#print(ang)
-
-
-		def find_r(cx,cy,ang):
-			global boundary
-			global striker_r
-			global dm_vs
-			global can
-			global dm_coord
+					#print(ang)
 
 
 
-			#0,0
+				else:
 
-			r_=0
-
-			for _ in range(600):
-
-				#print(r_)
+					a=cx-e.x
+					o=cy-e.y
 
 
-				x=r_*math.sin(math.radians(ang))+cx
-				y=r_*math.cos(math.radians(ang))+cy
+					ang=math.degrees(math.atan(o/a))
+
+					ang=90-ang
+
+					ang+=180
 
 
 
-				
 
-				if boundary[1][0]<=x<=boundary[1][0]+boundary[0]:
-					if boundary[1][1]<=y<=boundary[1][1]+boundary[0]:
+					#print(ang)
 
 
-						r2=math.sqrt((x-(boundary[1][0]+boundary[0]))**2+(y-(boundary[1][1]+boundary[0]))**2)
+			def find_r(cx,cy,ang):
+				global boundary
+				global striker_r
+				global dm_vs
+				global can
+				global dm_coord
 
-						if r2>boundary[0]:
+
+
+				#0,0
+
+				r_=0
+
+				for _ in range(600):
+
+					#print(r_)
+
+
+					x=r_*math.sin(math.radians(ang))+cx
+					y=r_*math.cos(math.radians(ang))+cy
+
+
+
+					
+
+					if boundary[1][0]<=x<=boundary[1][0]+boundary[0]:
+						if boundary[1][1]<=y<=boundary[1][1]+boundary[0]:
+
+
+							r2=math.sqrt((x-(boundary[1][0]+boundary[0]))**2+(y-(boundary[1][1]+boundary[0]))**2)
+
+							if r2>boundary[0]:
+
+
+
+
+								x+=striker_r
+								y+=striker_r
+
+
+								dm_coord=[cx,cy,x,y]
+								draw_move_()
+
+								return
+
+					
+					r_+=1
+
+
+				#1,0
+
+
+
+
+
+
+
+				r_=0
+
+				for _ in range(600):
+
+					#print(r_)
+
+
+					x=r_*math.sin(math.radians(ang))+cx
+					y=r_*math.cos(math.radians(ang))+cy
+
+
+
+					
+
+					if boundary[1][2]-boundary[0]<=x<=boundary[1][2]:
+						if boundary[1][1]<=y<=boundary[1][1]+boundary[0]:
+
+							#print("ok")
+
+							r2=math.sqrt((x-(boundary[1][2]-boundary[0]))**2+(y-(boundary[1][1]+boundary[0]))**2)
+
+							if r2>boundary[0]:
+
+
+
+
+								x-=striker_r
+								y+=striker_r
+
+
+								dm_coord=[cx,cy,x,y]
+								draw_move_()
+
+								return
+
+					
+					r_+=1
+
+
+
+				#1,1
+
+
+
+
+
+
+
+				r_=0
+
+				for _ in range(600):
+
+					#print(r_)
+
+
+					x=r_*math.sin(math.radians(ang))+cx
+					y=r_*math.cos(math.radians(ang))+cy
+
+
+
+					
+
+					if boundary[1][2]-boundary[0]<=x<=boundary[1][2]:
+						if boundary[1][3]-boundary[0]<=y<=boundary[1][3]:
+
+							#print("ok")
+
+							r2=math.sqrt((x-(boundary[1][2]-boundary[0]))**2+(y-(boundary[1][3]-boundary[0]))**2)
+
+							if r2>boundary[0]:
+
+
+
+
+								x-=striker_r
+								y-=striker_r
+
+
+								dm_coord=[cx,cy,x,y]
+								draw_move_()
+
+								return
+
+					
+					r_+=1
+
+
+
+
+				#0,1
+
+
+
+
+
+
+
+				r_=0
+
+				for _ in range(600):
+
+					#print(r_)
+
+
+					x=r_*math.sin(math.radians(ang))+cx
+					y=r_*math.cos(math.radians(ang))+cy
+
+
+
+					
+
+					if boundary[1][0]<=x<=boundary[1][0]+boundary[0]:
+						if boundary[1][3]-boundary[0]<=y<=boundary[1][3]:
+
+							#print("ok")
+
+							r2=math.sqrt((x-(boundary[1][0]+boundary[0]))**2+(y-(boundary[1][3]-boundary[0]))**2)
+
+							if r2>boundary[0]:
+
+
+
+								x+=striker_r
+								y-=striker_r
+
+								dm_coord=[cx,cy,x,y]
+								draw_move_()
+
+								return
+
+					
+					r_+=1
+
+
+
+				#left
+
+				r_=0
+
+				for _ in range(600):
+
+					#print(r_)
+
+
+					x=r_*math.sin(math.radians(ang))+cx
+					y=r_*math.cos(math.radians(ang))+cy
+
+
+
+
+					if x<boundary[1][0]:
+
+						if boundary[1][1]<=y<=boundary[1][3]:
 
 
 
 
 							x+=striker_r
-							y+=striker_r
-
 
 							dm_coord=[cx,cy,x,y]
 							draw_move_()
 
 							return
 
-				
-				r_+=1
-
-
-			#1,0
+					r_+=1
 
 
 
+				#right
+
+				r_=0
+
+				for _ in range(600):
+
+					#print(r_)
+
+
+					x=r_*math.sin(math.radians(ang))+cx
+					y=r_*math.cos(math.radians(ang))+cy
 
 
 
 
-			r_=0
+					if x>boundary[1][2]:
 
-			for _ in range(600):
-
-				#print(r_)
+						if boundary[1][1]<=y<=boundary[1][3]:
 
 
-				x=r_*math.sin(math.radians(ang))+cx
-				y=r_*math.cos(math.radians(ang))+cy
-
-
-
-				
-
-				if boundary[1][2]-boundary[0]<=x<=boundary[1][2]:
-					if boundary[1][1]<=y<=boundary[1][1]+boundary[0]:
-
-						#print("ok")
-
-						r2=math.sqrt((x-(boundary[1][2]-boundary[0]))**2+(y-(boundary[1][1]+boundary[0]))**2)
-
-						if r2>boundary[0]:
 
 
 
 
 							x-=striker_r
+
+							dm_coord=[cx,cy,x,y]
+							draw_move_()
+
+							return
+
+					r_+=1
+
+
+
+				#up
+
+				r_=0
+
+				for _ in range(600):
+
+					#print(r_)
+
+
+					x=r_*math.sin(math.radians(ang))+cx
+					y=r_*math.cos(math.radians(ang))+cy
+
+
+
+
+					if y<boundary[1][1]:
+
+						if boundary[1][0]<=x<=boundary[1][2]:
+
+
+
+
+
 							y+=striker_r
 
-
 							dm_coord=[cx,cy,x,y]
 							draw_move_()
 
 							return
 
-				
-				r_+=1
+					r_+=1
 
 
+				#down
 
-			#1,1
+				r_=0
 
+				for _ in range(600):
 
-
-
-
-
-
-			r_=0
-
-			for _ in range(600):
-
-				#print(r_)
+					#print(r_)
 
 
-				x=r_*math.sin(math.radians(ang))+cx
-				y=r_*math.cos(math.radians(ang))+cy
-
-
-
-				
-
-				if boundary[1][2]-boundary[0]<=x<=boundary[1][2]:
-					if boundary[1][3]-boundary[0]<=y<=boundary[1][3]:
-
-						#print("ok")
-
-						r2=math.sqrt((x-(boundary[1][2]-boundary[0]))**2+(y-(boundary[1][3]-boundary[0]))**2)
-
-						if r2>boundary[0]:
+					x=r_*math.sin(math.radians(ang))+cx
+					y=r_*math.cos(math.radians(ang))+cy
 
 
 
 
-							x-=striker_r
-							y-=striker_r
+					if y>boundary[1][3]:
 
-
-							dm_coord=[cx,cy,x,y]
-							draw_move_()
-
-							return
-
-				
-				r_+=1
-
-
-
-
-			#0,1
+						if boundary[1][0]<=x<=boundary[1][2]:
 
 
 
 
 
-
-
-			r_=0
-
-			for _ in range(600):
-
-				#print(r_)
-
-
-				x=r_*math.sin(math.radians(ang))+cx
-				y=r_*math.cos(math.radians(ang))+cy
-
-
-
-				
-
-				if boundary[1][0]<=x<=boundary[1][0]+boundary[0]:
-					if boundary[1][3]-boundary[0]<=y<=boundary[1][3]:
-
-						#print("ok")
-
-						r2=math.sqrt((x-(boundary[1][0]+boundary[0]))**2+(y-(boundary[1][3]-boundary[0]))**2)
-
-						if r2>boundary[0]:
-
-
-
-							x+=striker_r
 							y-=striker_r
 
 							dm_coord=[cx,cy,x,y]
@@ -465,157 +851,21 @@ def draw_move(e):
 
 							return
 
-				
-				r_+=1
+					r_+=1
 
 
+			find_r(cx,cy,ang)
 
-			#left
+			striker_ang=ang
 
-			r_=0
 
-			for _ in range(600):
 
-				#print(r_)
 
 
-				x=r_*math.sin(math.radians(ang))+cx
-				y=r_*math.cos(math.radians(ang))+cy
+			
 
-
-
-
-				if x<boundary[1][0]:
-
-					if boundary[1][1]<=y<=boundary[1][3]:
-
-
-
-
-						x+=striker_r
-
-						dm_coord=[cx,cy,x,y]
-						draw_move_()
-
-						return
-
-				r_+=1
-
-
-
-			#right
-
-			r_=0
-
-			for _ in range(600):
-
-				#print(r_)
-
-
-				x=r_*math.sin(math.radians(ang))+cx
-				y=r_*math.cos(math.radians(ang))+cy
-
-
-
-
-				if x>boundary[1][2]:
-
-					if boundary[1][1]<=y<=boundary[1][3]:
-
-
-
-
-
-
-						x-=striker_r
-
-						dm_coord=[cx,cy,x,y]
-						draw_move_()
-
-						return
-
-				r_+=1
-
-
-
-			#up
-
-			r_=0
-
-			for _ in range(600):
-
-				#print(r_)
-
-
-				x=r_*math.sin(math.radians(ang))+cx
-				y=r_*math.cos(math.radians(ang))+cy
-
-
-
-
-				if y<boundary[1][1]:
-
-					if boundary[1][0]<=x<=boundary[1][2]:
-
-
-
-
-
-						y+=striker_r
-
-						dm_coord=[cx,cy,x,y]
-						draw_move_()
-
-						return
-
-				r_+=1
-
-
-			#down
-
-			r_=0
-
-			for _ in range(600):
-
-				#print(r_)
-
-
-				x=r_*math.sin(math.radians(ang))+cx
-				y=r_*math.cos(math.radians(ang))+cy
-
-
-
-
-				if y>boundary[1][3]:
-
-					if boundary[1][0]<=x<=boundary[1][2]:
-
-
-
-
-
-						y-=striker_r
-
-						dm_coord=[cx,cy,x,y]
-						draw_move_()
-
-						return
-
-				r_+=1
-
-
-		find_r(cx,cy,ang)
-
-		striker_ang=ang
-
-
-
-
-
-		
-
-	except:
-		pass
+		except:
+			pass
 
 
 dm_coord=[0,0,0,0]
@@ -625,46 +875,44 @@ def draw_move_(con=0):
 	global striker_r
 	global force,max_force
 	global dm_vs,dm_coord
+	global st
+
+	if st=="main":
 
 
+		for i in dm_vs:
+
+			can.delete(i)
 
 
+		if con==0:
+
+			cx,cy,x,y=dm_coord
+
+			rr=100
+
+			dm_vs[0]=can.create_line(cx,cy, x,y,fill="#ff0000")
+			dm_vs[1]=can.create_oval(x-striker_r,y-striker_r, x+striker_r,y+striker_r ,outline="#ff0000")
+			dm_vs[2]=can.create_oval(cx-rr,cy-rr, cx+rr,cy+rr ,outline="#ff0000")
+
+			im=Image.new("RGBA",(500,500),(0,0,0,0))
+
+			draw=ImageDraw.Draw(im)
+
+			draw.ellipse((0,0, 500,500),fill=(255,0,0,128),outline=(255,0,0,128))
+
+			sz=int(round(force*rr/max_force,0))
+
+			
 
 
+			if not sz==0:
 
-	for i in dm_vs:
+				im=im.resize((sz*2,sz*2))
 
-		can.delete(i)
+				dm_vs[3]=ImageTk.PhotoImage(im)
 
-
-	if con==0:
-
-		cx,cy,x,y=dm_coord
-
-		rr=100
-
-		dm_vs[0]=can.create_line(cx,cy, x,y,fill="#ff0000")
-		dm_vs[1]=can.create_oval(x-striker_r,y-striker_r, x+striker_r,y+striker_r ,outline="#ff0000")
-		dm_vs[2]=can.create_oval(cx-rr,cy-rr, cx+rr,cy+rr ,outline="#ff0000")
-
-		im=Image.new("RGBA",(500,500),(0,0,0,0))
-
-		draw=ImageDraw.Draw(im)
-
-		draw.ellipse((0,0, 500,500),fill=(255,0,0,128),outline=(255,0,0,128))
-
-		sz=int(round(force*rr/max_force,0))
-
-		
-
-
-		if not sz==0:
-
-			im=im.resize((sz*2,sz*2))
-
-			dm_vs[3]=ImageTk.PhotoImage(im)
-
-			dm_vs[4]=can.create_image(cx,cy,image=dm_vs[3])
+				dm_vs[4]=can.create_image(cx,cy,image=dm_vs[3])
 
 
 
@@ -757,7 +1005,10 @@ def up(e):
 	global bnd_st
 	
 
-	#draw_piece(cx,cy-1,r)
+	draw_piece(cx,cy-1,r)
+
+
+	
 
 
 	if bnd_st==0:
@@ -772,10 +1023,14 @@ def up(e):
 		draw_boundary()
 
 
+
 def down(e):
 	global cx,cy
 	global bnd_st
-	#draw_piece(cx,cy+1,r)
+	draw_piece(cx,cy+1,r)
+
+
+	
 
 
 	if bnd_st==0:
@@ -789,11 +1044,16 @@ def down(e):
 
 		draw_boundary()
 
+	
+
 def right(e):
 	global cx,cy
 	global bnd_st
 
-	#draw_piece(cx+1,cy,r)
+	draw_piece(cx+1,cy,r)
+
+
+	
 
 
 
@@ -807,11 +1067,16 @@ def right(e):
 		coord[2]-=1
 
 		draw_boundary()
+
+	
 def left(e):
 	global cx,cy
 	global bnd_st
 
-	#draw_piece(cx-1,cy,r)
+	draw_piece(cx-1,cy,r)
+
+
+	
 
 
 	if bnd_st==0:
@@ -825,6 +1090,8 @@ def left(e):
 
 		draw_boundary()
 
+	
+
 def char(e):
 	global r,cx,cy
 	global bnd_st
@@ -835,9 +1102,9 @@ def char(e):
 
 		r+=1
 
-		#draw_piece(cx,cy,r)
+		draw_piece(cx,cy,r)
 
-		draw_boundary()
+		#draw_boundary()
 
 	elif e.char=="a":
 
@@ -846,9 +1113,9 @@ def char(e):
 
 		r-=1
 
-		#draw_piece(cx,cy,r)
+		draw_piece(cx,cy,r)
 
-		draw_boundary()
+		#draw_boundary()
 
 	elif e.char=="w":
 
@@ -856,14 +1123,22 @@ def char(e):
 			bnd_st=0
 		elif bnd_st==0:
 			bnd_st=1
+"""
+
+reset_st=0
 def can_b3(e):
 
 	global r,cx,cy
 	global coord
 
+	global reset_st,force
 
-	print(r,coord)#r,cx,cy)
-"""
+	reset_st=1
+	force=0
+
+
+	#print(r,coord)
+	#print(r,cx,cy)
 
 def get_pos(cx,cy,r_,ang,con_mv,con):
 	global boundary
@@ -1436,97 +1711,105 @@ def move_striker():
 	global striker_ang
 	global move_striker_st
 	global move_striker_data,proj_ang
+	global st
+
+	if st=="main":
 
 
-	if game_st==2:
+		if game_st==2:
 
-		if move_striker_st==0:
+			if move_striker_st==0:
 
-			#print(proj_ang)
+				#print(proj_ang)
 
-			striker_coord_=striker_coord
-			if proj_ang!=None:
-				move_striker_data=get_pos(striker_coord[0],striker_coord[1],0,proj_ang,0,0)
-				proj_ang=None
-			else:
+				striker_coord_=striker_coord
+				if proj_ang!=None:
+					move_striker_data=get_pos(striker_coord[0],striker_coord[1],0,proj_ang,0,0)
+					proj_ang=None
+				else:
 
-				move_striker_data=get_pos(striker_coord[0],striker_coord[1],0,striker_ang,0,0)
-			
-			#print(move_striker_data)
-			striker_coord=[move_striker_data[0],move_striker_data[1]]
-			striker_ang=move_striker_data[3]
-
-			draw_striker()
-
-			move_striker_st=1
-		elif move_striker_st==1:
-
-			move_striker_data=get_pos(striker_coord_[0],striker_coord_[1],move_striker_data[2],striker_ang,move_striker_data[4],1)
-
-
-			if move_striker_data==1:
-
-
-				proj_ang=None
-				game_st=0
-				move_striker_st=0
-				force=0
-
+					move_striker_data=get_pos(striker_coord[0],striker_coord[1],0,striker_ang,0,0)
 				
-				if turn==0:
-					turn=1
-					striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
-				elif turn==1:
-					turn=0				
-					striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
-
-
-
-				draw_striker()		
-
-
-			elif move_striker_data==2:
-				move_striker_st=0
-				draw_striker()	
-
-
-			else:
-
+				#print(move_striker_data)
+				striker_coord=[move_striker_data[0],move_striker_data[1]]
 				striker_ang=move_striker_data[3]
-				striker_coord=[move_striker_data[0],move_striker_data[1]]
+
+				draw_striker(1)
+
+				move_striker_st=1
+			elif move_striker_st==1:
+
+				move_striker_data=get_pos(striker_coord_[0],striker_coord_[1],move_striker_data[2],striker_ang,move_striker_data[4],1)
 
 
-				striker_coord=[move_striker_data[0],move_striker_data[1]]
-				
-
-				
-
-				try:
+				if move_striker_data==1:
 
 
-					if len(move_striker_data[4])==3:
+					proj_ang=None
+					game_st=0
+					move_striker_st=0
+					force=0
 
-
-
-						proj_ang=move_striker_data[4][1]
-
-				except:
-					pass
-
-				draw_striker()	
-
-				
+					
+					if turn==0:
+						turn=1
+						striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
+					elif turn==1:
+						turn=0				
+						striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
 
 
 
+					draw_striker(1)		
+
+
+				elif move_striker_data==2:
+					move_striker_st=0
+					draw_striker(1)	
+
+
+				else:
+
+					striker_ang=move_striker_data[3]
+					striker_coord=[move_striker_data[0],move_striker_data[1]]
+
+
+					striker_coord=[move_striker_data[0],move_striker_data[1]]
+					
+
+					
+
+					try:
+
+
+						if len(move_striker_data[4])==3:
+
+
+
+							proj_ang=move_striker_data[4][1]
+
+					except:
+						pass
+
+					draw_striker(1)	
+
+					
+
+
+
+
+		else:
+			move_striker_st=0
+
+
+
+
+		root.after(striker_speed,move_striker)
 
 	else:
-		move_striker_st=0
+		root.after(100,move_striker)
 
 
-
-
-	root.after(striker_speed,move_striker)
 
 
 
@@ -1534,17 +1817,21 @@ def move_striker():
 
 
 striker=0
-def draw_striker():
+def draw_striker(con=0):
 	global can
 	global striker,striker_r,striker_coord
 
 	x,y=striker_coord
 
-	can.delete(striker)
+	if con==0:
 
-	striker=can.create_oval(x-striker_r,y-striker_r, x+striker_r,y+striker_r,
-		fill="#323232",outline="#ffffff")
+		can.delete(striker)
 
+		striker=can.create_oval(x-striker_r,y-striker_r, x+striker_r,y+striker_r,
+			fill="#323232",outline="#ffffff")
+	elif con==1:
+
+		can.coords(striker,x-striker_r,y-striker_r, x+striker_r,y+striker_r)
 
 
 
@@ -1564,7 +1851,7 @@ can.bind("<Motion>",draw_move)
 #can.bind("<Right>",right)
 #can.bind("<Left>",left)
 #can.bind("<KeyPress>",char)
-#can.bind("<Button-3>",can_b3)
+can.bind("<Button-3>",can_b3)
 
 can.focus_set()
 
@@ -1600,13 +1887,13 @@ force=0
 load_im()
 
 root.geometry(f"{w}x{h}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
-main()
-
-draw_boundary()
-draw_striker()
+#main()
+intro()
+#draw_boundary()
 
 force_()
 
 move_striker()
+
 root.mainloop()
 
