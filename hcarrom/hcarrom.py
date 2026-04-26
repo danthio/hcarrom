@@ -195,6 +195,7 @@ def can_b1(e):
 	global force
 	global pos_intro
 	global game
+	global dm_vs
 
 	#global r
 
@@ -308,7 +309,13 @@ def can_b1(e):
 						if 82-10.36<=e.y<=82+10.36:
 							striker_coord[0]=e.x
 
+
+							for i in dm_vs:
+
+								can.delete(i)
 							draw_striker(1)
+							
+
 
 							return
 
@@ -319,6 +326,11 @@ def can_b1(e):
 
 					if r<=10.36:
 						striker_coord[0]=xrng[0]
+
+						for i in dm_vs:
+
+							can.delete(i)
+
 						draw_striker(1)
 						return
 
@@ -328,6 +340,13 @@ def can_b1(e):
 
 					if r<=10.36:
 						striker_coord[0]=xrng[1]
+
+
+
+						for i in dm_vs:
+
+							can.delete(i)
+
 						draw_striker(1)
 						return
 
@@ -339,6 +358,11 @@ def can_b1(e):
 						if 404-10.36<=e.y<=404+10.36:
 							striker_coord[0]=e.x
 
+
+
+							for i in dm_vs:
+
+								can.delete(i)
 							draw_striker(1)
 
 							return
@@ -350,6 +374,12 @@ def can_b1(e):
 
 					if r<=10.36:
 						striker_coord[0]=xrng[0]
+
+
+						for i in dm_vs:
+
+							can.delete(i)
+
 						draw_striker(1)
 						return
 
@@ -359,6 +389,12 @@ def can_b1(e):
 
 					if r<=10.36:
 						striker_coord[0]=xrng[1]
+
+
+						for i in dm_vs:
+
+							can.delete(i)
+
 						draw_striker(1)
 						return
 
@@ -414,6 +450,7 @@ def can_b1_release(e):
 	global st
 	global reset_st
 	global force
+	global dm_vs
 
 
 	if st=="main":
@@ -424,6 +461,9 @@ def can_b1_release(e):
 			game_st=0
 			force=0
 
+			for i in dm_vs:
+
+				can.delete(i)
 			return
 
 
@@ -551,21 +591,20 @@ def draw_move(e):
 
 
 
+					x2=(r_+striker_r)*math.sin(math.radians(ang))+cx
+					y2=(r_+striker_r)*math.cos(math.radians(ang))+cy
 					
 
-					if boundary[1][0]<=x<=boundary[1][0]+boundary[0]:
-						if boundary[1][1]<=y<=boundary[1][1]+boundary[0]:
+					if boundary[1][0]<=x2<=boundary[1][0]+boundary[0]:
+						if boundary[1][1]<=y2<=boundary[1][1]+boundary[0]:
 
 
-							r2=math.sqrt((x-(boundary[1][0]+boundary[0]))**2+(y-(boundary[1][1]+boundary[0]))**2)
+							r2=math.sqrt((x2-(boundary[1][0]+boundary[0]))**2+(y2-(boundary[1][1]+boundary[0]))**2)
 
 							if r2>boundary[0]:
 
 
 
-
-								x+=striker_r
-								y+=striker_r
 
 
 								dm_coord=[cx,cy,x,y]
@@ -595,24 +634,23 @@ def draw_move(e):
 					x=r_*math.sin(math.radians(ang))+cx
 					y=r_*math.cos(math.radians(ang))+cy
 
-
+					x2=(r_+striker_r)*math.sin(math.radians(ang))+cx
+					y2=(r_+striker_r)*math.cos(math.radians(ang))+cy
 
 					
 
-					if boundary[1][2]-boundary[0]<=x<=boundary[1][2]:
-						if boundary[1][1]<=y<=boundary[1][1]+boundary[0]:
+					if boundary[1][2]-boundary[0]<=x2<=boundary[1][2]:
+						if boundary[1][1]<=y2<=boundary[1][1]+boundary[0]:
 
 							#print("ok")
 
-							r2=math.sqrt((x-(boundary[1][2]-boundary[0]))**2+(y-(boundary[1][1]+boundary[0]))**2)
+							r2=math.sqrt((x2-(boundary[1][2]-boundary[0]))**2+(y2-(boundary[1][1]+boundary[0]))**2)
 
 							if r2>boundary[0]:
 
 
 
 
-								x-=striker_r
-								y+=striker_r
 
 
 								dm_coord=[cx,cy,x,y]
@@ -643,24 +681,24 @@ def draw_move(e):
 					x=r_*math.sin(math.radians(ang))+cx
 					y=r_*math.cos(math.radians(ang))+cy
 
+					x2=(r_+striker_r)*math.sin(math.radians(ang))+cx
+					y2=(r_+striker_r)*math.cos(math.radians(ang))+cy
 
 
 					
 
-					if boundary[1][2]-boundary[0]<=x<=boundary[1][2]:
-						if boundary[1][3]-boundary[0]<=y<=boundary[1][3]:
+					if boundary[1][2]-boundary[0]<=x2<=boundary[1][2]:
+						if boundary[1][3]-boundary[0]<=y2<=boundary[1][3]:
 
 							#print("ok")
 
-							r2=math.sqrt((x-(boundary[1][2]-boundary[0]))**2+(y-(boundary[1][3]-boundary[0]))**2)
+							r2=math.sqrt((x2-(boundary[1][2]-boundary[0]))**2+(y2-(boundary[1][3]-boundary[0]))**2)
 
 							if r2>boundary[0]:
 
 
 
 
-								x-=striker_r
-								y-=striker_r
 
 
 								dm_coord=[cx,cy,x,y]
@@ -692,23 +730,22 @@ def draw_move(e):
 					x=r_*math.sin(math.radians(ang))+cx
 					y=r_*math.cos(math.radians(ang))+cy
 
-
+					x2=(r_+striker_r)*math.sin(math.radians(ang))+cx
+					y2=(r_+striker_r)*math.cos(math.radians(ang))+cy
 
 					
 
-					if boundary[1][0]<=x<=boundary[1][0]+boundary[0]:
-						if boundary[1][3]-boundary[0]<=y<=boundary[1][3]:
+					if boundary[1][0]<=x2<=boundary[1][0]+boundary[0]:
+						if boundary[1][3]-boundary[0]<=y2<=boundary[1][3]:
 
 							#print("ok")
 
-							r2=math.sqrt((x-(boundary[1][0]+boundary[0]))**2+(y-(boundary[1][3]-boundary[0]))**2)
+							r2=math.sqrt((x2-(boundary[1][0]+boundary[0]))**2+(y2-(boundary[1][3]-boundary[0]))**2)
 
 							if r2>boundary[0]:
 
 
 
-								x+=striker_r
-								y-=striker_r
 
 								dm_coord=[cx,cy,x,y]
 								draw_move_()
@@ -732,17 +769,17 @@ def draw_move(e):
 					x=r_*math.sin(math.radians(ang))+cx
 					y=r_*math.cos(math.radians(ang))+cy
 
+					x2=(striker_r+1)*math.sin(math.radians(270))+x
+					y2=(striker_r+1)*math.cos(math.radians(270))+y
 
 
 
-					if x<boundary[1][0]:
+					if x2<boundary[1][0]:
 
-						if boundary[1][1]<=y<=boundary[1][3]:
-
-
+						if boundary[1][1]<=y2<=boundary[1][3]:
 
 
-							x+=striker_r
+
 
 							dm_coord=[cx,cy,x,y]
 							draw_move_()
@@ -765,19 +802,19 @@ def draw_move(e):
 					x=r_*math.sin(math.radians(ang))+cx
 					y=r_*math.cos(math.radians(ang))+cy
 
+					x2=(striker_r+1)*math.sin(math.radians(90))+x
+					y2=(striker_r+1)*math.cos(math.radians(90))+y
 
 
 
-					if x>boundary[1][2]:
+					if x2>boundary[1][2]:
 
-						if boundary[1][1]<=y<=boundary[1][3]:
-
-
+						if boundary[1][1]<=y2<=boundary[1][3]:
 
 
 
 
-							x-=striker_r
+
 
 							dm_coord=[cx,cy,x,y]
 							draw_move_()
@@ -801,17 +838,18 @@ def draw_move(e):
 					y=r_*math.cos(math.radians(ang))+cy
 
 
+					x2=(striker_r+1)*math.sin(math.radians(180))+x
+					y2=(striker_r+1)*math.cos(math.radians(180))+y
 
 
-					if y<boundary[1][1]:
+					if y2<boundary[1][1]:
 
-						if boundary[1][0]<=x<=boundary[1][2]:
-
-
+						if boundary[1][0]<=x2<=boundary[1][2]:
 
 
 
-							y+=striker_r
+
+
 
 							dm_coord=[cx,cy,x,y]
 							draw_move_()
@@ -833,18 +871,18 @@ def draw_move(e):
 					x=r_*math.sin(math.radians(ang))+cx
 					y=r_*math.cos(math.radians(ang))+cy
 
+					x2=(striker_r+1)*math.sin(math.radians(0))+x
+					y2=(striker_r+1)*math.cos(math.radians(0))+y
+
+
+					if y2>boundary[1][3]:
+
+						if boundary[1][0]<=x2<=boundary[1][2]:
 
 
 
-					if y>boundary[1][3]:
-
-						if boundary[1][0]<=x<=boundary[1][2]:
 
 
-
-
-
-							y-=striker_r
 
 							dm_coord=[cx,cy,x,y]
 							draw_move_()
@@ -1153,6 +1191,8 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 	# border
 
+	"""
+
 
 
 	# 0,0	
@@ -1348,7 +1388,53 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 		return [x,y,r_+1,ang,con_mv]
 
+	"""
 
+
+
+
+
+
+	def check_if_potted(x,y):
+		global boundary
+
+
+
+		r2=math.sqrt((x-(boundary[1][0]+boundary[0]))**2+(y-(boundary[1][1]+boundary[0]))**2)
+
+		if r2<=boundary[0]:
+
+			
+
+			return 1
+
+
+		r2=math.sqrt((x-(boundary[1][2]-boundary[0]))**2+(y-(boundary[1][1]+boundary[0]))**2)
+
+		if r2<=boundary[0]:
+
+			
+
+			return 1
+
+		r2=math.sqrt((x-(boundary[1][2]-boundary[0]))**2+(y-(boundary[1][3]-boundary[0]))**2)
+
+		if r2<=boundary[0]:
+
+			
+
+			return 1
+
+		r2=math.sqrt((x-(boundary[1][0]+boundary[0]))**2+(y-(boundary[1][3]-boundary[0]))**2)
+
+		if r2<=boundary[0]:
+
+			
+
+			return 1
+
+
+		return 0
 	
 
 
@@ -1436,6 +1522,11 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 		y=r_*math.cos(math.radians(ang))+cy
 
 
+		if check_if_potted(x,y)==1:
+
+			return 1
+
+
 
 		r=math.sqrt((x-(boundary[1][0]+1))**2+(y-y)**2)
 
@@ -1446,6 +1537,8 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 				return 2
 
 				#####
+
+
 
 		return [x,y,r_+1,ang,con_mv]
 
@@ -1522,6 +1615,13 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 		x=r_*math.sin(math.radians(ang))+cx
 		y=r_*math.cos(math.radians(ang))+cy
 
+
+
+		if check_if_potted(x,y)==1:
+
+			return 1
+
+
 		#print(r_)
 
 
@@ -1534,6 +1634,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 				return 2
 
 				#####
+
 
 		return [x,y,r_+1,ang,con_mv]
 
@@ -1607,12 +1708,20 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 		x=r_*math.sin(math.radians(ang))+cx
 		y=r_*math.cos(math.radians(ang))+cy
 
+
+		if check_if_potted(x,y)==1:
+
+			return 1
+
+
+
 		if r_==con_mv[2]:
 			if boundary[1][0]<=x<=boundary[1][2]:
 
 				return 2
 
 				#####
+
 
 		return [x,y,r_+1,ang,con_mv]
 
@@ -1688,12 +1797,21 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 		y=r_*math.cos(math.radians(ang))+cy
 
 
+		if check_if_potted(x,y)==1:
+
+			return 1
+
+
+
+
 		if r_==con_mv[2]:
 			if boundary[1][0]<=x<=boundary[1][2]:
 
 				return 2
 
 				#####
+
+
 
 		return [x,y,r_+1,ang,con_mv]
 
@@ -1720,23 +1838,28 @@ def move_striker():
 
 			if move_striker_st==0:
 
-				#print(proj_ang)
+				try:
 
-				striker_coord_=striker_coord
-				if proj_ang!=None:
-					move_striker_data=get_pos(striker_coord[0],striker_coord[1],0,proj_ang,0,0)
-					proj_ang=None
-				else:
+					#print(proj_ang)
 
-					move_striker_data=get_pos(striker_coord[0],striker_coord[1],0,striker_ang,0,0)
-				
-				#print(move_striker_data)
-				striker_coord=[move_striker_data[0],move_striker_data[1]]
-				striker_ang=move_striker_data[3]
+					striker_coord_=striker_coord
+					if proj_ang!=None:
+						move_striker_data=get_pos(striker_coord[0],striker_coord[1],0,proj_ang,0,0)
+						proj_ang=None
+					else:
 
-				draw_striker(1)
+						move_striker_data=get_pos(striker_coord[0],striker_coord[1],0,striker_ang,0,0)
+					
+					#print(move_striker_data)
+					striker_coord=[move_striker_data[0],move_striker_data[1]]
+					striker_ang=move_striker_data[3]
 
-				move_striker_st=1
+					draw_striker(1)
+
+					move_striker_st=1
+
+				except:
+					print(move_striker_data,"error")
 			elif move_striker_st==1:
 
 				move_striker_data=get_pos(striker_coord_[0],striker_coord_[1],move_striker_data[2],striker_ang,move_striker_data[4],1)
@@ -1761,6 +1884,9 @@ def move_striker():
 
 
 					draw_striker(1)		
+
+					root.after(100,move_striker)
+					return
 
 
 				elif move_striker_data==2:
@@ -1895,5 +2021,9 @@ force_()
 
 move_striker()
 
+def update():
+
+	root.after(1,update)
+update()
 root.mainloop()
 
