@@ -1,7 +1,7 @@
 from PIL import Image,ImageTk,ImageDraw
 import tkinter as tk
 import math
-
+import time
 
 bg=0
 circle=0
@@ -162,7 +162,7 @@ def draw_piece(x,y,r):
 
 def force_():
 
-	global force
+	global pieces
 	global game_st
 	global st
 
@@ -170,9 +170,9 @@ def force_():
 
 		if game_st==1:
 
-			if not force+1>20:
+			if not pieces["striker"]["initial_v"]+0.3>3:
 
-				force+=1
+				pieces["striker"]["initial_v"]+=0.3
 
 
 				draw_move_()
@@ -191,8 +191,7 @@ game=""
 def can_b1(e):
 	global st
 	global drag_st,game_st
-	global striker_coord,striker_r
-	global force
+	global pieces
 	global pos_intro
 	global game
 	global dm_vs
@@ -292,7 +291,7 @@ def can_b1(e):
 
 		if game_st==0:
 
-			x,y=striker_coord
+			x,y=pieces["striker"]["coord"]
 
 			r=math.sqrt((e.x-x)**2+(e.y-y)**2)
 
@@ -307,7 +306,7 @@ def can_b1(e):
 
 					if 102<=e.x<=383:
 						if 82-10.36<=e.y<=82+10.36:
-							striker_coord[0]=e.x
+							pieces["striker"]["coord"][0]=e.x
 
 
 							for i in dm_vs:
@@ -325,7 +324,7 @@ def can_b1(e):
 					r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
 
 					if r<=10.36:
-						striker_coord[0]=xrng[0]
+						pieces["striker"]["coord"][0]=xrng[0]
 
 						for i in dm_vs:
 
@@ -339,7 +338,7 @@ def can_b1(e):
 					r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
 
 					if r<=10.36:
-						striker_coord[0]=xrng[1]
+						pieces["striker"]["coord"][0]=xrng[1]
 
 
 
@@ -356,7 +355,7 @@ def can_b1(e):
 
 					if 102<=e.x<=383:
 						if 404-10.36<=e.y<=404+10.36:
-							striker_coord[0]=e.x
+							pieces["striker"]["coord"][0]=e.x
 
 
 
@@ -373,7 +372,7 @@ def can_b1(e):
 					r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
 
 					if r<=10.36:
-						striker_coord[0]=xrng[0]
+						pieces["striker"]["coord"][0]=xrng[0]
 
 
 						for i in dm_vs:
@@ -388,7 +387,7 @@ def can_b1(e):
 					r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
 
 					if r<=10.36:
-						striker_coord[0]=xrng[1]
+						pieces["striker"]["coord"][0]=xrng[1]
 
 
 						for i in dm_vs:
@@ -421,7 +420,7 @@ def can_b1(e):
 
 def drag(e):
 	global drag_st
-	global striker_coord,striker_r,xrng
+	global pieces
 	global dm_vs
 	global st
 
@@ -429,13 +428,13 @@ def drag(e):
 
 		if drag_st==1:
 
-			x,y=striker_coord
+			x,y=pieces["striker"]["coord"]
 
 			r=math.sqrt((e.x-x)**2+(e.y-y)**2)
 
 			if r<=striker_r:
 				if xrng[0]<=e.x<=xrng[1]:
-					striker_coord[0]=e.x
+					pieces["striker"]["coord"][0]=e.x
 
 
 					for i in dm_vs:
@@ -449,7 +448,7 @@ def can_b1_release(e):
 	global drag_st,game_st
 	global st
 	global reset_st
-	global force
+	global pieces
 	global dm_vs
 
 
@@ -459,7 +458,7 @@ def can_b1_release(e):
 
 			reset_st=0
 			game_st=0
-			force=0
+			pieces["striker"]["initial_v"]=0
 
 			for i in dm_vs:
 
@@ -475,16 +474,16 @@ def can_b1_release(e):
 
 		if game_st==1:
 			game_st=2
+			pieces["striker"]["start_time"]=time.time()
 
 
 
 
 def draw_move(e):
 	global game_st,drag_st
-	global striker_coord
+	global pieces
 	global dm_vs
 	global boundary
-	global striker_ang
 	global st
 
 
@@ -504,7 +503,7 @@ def draw_move(e):
 
 		try:
 
-			cx,cy=striker_coord
+			cx,cy=pieces["striker"]["coord"]
 
 
 			if e.x>=cx:
@@ -894,7 +893,7 @@ def draw_move(e):
 
 			find_r(cx,cy,ang)
 
-			striker_ang=ang
+			pieces["striker"]["angle"]=ang
 
 
 
@@ -911,7 +910,7 @@ dm_vs=[0,0,0,0,0]
 def draw_move_(con=0):
 	global can
 	global striker_r
-	global force,max_force
+	global pieces
 	global dm_vs,dm_coord
 	global st
 
@@ -939,7 +938,7 @@ def draw_move_(con=0):
 
 			draw.ellipse((0,0, 500,500),fill=(255,0,0,128),outline=(255,0,0,128))
 
-			sz=int(round(force*rr/max_force,0))
+			sz=int(round(pieces["striker"]["initial_v"]*rr/3,0))
 
 			
 
@@ -1169,10 +1168,10 @@ def can_b3(e):
 	global r,cx,cy
 	global coord
 
-	global reset_st,force
+	global reset_st,pieces
 
 	reset_st=1
-	force=0
+	pieces["striker"]["initial_v"]=0
 
 
 	#print(r,coord)
@@ -1400,34 +1399,34 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 
 
-		r2=math.sqrt((x-(boundary[1][0]+boundary[0]))**2+(y-(boundary[1][1]+boundary[0]))**2)
+		r2=math.sqrt((x-40)**2+(y-39)**2)
 
-		if r2<=boundary[0]:
-
-			
-
-			return 1
-
-
-		r2=math.sqrt((x-(boundary[1][2]-boundary[0]))**2+(y-(boundary[1][1]+boundary[0]))**2)
-
-		if r2<=boundary[0]:
+		if r2<=16:
 
 			
 
 			return 1
 
-		r2=math.sqrt((x-(boundary[1][2]-boundary[0]))**2+(y-(boundary[1][3]-boundary[0]))**2)
 
-		if r2<=boundary[0]:
+		r2=math.sqrt((x-446)**2+(y-39)**2)
+
+		if r2<=16:
 
 			
 
 			return 1
 
-		r2=math.sqrt((x-(boundary[1][0]+boundary[0]))**2+(y-(boundary[1][3]-boundary[0]))**2)
+		r2=math.sqrt((x-40)**2+(y-447)**2)
 
-		if r2<=boundary[0]:
+		if r2<=16:
+
+			
+
+			return 1
+
+		r2=math.sqrt((x-446)**2+(y-447)**2)
+
+		if r2<=16:
 
 			
 
@@ -1817,69 +1816,68 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 
 
-striker_speed=2
-move_striker_st=0
-move_striker_data=[]
-proj_ang=None
-striker_ang=0
-striker_coord_=[0,0]
+
 def move_striker():
-	global striker_coord,striker_coord_,xrng,yv1,turn,boundary,force
+	global pieces
 	global game_st
-	global striker_ang
-	global move_striker_st
-	global move_striker_data,proj_ang
 	global st
+	global turn
 
 	if st=="main":
 
 
 		if game_st==2:
 
-			if move_striker_st==0:
+			if pieces["striker"]["st"]==0:
+
+				
 
 				try:
 
-					#print(proj_ang)
+					#print(pieces["striker"]["proj_ang"])
 
-					striker_coord_=striker_coord
-					if proj_ang!=None:
-						move_striker_data=get_pos(striker_coord[0],striker_coord[1],0,proj_ang,0,0)
-						proj_ang=None
+					pieces["striker"]["coord_"]=pieces["striker"]["coord"]
+					if pieces["striker"]["proj_ang"]!=None:
+						pieces["striker"]["data"]=get_pos(pieces["striker"]["coord"][0],pieces["striker"]["coord"][1],0,pieces["striker"]["proj_ang"],0,0)
+						pieces["striker"]["proj_ang"]=None
 					else:
 
-						move_striker_data=get_pos(striker_coord[0],striker_coord[1],0,striker_ang,0,0)
+						pieces["striker"]["data"]=get_pos(pieces["striker"]["coord"][0],pieces["striker"]["coord"][1],0,pieces["striker"]["angle"],0,0)
 					
-					#print(move_striker_data)
-					striker_coord=[move_striker_data[0],move_striker_data[1]]
-					striker_ang=move_striker_data[3]
+					#print(pieces["striker"]["data"])
+					pieces["striker"]["coord"]=[pieces["striker"]["data"][0],pieces["striker"]["data"][1]]
+					pieces["striker"]["angle"]=pieces["striker"]["data"][3]
 
 					draw_striker(1)
 
-					move_striker_st=1
+					pieces["striker"]["st"]=1
 
 				except:
-					print(move_striker_data,"error")
-			elif move_striker_st==1:
+					print(pieces["striker"]["data"],"error")
+			elif pieces["striker"]["st"]==1:
 
-				move_striker_data=get_pos(striker_coord_[0],striker_coord_[1],move_striker_data[2],striker_ang,move_striker_data[4],1)
-
-
-				if move_striker_data==1:
+				pieces["striker"]["data"]=get_pos(pieces["striker"]["coord_"][0],pieces["striker"]["coord_"][1],pieces["striker"]["data"][2],pieces["striker"]["angle"],pieces["striker"]["data"][4],1)
 
 
-					proj_ang=None
+				if pieces["striker"]["data"]==1:
+
+					pieces["striker"]["start_time"]=0
+					pieces["striker"]["speed"]=0
+					pieces["striker"]["initial_v"]=0
+					pieces["striker"]["current_v"]=0
+
+					pieces["striker"]["proj_ang"]=None
 					game_st=0
-					move_striker_st=0
-					force=0
+					pieces["striker"]["st"]=0
+					pieces["striker"]["initial_v"]=0
 
 					
 					if turn==0:
 						turn=1
-						striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
+						pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
 					elif turn==1:
 						turn=0				
-						striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+						pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
 
 
 
@@ -1889,18 +1887,18 @@ def move_striker():
 					return
 
 
-				elif move_striker_data==2:
-					move_striker_st=0
+				elif pieces["striker"]["data"]==2:
+					pieces["striker"]["st"]=0
 					draw_striker(1)	
 
 
 				else:
 
-					striker_ang=move_striker_data[3]
-					striker_coord=[move_striker_data[0],move_striker_data[1]]
+					pieces["striker"]["angle"]=pieces["striker"]["data"][3]
+					pieces["striker"]["coord"]=[pieces["striker"]["data"][0],pieces["striker"]["data"][1]]
 
 
-					striker_coord=[move_striker_data[0],move_striker_data[1]]
+					pieces["striker"]["coord"]=[pieces["striker"]["data"][0],pieces["striker"]["data"][1]]
 					
 
 					
@@ -1908,16 +1906,67 @@ def move_striker():
 					try:
 
 
-						if len(move_striker_data[4])==3:
+						if len(pieces["striker"]["data"][4])==3:
 
 
 
-							proj_ang=move_striker_data[4][1]
+							pieces["striker"]["proj_ang"]=pieces["striker"]["data"][4][1]
 
 					except:
 						pass
 
-					draw_striker(1)	
+					draw_striker(1)
+
+
+				pieces["striker"]["current_v"]=pieces["striker"]["initial_v"]-0.05*9.8*(time.time()-pieces["striker"]["start_time"])
+
+				if pieces["striker"]["current_v"]<0:
+
+
+
+					pieces["striker"]["start_time"]=0
+					pieces["striker"]["speed"]=0
+					pieces["striker"]["initial_v"]=0
+					pieces["striker"]["current_v"]=0
+
+
+
+					pieces["striker"]["proj_ang"]=None
+					game_st=0
+					pieces["striker"]["st"]=0
+					pieces["striker"]["initial_v"]=0
+
+					
+					if turn==0:
+						turn=1
+						pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
+					elif turn==1:
+						turn=0				
+						pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+
+
+
+					draw_striker(1)		
+
+					root.after(1,move_striker)
+					return
+				else:
+
+					pieces["striker"]["speed"]=int(round((1-pieces["striker"]["current_v"]/3)*10,0))
+
+					if pieces["striker"]["speed"]<2:
+						pieces["striker"]["speed"]=2
+
+
+					#print(pieces["striker"]["speed"])
+
+				root.after(pieces["striker"]["speed"],move_striker)
+				return
+
+
+			root.after(1,move_striker)
+			return
+
 
 					
 
@@ -1925,15 +1974,20 @@ def move_striker():
 
 
 		else:
-			move_striker_st=0
+			pieces["striker"]["st"]=0
+			root.after(1,move_striker)
+			return
 
 
 
 
-		root.after(striker_speed,move_striker)
+
+
+		
 
 	else:
-		root.after(100,move_striker)
+		root.after(1,move_striker)
+		return
 
 
 
@@ -1945,9 +1999,9 @@ def move_striker():
 striker=0
 def draw_striker(con=0):
 	global can
-	global striker,striker_r,striker_coord
+	global striker,striker_r,pieces
 
-	x,y=striker_coord
+	x,y=pieces["striker"]["coord"]
 
 	if con==0:
 
@@ -1959,6 +2013,28 @@ def draw_striker(con=0):
 
 		can.coords(striker,x-striker_r,y-striker_r, x+striker_r,y+striker_r)
 
+
+
+
+
+pieces={"striker":{"coord":[0,0],
+					"coord_":[0,0],
+					"angle":0,
+					"proj_ang":None,
+					"st":0,
+					"data":[],
+					"initial_v":0,
+					"current_v":0,
+					"start_time":0,
+					"speed":0,
+					}
+
+
+
+
+		}
+
+print(pieces["striker"])
 
 
 w,h=500,500
@@ -1995,9 +2071,9 @@ xrng=(102*w/500,383*w/500)
 
 
 if turn==0:
-	striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+	pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
 elif turn==1:
-	striker_coord=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
+	pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
 
 #coord=[w/2-100,h/2-100, w/2+100,h/2+100]
 
@@ -2007,8 +2083,8 @@ coord=boundary[1]
 
 r=22
 
-max_force=20 # N
-force=0
+max_v0=20 # N
+pieces["striker"]["initial_v"]=0
 
 load_im()
 
