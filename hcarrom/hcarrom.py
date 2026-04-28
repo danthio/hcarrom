@@ -2,6 +2,7 @@ from PIL import Image,ImageTk,ImageDraw
 import tkinter as tk
 import math
 import time
+import random
 
 bg=0
 circle=0
@@ -136,6 +137,8 @@ def intro():
 def main():
 	global bg
 	global st
+	global pieces
+	global striker_r,piece_r
 
 	st="main"
 
@@ -144,7 +147,29 @@ def main():
 
 	can.create_image(0,0,image=bg,anchor="nw")
 
-	draw_striker()
+	for i in pieces:
+
+		if i=="striker":
+
+			draw_piece_(striker_r,i,"#323232","#ffffff")
+
+		else:
+
+			if i.split(" ")[-1]=="white":
+				col1="#ffffff"
+				col2="#000000"
+
+			elif i.split(" ")[-1]=="black":
+				col1="#000000"
+				col2="#ffffff"
+			draw_piece_(piece_r,i,col1,col2)
+
+			pieces[i]["angle"]=random.randint(100,260)
+			pieces[i]["initial_v"]=3
+
+			pieces[i]["start_time"]=time.time()
+			pieces[i]["move st"]=1
+
 
 p=0
 #r=30
@@ -312,7 +337,7 @@ def can_b1(e):
 							for i in dm_vs:
 
 								can.delete(i)
-							draw_striker(1)
+							draw_piece_(striker_r,"striker","#323232","#ffffff",1)
 							
 
 
@@ -330,7 +355,7 @@ def can_b1(e):
 
 							can.delete(i)
 
-						draw_striker(1)
+						draw_piece_(striker_r,"striker","#323232","#ffffff",1)
 						return
 
 					cx,cy=383,82
@@ -346,7 +371,7 @@ def can_b1(e):
 
 							can.delete(i)
 
-						draw_striker(1)
+						draw_piece_(striker_r,"striker","#323232","#ffffff",1)
 						return
 
 
@@ -362,7 +387,7 @@ def can_b1(e):
 							for i in dm_vs:
 
 								can.delete(i)
-							draw_striker(1)
+							draw_piece_(striker_r,"striker","#323232","#ffffff",1)
 
 							return
 
@@ -379,7 +404,7 @@ def can_b1(e):
 
 							can.delete(i)
 
-						draw_striker(1)
+						draw_piece_(striker_r,"striker","#323232","#ffffff",1)
 						return
 
 					cx,cy=383,404
@@ -394,7 +419,7 @@ def can_b1(e):
 
 							can.delete(i)
 
-						draw_striker(1)
+						draw_piece_(striker_r,"striker","#323232","#ffffff",1)
 						return
 
 
@@ -440,7 +465,7 @@ def drag(e):
 					for i in dm_vs:
 
 						can.delete(i)
-					draw_striker(1)
+					draw_piece_(striker_r,"striker","#323232","#ffffff",1)
 
 
 
@@ -475,6 +500,11 @@ def can_b1_release(e):
 		if game_st==1:
 			game_st=2
 			pieces["striker"]["start_time"]=time.time()
+
+
+
+def collusions(piece,con=0):
+	global pieces
 
 
 
@@ -1179,7 +1209,6 @@ def can_b3(e):
 
 def get_pos(cx,cy,r_,ang,con_mv,con):
 	global boundary
-	global striker_r
 
 
 	# colliding
@@ -1462,7 +1491,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 			if r<=striker_r:
 				if boundary[1][1]<=y<=boundary[1][3]:
 
-					print(5)
+					#print(5)
 
 
 					if cy<=y:
@@ -1495,7 +1524,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 
 
 
-					print(_a_)
+					#print(_a_)
 
 					con_mv=[5,_a_,_r_]
 
@@ -1562,7 +1591,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 			if r<=striker_r:
 
 				if boundary[1][1]<=y<=boundary[1][3]:
-					print(6)
+					#print(6)
 
 					if cy<=y:					
 
@@ -1660,7 +1689,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 				#print(_r_)
 				if boundary[1][0]<=x<=boundary[1][2]:
 
-					print(7)
+					#print(7)
 
 					if cx<=x:
 
@@ -1745,7 +1774,7 @@ def get_pos(cx,cy,r_,ang,con_mv,con):
 			if r<=striker_r:
 				if boundary[1][0]<=x<=boundary[1][2]:
 
-					print(8,_r_)
+					#print(8,_r_)
 
 					if cx<=x:
 
@@ -1848,7 +1877,7 @@ def move_striker():
 					pieces["striker"]["coord"]=[pieces["striker"]["data"][0],pieces["striker"]["data"][1]]
 					pieces["striker"]["angle"]=pieces["striker"]["data"][3]
 
-					draw_striker(1)
+					draw_piece_(striker_r,"striker","#323232","#ffffff",1)
 
 					pieces["striker"]["st"]=1
 
@@ -1881,7 +1910,7 @@ def move_striker():
 
 
 
-					draw_striker(1)		
+					draw_piece_(striker_r,"striker","#323232","#ffffff",1)		
 
 					root.after(100,move_striker)
 					return
@@ -1889,7 +1918,7 @@ def move_striker():
 
 				elif pieces["striker"]["data"]==2:
 					pieces["striker"]["st"]=0
-					draw_striker(1)	
+					draw_piece_(striker_r,"striker","#323232","#ffffff",1)	
 
 
 				else:
@@ -1915,7 +1944,7 @@ def move_striker():
 					except:
 						pass
 
-					draw_striker(1)
+					draw_piece_(striker_r,"striker","#323232","#ffffff",1)
 
 
 				pieces["striker"]["current_v"]=pieces["striker"]["initial_v"]-0.05*9.8*(time.time()-pieces["striker"]["start_time"])
@@ -1946,7 +1975,7 @@ def move_striker():
 
 
 
-					draw_striker(1)		
+					draw_piece_(striker_r,"striker","#323232","#ffffff",1)		
 
 					root.after(1,move_striker)
 					return
@@ -1992,26 +2021,403 @@ def move_striker():
 
 
 
+def move_1_w():
+	global pieces
+	global game_st
+	global st
+	global turn
+	global piece_r
+
+	if pieces["1 white"]["potted"]==1:
+
+		root.after(1,move_1_w)
+		return
+
+	if st=="main":
+
+
+		if pieces["1 white"]["move st"]==1:
+
+			if pieces["1 white"]["st"]==0:
+
+				
+
+				try:
+
+					#print(pieces["1 white"]["proj_ang"])
+
+					pieces["1 white"]["coord_"]=pieces["1 white"]["coord"]
+					if pieces["1 white"]["proj_ang"]!=None:
+						pieces["1 white"]["data"]=get_pos(pieces["1 white"]["coord"][0],pieces["1 white"]["coord"][1],0,pieces["1 white"]["proj_ang"],0,0)
+						pieces["1 white"]["proj_ang"]=None
+					else:
+
+						pieces["1 white"]["data"]=get_pos(pieces["1 white"]["coord"][0],pieces["1 white"]["coord"][1],0,pieces["1 white"]["angle"],0,0)
+					
+					#print(pieces["1 white"]["data"])
+					pieces["1 white"]["coord"]=[pieces["1 white"]["data"][0],pieces["1 white"]["data"][1]]
+					pieces["1 white"]["angle"]=pieces["1 white"]["data"][3]
+
+					draw_piece_(piece_r,"1 white","#ffffff","#000000",1)
+
+
+					pieces["1 white"]["st"]=1
+
+				except:
+					print(pieces["1 white"]["data"],"error")
+			elif pieces["1 white"]["st"]==1:
+
+				pieces["1 white"]["data"]=get_pos(pieces["1 white"]["coord_"][0],pieces["1 white"]["coord_"][1],pieces["1 white"]["data"][2],pieces["1 white"]["angle"],pieces["1 white"]["data"][4],1)
+
+
+				if pieces["1 white"]["data"]==1:
+
+					pieces["1 white"]["potted"]=1
+
+					pieces["1 white"]["start_time"]=0
+					pieces["1 white"]["speed"]=0
+					pieces["1 white"]["initial_v"]=0
+					pieces["1 white"]["current_v"]=0
+
+					pieces["1 white"]["proj_ang"]=None
+					
+					pieces["1 white"]["st"]=0
+					pieces["1 white"]["initial_v"]=0
+
+					pieces["1 white"]["move st"]=0
+
+					
+
+					pieces["1 white"]["coord"]=[-100,100]
+
+					draw_piece_(piece_r,"1 white","#ffffff","#000000",1)		
+
+					root.after(1,move_1_w)
+					return
+
+
+				elif pieces["1 white"]["data"]==2:
+					pieces["1 white"]["st"]=0
+					draw_piece_(piece_r,"1 white","#ffffff","#000000",1)	
+
+
+				else:
+
+					pieces["1 white"]["angle"]=pieces["1 white"]["data"][3]
+					pieces["1 white"]["coord"]=[pieces["1 white"]["data"][0],pieces["1 white"]["data"][1]]
+
+
+					pieces["1 white"]["coord"]=[pieces["1 white"]["data"][0],pieces["1 white"]["data"][1]]
+					
+
+					
+
+					try:
+
+
+						if len(pieces["1 white"]["data"][4])==3:
+
+
+
+							pieces["1 white"]["proj_ang"]=pieces["1 white"]["data"][4][1]
+
+					except:
+						pass
+
+					draw_piece_(piece_r,"1 white","#ffffff","#000000",1)
+
+
+				pieces["1 white"]["current_v"]=pieces["1 white"]["initial_v"]-0.05*9.8*(time.time()-pieces["1 white"]["start_time"])
+
+				if pieces["1 white"]["current_v"]<0:
+
+
+
+					pieces["1 white"]["start_time"]=0
+					pieces["1 white"]["speed"]=0
+					pieces["1 white"]["initial_v"]=0
+					pieces["1 white"]["current_v"]=0
+
+
+
+					pieces["1 white"]["proj_ang"]=None
+					
+					pieces["1 white"]["st"]=0
+					pieces["1 white"]["initial_v"]=0
+
+					pieces["1 white"]["move st"]=0
+
+					
+
+					draw_piece_(piece_r,"1 white","#ffffff","#000000",1)		
+
+					root.after(1,move_1_w)
+					return
+				else:
+
+					pieces["1 white"]["speed"]=int(round((1-pieces["1 white"]["current_v"]/3)*10,0))
+
+					if pieces["1 white"]["speed"]<2:
+						pieces["1 white"]["speed"]=2
+
+
+					#print(pieces["1 white"]["speed"])
+
+				root.after(pieces["1 white"]["speed"],move_1_w)
+				return
+
+
+			root.after(1,move_1_w)
+			return
+
+
+					
 
 
 
 
-striker=0
-def draw_striker(con=0):
+		else:
+			pieces["1 white"]["st"]=0
+			root.after(1,move_1_w)
+			return
+
+
+	else:
+		root.after(1,move_1_w)
+		return
+
+
+def move_1_b():
+    global pieces
+    global game_st
+    global st
+    global turn
+    global piece_r
+
+    if pieces["1 black"]["potted"]==1:
+
+        root.after(1,move_1_b)
+        return
+
+    if st=="main":
+
+        if pieces["1 black"]["move st"]==1:
+
+            if pieces["1 black"]["st"]==0:
+
+                
+
+                try:
+
+                    #print(pieces["1 black"]["proj_ang"])
+
+                    pieces["1 black"]["coord_"]=pieces["1 black"]["coord"]
+                    if pieces["1 black"]["proj_ang"]!=None:
+                        pieces["1 black"]["data"]=get_pos(pieces["1 black"]["coord"][0],pieces["1 black"]["coord"][1],0,pieces["1 black"]["proj_ang"],0,0)
+                        pieces["1 black"]["proj_ang"]=None
+                    else:
+
+                        pieces["1 black"]["data"]=get_pos(pieces["1 black"]["coord"][0],pieces["1 black"]["coord"][1],0,pieces["1 black"]["angle"],0,0)
+                    
+                    #print(pieces["1 black"]["data"])
+                    pieces["1 black"]["coord"]=[pieces["1 black"]["data"][0],pieces["1 black"]["data"][1]]
+                    pieces["1 black"]["angle"]=pieces["1 black"]["data"][3]
+
+                    draw_piece_(piece_r,"1 black","#000000","#ffffff",1)
+
+
+                    pieces["1 black"]["st"]=1
+
+                except:
+                    print(pieces["1 black"]["data"],"error")
+            elif pieces["1 black"]["st"]==1:
+
+                pieces["1 black"]["data"]=get_pos(pieces["1 black"]["coord_"][0],pieces["1 black"]["coord_"][1],pieces["1 black"]["data"][2],pieces["1 black"]["angle"],pieces["1 black"]["data"][4],1)
+
+
+                if pieces["1 black"]["data"]==1:
+
+                    pieces["1 black"]["potted"]=1
+
+                    pieces["1 black"]["start_time"]=0
+                    pieces["1 black"]["speed"]=0
+                    pieces["1 black"]["initial_v"]=0
+                    pieces["1 black"]["current_v"]=0
+
+                    pieces["1 black"]["proj_ang"]=None
+                    
+                    pieces["1 black"]["st"]=0
+                    pieces["1 black"]["initial_v"]=0
+
+                    pieces["1 black"]["move st"]=0
+
+                    
+
+                    pieces["1 black"]["coord"]=[-100,100]
+
+                    draw_piece_(piece_r,"1 black","#000000","#ffffff",1)        
+
+                    root.after(1,move_1_b)
+                    return
+
+
+                elif pieces["1 black"]["data"]==2:
+                    pieces["1 black"]["st"]=0
+                    draw_piece_(piece_r,"1 black","#000000","#ffffff",1)    
+
+
+                else:
+
+                    pieces["1 black"]["angle"]=pieces["1 black"]["data"][3]
+                    pieces["1 black"]["coord"]=[pieces["1 black"]["data"][0],pieces["1 black"]["data"][1]]
+
+
+                    pieces["1 black"]["coord"]=[pieces["1 black"]["data"][0],pieces["1 black"]["data"][1]]
+                    
+
+                    
+
+                    try:
+
+
+                        if len(pieces["1 black"]["data"][4])==3:
+
+
+
+                            pieces["1 black"]["proj_ang"]=pieces["1 black"]["data"][4][1]
+
+                    except:
+                        pass
+
+                    draw_piece_(piece_r,"1 black","#000000","#ffffff",1)
+
+
+                pieces["1 black"]["current_v"]=pieces["1 black"]["initial_v"]-0.05*9.8*(time.time()-pieces["1 black"]["start_time"])
+                #print("1 black"," - ",pieces["1 black"]["current_v"])
+
+                if int(pieces["1 black"]["current_v"])<0:
+
+
+
+                    pieces["1 black"]["start_time"]=0
+                    pieces["1 black"]["speed"]=0
+                    pieces["1 black"]["initial_v"]=0
+                    pieces["1 black"]["current_v"]=0
+
+
+
+                    pieces["1 black"]["proj_ang"]=None
+                    
+                    pieces["1 black"]["st"]=0
+                    pieces["1 black"]["move st"]=0
+
+                    
+
+                    draw_piece_(piece_r,"1 black","#000000","#ffffff",1)        
+
+                    root.after(1,move_1_b)
+                    return
+                else:
+
+                    pieces["1 black"]["speed"]=int(round((1-pieces["1 black"]["current_v"]/3)*10,0))
+
+                    if pieces["1 black"]["speed"]<2:
+                        pieces["1 black"]["speed"]=2
+
+
+               
+
+                root.after(pieces["1 black"]["speed"],move_1_b)
+                return
+
+
+            root.after(1,move_1_b)
+            return
+
+
+                    
+
+
+
+
+        else:
+            pieces["1 black"]["st"]=0
+            root.after(1,move_1_b)
+            return
+
+
+    else:
+        root.after(1,move_1_b)
+        return
+
+_pieces_={}
+
+def draw_piece_(r,p,col1,col2,con=0):
 	global can
-	global striker,striker_r,pieces
+	global pieces,_pieces_
 
-	x,y=pieces["striker"]["coord"]
+	x,y=pieces[p]["coord"]
+
+	def get_index(p):
+		global pieces,_pieces_
+
+		
+
+
+		ar=[]
+
+		for i in pieces:
+
+			ar.append(i)
+
+
+		try:
+
+			v=ar.index(p)
+
+			return _pieces_[p]
+
+		except:
+
+			c=100
+
+
+			ar=[]
+
+			for i in _pieces_:
+
+				ar.append(_pieces_[i])
+
+			if len(ar)>0:
+
+				c=max(ar)+1
+
+			return c
+
+
+
+
+
+			
+
+
+
+
 
 	if con==0:
 
-		can.delete(striker)
+		
+		_pieces_[p]=get_index(p)
 
-		striker=can.create_oval(x-striker_r,y-striker_r, x+striker_r,y+striker_r,
-			fill="#323232",outline="#ffffff")
+		can.delete(_pieces_[p])
+
+		_pieces_[p]=can.create_oval(x-r,y-r, x+r,y+r,
+			fill=col1,outline=col2)
 	elif con==1:
 
-		can.coords(striker,x-striker_r,y-striker_r, x+striker_r,y+striker_r)
+		can.coords(_pieces_[p],x-r,y-r, x+r,y+r)
+
+
 
 
 
@@ -2027,10 +2433,38 @@ pieces={"striker":{"coord":[0,0],
 					"current_v":0,
 					"start_time":0,
 					"speed":0,
-					}
+
+					},
 
 
+	"1 white":{"coord":[150,150],
+						"coord_":[0,0],
+						"angle":0,
+						"proj_ang":None,
+						"st":0,
+						"data":[],
+						"initial_v":0,
+						"current_v":0,
+						"start_time":0,
+						"speed":0,
+						"potted":0,
+						"move st":0,
+						},
 
+
+	"1 black":{"coord":[150,250],
+						"coord_":[0,0],
+						"angle":0,
+						"proj_ang":None,
+						"st":0,
+						"data":[],
+						"initial_v":0,
+						"current_v":0,
+						"start_time":0,
+						"speed":0,
+						"potted":0,
+						"move st":0,
+						},
 
 		}
 
@@ -2096,6 +2530,8 @@ intro()
 force_()
 
 move_striker()
+move_1_w()
+move_1_b()
 
 def update():
 
