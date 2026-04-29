@@ -503,10 +503,16 @@ def collusions(pc):
 	global pieces
 	global striker_r,piece_r
 
+
+	if pieces[pc]["current_v"]==0:
+		return
+
 	for p_ in pieces:
 
 		if p_ ==pc:
 			continue
+
+
 
 
 		x1,y1=pieces[pc]["coord"]
@@ -517,8 +523,8 @@ def collusions(pc):
 		else:
 			rr=piece_r
 
-		x1=rr*math.sin(math.radians(pieces[pc]["angle"]))+x1
-		y1=rr*math.cos(math.radians(pieces[pc]["angle"]))+y1
+		x1=(rr+1)*math.sin(math.radians(pieces[pc]["angle"]))+x1
+		y1=(rr+1)*math.cos(math.radians(pieces[pc]["angle"]))+y1
 
 		x2,y2=pieces[p_]["coord"]
 
@@ -2044,6 +2050,8 @@ def move_striker():
 
 		if game_st==2:
 
+			collusions("striker")
+
 			if pieces["striker"]["st"]==0:
 
 				
@@ -2056,6 +2064,7 @@ def move_striker():
 					if pieces["striker"]["proj_ang"]!=None:
 						pieces["striker"]["data"]=get_pos("striker",pieces["striker"]["coord"][0],pieces["striker"]["coord"][1],0,pieces["striker"]["proj_ang"],0,0)
 						pieces["striker"]["proj_ang"]=None
+						pieces["striker"]["angle"]=pieces["striker"]["proj_ang"]
 					else:
 
 						pieces["striker"]["data"]=get_pos("striker",pieces["striker"]["coord"][0],pieces["striker"]["coord"][1],0,pieces["striker"]["angle"],0,0)
@@ -2084,6 +2093,7 @@ def move_striker():
 
 					pieces["striker"]["proj_ang"]=None
 					game_st=0
+					pieces["striker"]["move st"]=0
 					pieces["striker"]["st"]=0
 					pieces["striker"]["initial_v"]=0
 
@@ -2144,10 +2154,13 @@ def move_striker():
 					pieces["striker"]["speed"]=0
 					pieces["striker"]["initial_v"]=0
 					pieces["striker"]["current_v"]=0
+					pieces["striker"]["move st"]=0
 
 
 
 					pieces["striker"]["proj_ang"]=None
+
+					pieces["striker"]["st"]=0
 					game_st=0
 					pieces["striker"]["st"]=0
 					pieces["striker"]["initial_v"]=0
@@ -2179,7 +2192,7 @@ def move_striker():
 					#print(pieces["striker"]["speed"])
 
 
-				collusions("striker")
+				
 
 				root.after(pieces["striker"]["speed"],move_striker)
 				return
@@ -2230,6 +2243,8 @@ def move_1_w():
 
 		if pieces["1 white"]["move st"]==1:
 
+			collusions("1 white")
+
 			if pieces["1 white"]["st"]==0:
 
 				
@@ -2242,6 +2257,7 @@ def move_1_w():
 					if pieces["1 white"]["proj_ang"]!=None:
 						pieces["1 white"]["data"]=get_pos("1 white",pieces["1 white"]["coord"][0],pieces["1 white"]["coord"][1],0,pieces["1 white"]["proj_ang"],0,0)
 						pieces["1 white"]["proj_ang"]=None
+						pieces["1 white"]["angle"]=pieces["1 white"]["proj_ang"]
 					else:
 
 						pieces["1 white"]["data"]=get_pos("1 white",pieces["1 white"]["coord"][0],pieces["1 white"]["coord"][1],0,pieces["1 white"]["angle"],0,0)
@@ -2355,7 +2371,7 @@ def move_1_w():
 
 					#print(pieces["1 white"]["speed"])
 
-				collusions("1 white")
+				
 
 				root.after(pieces["1 white"]["speed"],move_1_w)
 				return
@@ -2397,6 +2413,9 @@ def move_1_b():
 
         if pieces["1 black"]["move st"]==1:
 
+            
+
+            collusions("1 black")
             if pieces["1 black"]["st"]==0:
 
                 
@@ -2409,6 +2428,7 @@ def move_1_b():
                     if pieces["1 black"]["proj_ang"]!=None:
                         pieces["1 black"]["data"]=get_pos("1 black",pieces["1 black"]["coord"][0],pieces["1 black"]["coord"][1],0,pieces["1 black"]["proj_ang"],0,0)
                         pieces["1 black"]["proj_ang"]=None
+                        pieces["1 black"]["angle"]=pieces["1 black"]["proj_ang"]
                     else:
 
                         pieces["1 black"]["data"]=get_pos("1 black",pieces["1 black"]["coord"][0],pieces["1 black"]["coord"][1],0,pieces["1 black"]["angle"],0,0)
@@ -2519,7 +2539,7 @@ def move_1_b():
                     if pieces["1 black"]["speed"]<2:
                         pieces["1 black"]["speed"]=2
 
-                collusions("1 black")
+                
 
 
 
