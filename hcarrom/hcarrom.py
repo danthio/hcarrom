@@ -517,27 +517,29 @@ def collusions(pc):
 
 		x1,y1=pieces[pc]["coord"]
 
-		if pieces[pc]=="striker":
+		if pc=="striker":
 
 			rr=striker_r
 		else:
 			rr=piece_r
 
-		x1=(rr+1)*math.sin(math.radians(pieces[pc]["angle"]))+x1
-		y1=(rr+1)*math.cos(math.radians(pieces[pc]["angle"]))+y1
+		x1=(rr)*math.sin(math.radians(pieces[pc]["angle"]))+x1
+		y1=(rr)*math.cos(math.radians(pieces[pc]["angle"]))+y1
 
 		x2,y2=pieces[p_]["coord"]
 
 		_r=math.sqrt((x2-x1)**2+(y2-y1)**2)
 
-		if pieces[p_]=="striker":
+		if p_=="striker":
 
 			rr=striker_r
 		else:
 			rr=piece_r
 
-		if _r<=rr:
-			print("ok")
+		#print(_r,rr)
+
+		if int(_r-1)<=rr+3:
+			#print("ok",_r-1)
 			
 			a=get_ang([x1,y1],[x2,y2])
 
@@ -570,6 +572,8 @@ def collusions(pc):
 			pieces[pc]["initial_v"]=pieces[pc]["current_v"]
 			pieces[pc]["current_v"]=0
 			#pieces[pc]["move st"]=1
+
+			return 1
 
 def get_ang(p1,p2):
 
@@ -723,6 +727,8 @@ def draw_move(e):
 				global dm_piece_mv
 
 				#collusions
+
+
 
 
 				r_=0
@@ -1402,6 +1408,10 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 	# colliding
 
+	if collusions(pc)==1:
+
+		return 2
+
 	#get_ang
 
 
@@ -2050,7 +2060,7 @@ def move_striker():
 
 		if game_st==2:
 
-			collusions("striker")
+			
 
 			if pieces["striker"]["st"]==0:
 
@@ -2096,6 +2106,7 @@ def move_striker():
 					pieces["striker"]["move st"]=0
 					pieces["striker"]["st"]=0
 					pieces["striker"]["initial_v"]=0
+					pieces["striker"]["angle"]=0
 
 					
 					if turn==0:
@@ -2115,6 +2126,7 @@ def move_striker():
 
 				elif pieces["striker"]["data"]==2:
 					pieces["striker"]["st"]=0
+					pieces["striker"]["angle"]=pieces["striker"]["proj_ang"]
 					draw_piece_(striker_r,"striker","#323232","#ffffff",1)	
 
 
@@ -2159,6 +2171,8 @@ def move_striker():
 
 
 					pieces["striker"]["proj_ang"]=None
+
+					pieces["striker"]["angle"]=0
 
 					pieces["striker"]["st"]=0
 					game_st=0
@@ -2243,7 +2257,7 @@ def move_1_w():
 
 		if pieces["1 white"]["move st"]==1:
 
-			collusions("1 white")
+			
 
 			if pieces["1 white"]["st"]==0:
 
@@ -2288,6 +2302,7 @@ def move_1_w():
 					pieces["1 white"]["current_v"]=0
 
 					pieces["1 white"]["proj_ang"]=None
+					pieces["1 white"]["angle"]=0
 					
 					pieces["1 white"]["st"]=0
 					pieces["1 white"]["initial_v"]=0
@@ -2306,6 +2321,7 @@ def move_1_w():
 
 				elif pieces["1 white"]["data"]==2:
 					pieces["1 white"]["st"]=0
+					pieces["1 white"]["angle"]=pieces["1 white"]["proj_ang"]
 					draw_piece_(piece_r,"1 white","#ffffff","#000000",1)	
 
 
@@ -2349,6 +2365,7 @@ def move_1_w():
 
 
 					pieces["1 white"]["proj_ang"]=None
+					pieces["1 white"]["angle"]=0
 					
 					pieces["1 white"]["st"]=0
 					pieces["1 white"]["initial_v"]=0
@@ -2415,7 +2432,7 @@ def move_1_b():
 
             
 
-            collusions("1 black")
+            
             if pieces["1 black"]["st"]==0:
 
                 
@@ -2460,6 +2477,7 @@ def move_1_b():
                     pieces["1 black"]["current_v"]=0
 
                     pieces["1 black"]["proj_ang"]=None
+                    pieces["1 black"]["angle"]=0
                     
                     pieces["1 black"]["st"]=0
                     pieces["1 black"]["initial_v"]=0
@@ -2478,6 +2496,7 @@ def move_1_b():
 
                 elif pieces["1 black"]["data"]==2:
                     pieces["1 black"]["st"]=0
+                    pieces["1 black"]["angle"]=pieces["1 black"]["proj_ang"]
                     draw_piece_(piece_r,"1 black","#000000","#ffffff",1)    
 
 
@@ -2522,6 +2541,7 @@ def move_1_b():
 
 
                     pieces["1 black"]["proj_ang"]=None
+                    pieces["1 black"]["angle"]=0
                     
                     pieces["1 black"]["st"]=0
                     pieces["1 black"]["move st"]=0
