@@ -543,12 +543,14 @@ def collusions(pc):
 				pieces[p_]["move st"]=1
 
 				pieces[p_]["angle"]=a+180
-				pieces[p_]["initial_v"]=pieces[pc]["initial_v"]
+				pieces[p_]["initial_v"]=pieces[pc]["current_v"]
+				pieces[p_]["current_v"]=0
 				pieces[p_]["start_time"]=time.time()
 			else:
 				pieces[p_]["proj_ang"]=a+180
 				pieces[p_]["st"]=0
-				pieces[p_]["initial_v"]=pieces[pc]["initial_v"]
+				pieces[p_]["initial_v"]=pieces[pc]["current_v"]
+				pieces[p_]["current_v"]=0
 				pieces[p_]["start_time"]=time.time()
 
 
@@ -559,6 +561,8 @@ def collusions(pc):
 			pieces[pc]["proj_ang"]=a
 			pieces[pc]["st"]=0
 			pieces[pc]["start_time"]=time.time()
+			pieces[pc]["initial_v"]=pieces[pc]["current_v"]
+			pieces[pc]["current_v"]=0
 			#pieces[pc]["move st"]=1
 
 def get_ang(p1,p2):
