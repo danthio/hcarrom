@@ -515,65 +515,67 @@ def collusions(pc):
 
 
 
-		x1,y1=pieces[pc]["coord"]
+		x1_,y1_=pieces[pc]["coord"]
 
-		if pc=="striker":
+		for a_ in range(360):
 
-			rr=striker_r
-		else:
-			rr=piece_r
+			if pc=="striker":
 
-		x1=(rr)*math.sin(math.radians(pieces[pc]["angle"]))+x1
-		y1=(rr)*math.cos(math.radians(pieces[pc]["angle"]))+y1
-
-		x2,y2=pieces[p_]["coord"]
-
-		_r=math.sqrt((x2-x1)**2+(y2-y1)**2)
-
-		if p_=="striker":
-
-			rr=striker_r
-		else:
-			rr=piece_r
-
-		#print(_r,rr)
-
-		if int(_r-1)<=rr+3:
-			#print("ok",_r-1)
-			
-			a=get_ang([x1,y1],[x2,y2])
-
-
-
-
-
-			if pieces[p_]["move st"]==0:
-				pieces[p_]["move st"]=1
-
-				pieces[p_]["angle"]=a+180
-				pieces[p_]["initial_v"]=pieces[pc]["current_v"]
-				pieces[p_]["current_v"]=0
-				pieces[p_]["start_time"]=time.time()
+				rr=striker_r
 			else:
-				pieces[p_]["proj_ang"]=a+180
-				pieces[p_]["st"]=0
-				pieces[p_]["initial_v"]=pieces[pc]["current_v"]
-				pieces[p_]["current_v"]=0
-				pieces[p_]["start_time"]=time.time()
+				rr=piece_r
+
+			x1=(rr+1)*math.sin(math.radians(a_))+x1_
+			y1=(rr+1)*math.cos(math.radians(a_))+y1_
+
+			x2,y2=pieces[p_]["coord"]
+
+			_r=math.sqrt((x2-x1)**2+(y2-y1)**2)
+
+			if p_=="striker":
+
+				rr=striker_r
+			else:
+				rr=piece_r
+
+			#print(_r,rr)
+
+			if _r<=rr:
+				print("ok",_r)
+				
+				a=get_ang([x1,y1],[x2,y2])
+
+
+
+
+
+				if pieces[p_]["move st"]==0:
+					pieces[p_]["move st"]=1
+
+					pieces[p_]["angle"]=a+180
+					pieces[p_]["initial_v"]=pieces[pc]["current_v"]
+					pieces[p_]["current_v"]=0
+					pieces[p_]["start_time"]=time.time()
+				else:
+					pieces[p_]["proj_ang"]=a+180
+					pieces[p_]["st"]=0
+					pieces[p_]["initial_v"]=pieces[pc]["current_v"]
+					pieces[p_]["current_v"]=0
+					pieces[p_]["start_time"]=time.time()
 
 
 
 
 
 
-			pieces[pc]["proj_ang"]=a
-			pieces[pc]["st"]=0
-			pieces[pc]["start_time"]=time.time()
-			pieces[pc]["initial_v"]=pieces[pc]["current_v"]
-			pieces[pc]["current_v"]=0
-			#pieces[pc]["move st"]=1
+				pieces[pc]["proj_ang"]=a
+				pieces[pc]["st"]=0
+				pieces[pc]["start_time"]=time.time()
+				pieces[pc]["initial_v"]=pieces[pc]["current_v"]
+				pieces[pc]["current_v"]=0
+				#pieces[pc]["move st"]=1
 
-			return 1
+				return 1
 
 def get_ang(p1,p2):
 
@@ -742,36 +744,52 @@ def draw_move(e):
 					y=r_*math.cos(math.radians(ang))+cy
 
 
-					x2=(r_+striker_r+1)*math.sin(math.radians(ang))+cx
-					y2=(r_+striker_r+1)*math.cos(math.radians(ang))+cy
+
+
+
 
 					for p in pieces:
 
-						xx,yy=pieces[p]["coord"]
-
 						if p=="striker":
-							_r=striker_r
-						else:
-							_r=piece_r
-
-						rr=math.sqrt((xx-x2)**2+(yy-y2)**2)
-
-						if rr<=_r:
-
-							dm_coord=[cx,cy,x,y]
-
-							a=get_ang([x2,y2],[xx,yy])+180
-
-							
-
-							dm_piece_mv=[a,xx,yy]
+							continue
 
 
 
+						for a_ in range(360):
 
-							draw_move_()
 
-							return
+							x2=(striker_r+1)*math.sin(math.radians(a_))+x
+							y2=(striker_r+1)*math.cos(math.radians(a_))+y
+
+						
+
+
+
+							xx,yy=pieces[p]["coord"]
+
+							if p=="striker":
+								_r=striker_r
+							else:
+								_r=piece_r
+
+							rr=math.sqrt((xx-x2)**2+(yy-y2)**2)
+
+							if rr<=_r:
+
+								dm_coord=[cx,cy,x,y]
+
+								a=get_ang([x2,y2],[xx,yy])+180
+
+								
+
+								dm_piece_mv=[a,xx,yy]
+
+
+
+
+								draw_move_()
+
+								return
 
 
 
@@ -1408,9 +1426,9 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 	# colliding
 
-	if collusions(pc)==1:
+	#if collusions(pc)==1:
 
-		return 2
+	#	return 2
 
 	#get_ang
 
@@ -2060,6 +2078,8 @@ def move_striker():
 
 		if game_st==2:
 
+			collusions("striker")
+
 			
 
 			if pieces["striker"]["st"]==0:
@@ -2257,6 +2277,9 @@ def move_1_w():
 
 		if pieces["1 white"]["move st"]==1:
 
+
+			collusions("1 white")
+
 			
 
 			if pieces["1 white"]["st"]==0:
@@ -2430,11 +2453,17 @@ def move_1_b():
 
         if pieces["1 black"]["move st"]==1:
 
+
+
+
+
             
 
             
+
+
+            collusions("1 black")
             if pieces["1 black"]["st"]==0:
-
                 
 
                 try:
@@ -2692,7 +2721,7 @@ pieces={"striker":{"coord":[0,0],
 						},
 
 
-	"1 black":{"coord":[150,250],
+	"1 black":{"coord":[150,159],
 						"coord_":[0,0],
 						"angle":0,
 						"proj_ang":None,
