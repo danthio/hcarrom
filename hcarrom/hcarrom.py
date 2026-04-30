@@ -727,75 +727,89 @@ def draw_move(e):
 				global dm_coord
 				global pieces,striker_r,piece_r
 				global dm_piece_mv
+				global turn
 
 				#collusions
 
 
 
 
-				r_=0
 
-				for _ in range(600):
-
-					#print(r_)
+				for p in pieces:
 
 
-					x=r_*math.sin(math.radians(ang))+cx
-					y=r_*math.cos(math.radians(ang))+cy
+					if p=="striker":
+						continue
 
+					x1,y1=pieces[p]["coord"]
 
-
+					r=math.sqrt((cx-x1)**2+(cy-y1)**2)
 
 
 
-					for p in pieces:
 
-						if p=="striker":
-							continue
+					r_=int(r)-30
 
+					for _ in range(30):
 
-
-						for a_ in range(360):
+						#print(r_)
 
 
-							x2=(striker_r+1)*math.sin(math.radians(a_))+x
-							y2=(striker_r+1)*math.cos(math.radians(a_))+y
+						x=r_*math.sin(math.radians(ang))+cx
+						y=r_*math.cos(math.radians(ang))+cy
+
+
+
+
+
+
+						for p in pieces:
+
+
+
+
+
+							for a_ in range(360):
+
+
+								x2=(striker_r+1)*math.sin(math.radians(a_))+x
+								y2=(striker_r+1)*math.cos(math.radians(a_))+y
+
+							
+
+
+
+								xx,yy=pieces[p]["coord"]
+
+								if p=="striker":
+									_r=striker_r
+								else:
+									_r=piece_r
+
+								rr=math.sqrt((xx-x2)**2+(yy-y2)**2)
+
+								if rr<=_r:
+
+									dm_coord=[cx,cy,x,y]
+
+									a=get_ang([x2,y2],[xx,yy])+180
+
+									
+
+									dm_piece_mv=[a,xx,yy]
+
+
+
+
+									draw_move_()
+
+									return
+
+
 
 						
 
-
-
-							xx,yy=pieces[p]["coord"]
-
-							if p=="striker":
-								_r=striker_r
-							else:
-								_r=piece_r
-
-							rr=math.sqrt((xx-x2)**2+(yy-y2)**2)
-
-							if rr<=_r:
-
-								dm_coord=[cx,cy,x,y]
-
-								a=get_ang([x2,y2],[xx,yy])+180
-
-								
-
-								dm_piece_mv=[a,xx,yy]
-
-
-
-
-								draw_move_()
-
-								return
-
-
-
-					
-
-					r_+=1
+						r_+=1
 
 
 
@@ -1713,35 +1727,40 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 				if boundary[1][1]<=y<=boundary[1][3]:
 
 					#print(5)
-
-
-					if cy<=y:
-
-						o=cx-x
-						a=y-cy
-
-
-						if o<0:
-							o=-o
-						if a<0:
-							a=-a
-
-
-						_a_=math.degrees(math.atan(o/a))
+					if ang==270:
+						_a_=90
 
 					else:
 
-						o=cx-x
-						a=cy-y
+						if cy<=y:
+
+							o=cx-x
+							a=y-cy
 
 
-						if o<0:
-							o=-o
-						if a<0:
-							a=-a
+							if o<0:
+								o=-o
+							if a<0:
+								a=-a
 
 
-						_a_=180-math.degrees(math.atan(o/a))
+							_a_=math.degrees(math.atan(o/a))
+
+						else:
+
+							o=cx-x
+							a=cy-y
+
+
+							if o<0:
+								o=-o
+							if a<0:
+								a=-a
+
+
+							_a_=180-math.degrees(math.atan(o/a))
+
+
 
 
 
@@ -1812,35 +1831,47 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 			if r<=striker_r:
 
 				if boundary[1][1]<=y<=boundary[1][3]:
+
+
 					#print(6)
 
-					if cy<=y:					
-
-						o=x-cx
-						a=y-cy
 
 
-						if o<0:
-							o=-o
-						if a<0:
-							a=-a
+					if ang==90:
 
+						_a_=270
 
-						_a_=360-math.degrees(math.atan(o/a))
 					else:
 
+						if cy<=y:					
 
-						o=x-cx
-						a=cy-y
-
-
-						if o<0:
-							o=-o
-						if a<0:
-							a=-a
+							o=x-cx
+							a=y-cy
 
 
-						_a_=180+math.degrees(math.atan(o/a))
+							if o<0:
+								o=-o
+							if a<0:
+								a=-a
+
+
+							_a_=360-math.degrees(math.atan(o/a))
+						else:
+
+
+							o=x-cx
+							a=cy-y
+
+
+							if o<0:
+								o=-o
+							if a<0:
+								a=-a
+
+
+							_a_=180+math.degrees(math.atan(o/a))
+
+
 
 
 
@@ -2721,7 +2752,7 @@ pieces={"striker":{"coord":[0,0],
 						},
 
 
-	"1 black":{"coord":[150,159],
+	"1 black":{"coord":[150,171],
 						"coord_":[0,0],
 						"angle":0,
 						"proj_ang":None,
