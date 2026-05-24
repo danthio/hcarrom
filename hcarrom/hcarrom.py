@@ -155,6 +155,8 @@ def main():
 
 		else:
 
+			pieces[i]["potted"]=0
+
 			if i.split(" ")[-1]=="white":
 				col1="#ffffff"
 				col2="#000000"
@@ -481,6 +483,7 @@ def can_b1_release(e):
 			game_st=0
 			pieces["striker"]["initial_v"]=0
 
+
 			for i in dm_vs:
 
 				can.delete(i)
@@ -496,6 +499,7 @@ def can_b1_release(e):
 		if game_st==1:
 			game_st=2
 			pieces["striker"]["start_time"]=time.time()
+			pieces["striker"]["move st"]=1
 
 
 
@@ -512,6 +516,11 @@ def collusions(pc):
 		if p_ ==pc:
 			continue
 
+		if p_!="striker":
+
+			if pieces[p_]["potted"]==1:
+				continue
+
 
 
 
@@ -525,8 +534,8 @@ def collusions(pc):
 			else:
 				rr=piece_r
 
-			x1=(rr+1)*math.sin(math.radians(a_))+x1_
-			y1=(rr+1)*math.cos(math.radians(a_))+y1_
+			x1=(rr)*math.sin(math.radians(a_))+x1_
+			y1=(rr)*math.cos(math.radians(a_))+y1_
 
 			x2,y2=pieces[p_]["coord"]
 
@@ -545,6 +554,8 @@ def collusions(pc):
 				
 				a=get_ang([x1,y1],[x2,y2])
 
+				aa=a+180
+
 
 
 
@@ -552,12 +563,12 @@ def collusions(pc):
 				if pieces[p_]["move st"]==0:
 					pieces[p_]["move st"]=1
 
-					pieces[p_]["angle"]=a+180
+					pieces[p_]["angle"]=aa
 					pieces[p_]["initial_v"]=pieces[pc]["current_v"]
 					pieces[p_]["current_v"]=0
 					pieces[p_]["start_time"]=time.time()
 				else:
-					pieces[p_]["proj_ang"]=a+180
+					pieces[p_]["proj_ang"]=aa
 					pieces[p_]["st"]=0
 					pieces[p_]["initial_v"]=pieces[pc]["current_v"]
 					pieces[p_]["current_v"]=0
@@ -565,10 +576,81 @@ def collusions(pc):
 
 
 
+				if pieces[pc]["angle"]==0 or pieces[pc]["angle"]==90 or pieces[pc]["angle"]==180 or pieces[pc]["angle"]==270:
+
+					aa2=aa+180
+				else:
+
+					aa2_=aa+180
+
+					if aa2_>360:
+						aa2_-=360
+					elif aa2_<0:
+						aa2_=360-aa2_
+
+
+					print(aa2_)
+
+
+					aa_=aa
+
+					if aa_>360:
+						aa_-=360
+					elif aa_<0:
+						aa_=360-aa_
+
+
+					if 0<=aa2_<=90:
+
+						if aa2_>45:
+
+							aa2=aa-90
+						else:
+							aa2=aa+90
+
+
+					if 90<=aa2_<=180:
+
+						if aa2_>90+45:
+
+							aa2=aa-90
+						else:
+							aa2=aa+90
+					
+
+
+					if 180<=aa2_<=270:
+
+						if aa2_>180+45:
+
+							aa2=aa-90
+						else:
+							aa2=aa+90
+					
+
+
+					if 270<=aa2_<=360:
+
+						if aa2_>270+45:
+
+							aa2=aa-90
+						else:
+							aa2=aa+90
+					
 
 
 
-				pieces[pc]["proj_ang"]=a
+
+
+				print(aa,aa2,aa-aa2)
+
+
+
+
+
+
+				pieces[pc]["proj_ang"]=aa2
+				pieces[pc]["angle"]=aa2
 				pieces[pc]["st"]=0
 				pieces[pc]["start_time"]=time.time()
 				pieces[pc]["initial_v"]=pieces[pc]["current_v"]
@@ -731,26 +813,41 @@ def draw_move(e):
 
 				#collusions
 
-
-
-
+				pieces_ar=[]
+				ar2=[]
 
 				for p in pieces:
 
 
-					if p=="striker":
-						continue
-
-					x1,y1=pieces[p]["coord"]
-
-					r=math.sqrt((cx-x1)**2+(cy-y1)**2)
 
 
+					if p!="striker":
+
+						if pieces[p]["potted"]==1:
+							continue
+
+						x,y=pieces[p]["coord"]
+						r=math.sqrt((cx-x)**2+(cy-y)**2)
+
+						pieces_ar.append([p,r])
+						ar2.append(y)
 
 
-					r_=int(r)-30
+				pieces_ar=sorted(pieces_ar,key=lambda x:x[1],reverse=False)
 
-					for _ in range(30):
+
+
+				con=0
+
+				
+
+				for p in pieces_ar:
+
+					x_,y_=pieces[p[0]]["coord"]
+
+					r_=0
+
+					for _ in range(600):
 
 						#print(r_)
 
@@ -759,11 +856,63 @@ def draw_move(e):
 						y=r_*math.cos(math.radians(ang))+cy
 
 
+						r=math.sqrt((x-x_)**2+(y-y_)**2)
+
+
+
+						if r<12+2:
+
+							con=1
+							break
+
+						r_+=1
+
+
+					if con==1:
+						break
+
+				
+
+
+				
+
+				if con==1:
 
 
 
 
-						for p in pieces:
+
+
+
+
+					for p in pieces_ar:
+
+
+						if turn==0:
+
+							rx=int(min(ar2)-piece_r-2)
+						elif turn==1:
+
+							rx=int(max(ar2)-piece_r-2)
+
+
+
+
+						r_=0
+
+						for _ in range(600):
+
+							#print(r_)
+
+
+							x=r_*math.sin(math.radians(ang))+cx
+							y=r_*math.cos(math.radians(ang))+cy
+
+
+
+
+
+
 
 
 
@@ -772,23 +921,23 @@ def draw_move(e):
 							for a_ in range(360):
 
 
-								x2=(striker_r+1)*math.sin(math.radians(a_))+x
-								y2=(striker_r+1)*math.cos(math.radians(a_))+y
+								x2=(striker_r)*math.sin(math.radians(a_))+x
+								y2=(striker_r)*math.cos(math.radians(a_))+y
 
 							
 
 
 
-								xx,yy=pieces[p]["coord"]
+								xx,yy=pieces[p[0]]["coord"]
 
-								if p=="striker":
+								if p[0]=="striker":
 									_r=striker_r
 								else:
 									_r=piece_r
 
 								rr=math.sqrt((xx-x2)**2+(yy-y2)**2)
 
-								if rr<=_r:
+								if rr<=_r+2:
 
 									dm_coord=[cx,cy,x,y]
 
@@ -807,9 +956,9 @@ def draw_move(e):
 
 
 
-						
+							
 
-						r_+=1
+							r_+=1
 
 
 
@@ -1141,8 +1290,8 @@ def draw_move(e):
 
 			
 
-		except:
-			pass
+		except Exception as e:
+			print(e)
 
 
 dm_coord=[0,0,0,0]
@@ -2100,14 +2249,14 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 def move_striker():
 	global pieces
-	global game_st
+	global game_st,game_st2
 	global st
 	global turn
 
 	if st=="main":
 
 
-		if game_st==2:
+		if pieces["striker"]["move st"]==1 and game_st==2:
 
 			collusions("striker")
 
@@ -2141,6 +2290,7 @@ def move_striker():
 				except:
 					print(pieces["striker"]["data"],"error")
 			elif pieces["striker"]["st"]==1:
+				game_st2=1
 
 				pieces["striker"]["data"]=get_pos("striker",pieces["striker"]["coord_"][0],pieces["striker"]["coord_"][1],pieces["striker"]["data"][2],pieces["striker"]["angle"],pieces["striker"]["data"][4],1)
 				
@@ -2153,19 +2303,16 @@ def move_striker():
 					pieces["striker"]["current_v"]=0
 
 					pieces["striker"]["proj_ang"]=None
-					game_st=0
+					pieces["striker"]["move st"]=0
+
+					#game_st=0
 					pieces["striker"]["move st"]=0
 					pieces["striker"]["st"]=0
 					pieces["striker"]["initial_v"]=0
 					pieces["striker"]["angle"]=0
 
 					
-					if turn==0:
-						turn=1
-						pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
-					elif turn==1:
-						turn=0				
-						pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+
 
 
 
@@ -2226,18 +2373,12 @@ def move_striker():
 					pieces["striker"]["angle"]=0
 
 					pieces["striker"]["st"]=0
-					game_st=0
+					pieces["striker"]["move st"]=0					
+					#game_st=0
 					pieces["striker"]["st"]=0
 					pieces["striker"]["initial_v"]=0
 
 					
-					if turn==0:
-						turn=1
-						pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
-					elif turn==1:
-						turn=0				
-						pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
-
 
 
 					draw_piece_(striker_r,"striker","#323232","#ffffff",1)		
@@ -2718,8 +2859,41 @@ def draw_piece_(r,p,col1,col2,con=0):
 
 
 
+game_st2=0
+def check_game():
+
+	global pieces,game_st,turn,xrng,yv2,striker_r
+	global game_st2
+	global force
+
+	if game_st2==1:
+
+		con=0
+		for p in pieces:
+
+			if pieces[p]["initial_v"]!=0:
+				con=1
+				break
 
 
+		if con==0:
+
+			if turn==0:
+				turn=1
+				pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
+			elif turn==1:
+				turn=0				
+				pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+
+			draw_piece_(striker_r,"striker","#323232","#ffffff",1)	
+
+
+			#check if game is finished
+			game_st=0
+			game_st2=0
+			force=0
+
+	root.after(1,check_game)
 
 
 pieces={"striker":{"coord":[0,0],
@@ -2747,7 +2921,7 @@ pieces={"striker":{"coord":[0,0],
 						"current_v":0,
 						"start_time":0,
 						"speed":0,
-						"potted":0,
+						"potted":1,
 						"move st":0,
 						},
 
@@ -2837,5 +3011,7 @@ def update():
 
 	root.after(1,update)
 update()
+
+check_game()
 root.mainloop()
 
