@@ -190,6 +190,7 @@ def main():
 	global st
 	global pieces
 	global striker_r,piece_r
+	global game
 
 	st="main"
 
@@ -206,10 +207,18 @@ def main():
 			draw_piece_(i)
 
 		else:
+
+
+			pieces[i]["potted"]=0
+
+			if game=="disk pool" and i=="red":
+				pieces[i]["potted"]=1
+
+
+
 			if pieces[i]["potted"]==1:
 				continue
 
-			#pieces[i]["potted"]==0
 
 			draw_piece_(i)
 
