@@ -576,6 +576,11 @@ def collusions(pc):
 
 	ar=sorted(ar,key=lambda x:x[1])
 
+
+
+
+
+
 	for i in ar:
 
 		p_=i[0]
@@ -610,120 +615,85 @@ def collusions(pc):
 		x1,y1=pieces[pc]["coord"]
 		x2,y2=pieces[p_]["coord"]
 
-		dx=x2-x1
-		dy=y2-y1
-
-
-		distance=math.hypot(dx,dy)
-
-		if distance<=r1+r2:
-
-			a_=math.degrees(math.atan2(dy,dx))-90
-
-
-			#for a_ in range(360):
-
-
-			if pc=="striker":
-
-				rr=striker_r
-			else:
-				rr=piece_r
-
-			x1=(rr)*math.sin(math.radians(a_))+x1
-			y1=(rr)*math.cos(math.radians(a_))+y1
+		
 
 
 
-			_r=math.sqrt((x2-x1)**2+(y2-y1)**2)
+		r=math.sqrt((x1-x2)**2+(y1-y2)**2)
 
-			if p_=="striker":
+		if r<=r1+r2:
 
-				rr=striker_r
-			else:
-				rr=piece_r
+			aa=angle(get_ang([x1,y1],[x2,y2])+180)
 
-
-			if _r<=rr:
 				
-				a=get_ang([x1,y1],[x2,y2])
-
-
-
-				aa=angle(a+180)
-
-
-
-
-
-				if pieces[p_]["move st"]==0:
-					pieces[p_]["move st"]=1
-
-					pieces[p_]["angle"]=aa
-					pieces[p_]["initial_v"]=pieces[pc]["current_v"]
-					pieces[p_]["current_v"]=0
-					pieces[p_]["start_time"]=time.time()
-				else:
-					pieces[p_]["proj_ang"]=aa
-					pieces[p_]["st"]=0
-					pieces[p_]["initial_v"]=pieces[pc]["current_v"]
-					pieces[p_]["current_v"]=0
-					pieces[p_]["start_time"]=time.time()
-
-
-
-				a1=pieces[pc]["angle"]
-
-				if a1<0:
-					a1=360+a1
-
-				x1,y1=pieces[pc]["coord"]
-				x2,y2=pieces[p_]["coord"]
-
-				a2=get_ang([x2,y2],[x1,y1])
-
-				if a2<0:
-					a2=360+a2
-
-
-				a3=a1+180
-
-				if a3<0:
-					a3=360+a3
-
-
-				if a3==aa:
-					aa2=aa+180
-
-				elif a1>a2:
-
-					aa2=aa+90
-				elif a1<a2:
-					aa2=aa-90
-
-
-
-				if aa2>360:
-					aa2=aa2-360
-				elif aa2<0:
-					aa2=360+aa2
-				elif aa2==360:
-					aa2=0
 
 
 
 
 
 
-				pieces[pc]["proj_ang"]=aa2
-				pieces[pc]["angle"]=aa2
-				pieces[pc]["st"]=0
-				pieces[pc]["start_time"]=time.time()
-				pieces[pc]["initial_v"]=pieces[pc]["current_v"]
-				pieces[pc]["current_v"]=0
-				#pieces[pc]["move st"]=1
 
-				return 1
+
+			if pieces[p_]["move st"]==0:
+				pieces[p_]["move st"]=1
+
+				pieces[p_]["angle"]=aa
+				pieces[p_]["initial_v"]=pieces[pc]["current_v"]
+				pieces[p_]["current_v"]=0
+				pieces[p_]["start_time"]=time.time()
+			else:
+				pieces[p_]["proj_ang"]=aa
+				pieces[p_]["st"]=0
+				pieces[p_]["initial_v"]=pieces[pc]["current_v"]
+				pieces[p_]["current_v"]=0
+				pieces[p_]["start_time"]=time.time()
+
+
+
+			a1=pieces[pc]["angle"]
+
+			if a1<0:
+				a1=360+a1
+
+			x1,y1=pieces[pc]["coord"]
+			x2,y2=pieces[p_]["coord"]
+
+			a2=get_ang([x2,y2],[x1,y1])
+
+			if a2<0:
+				a2=360+a2
+
+
+			a3=a1+180
+
+			if a3<0:
+				a3=360+a3
+
+
+			if a3==aa:
+				aa2=aa+180
+
+			elif a1>a2:
+
+				aa2=aa+90
+			elif a1<a2:
+				aa2=aa-90
+
+			aa2=angle(aa2)
+
+
+
+
+
+			pieces[pc]["proj_ang"]=aa2
+			pieces[pc]["angle"]=aa2
+			pieces[pc]["st"]=0
+			pieces[pc]["start_time"]=time.time()
+			pieces[pc]["initial_v"]=pieces[pc]["current_v"]
+			pieces[pc]["current_v"]=0
+			#pieces[pc]["move st"]=1
+
+			return 1
 
 def get_ang(p1,p2):
 
@@ -900,6 +870,8 @@ def draw_move(e):
 
 				con=0
 
+				ar=[]
+
 				
 
 				for p in pieces_ar:
@@ -920,9 +892,14 @@ def draw_move(e):
 
 
 
-						if r<12+2:
+						if r<striker_r+piece_r:
 
 							con=1
+
+							a=angle(get_ang([x,y],[x_,y_])+180)
+
+							ar=[p[0],x,y,x_,y_,a]
+
 							break
 
 						r_+=1
@@ -938,102 +915,25 @@ def draw_move(e):
 
 				if con==1:
 
+					a_=ar[-1]
+
+
+					dm_coord=[cx,cy,ar[1],ar[2]]
+
+
+					dm_piece_mv=[a_,ar[1],ar[2]]
 
 
 
 
+					draw_move_()
 
-
-
-					for p in pieces_ar:
-
-
-				
-						r_=0
-
-						for _ in range(600):
-
-
-
-							x=r_*math.sin(math.radians(ang))+cx
-							y=r_*math.cos(math.radians(ang))+cy
-
-
-
-
-							"""
-
-							def get_b(striker_cx, striker_cy, piece_cx, piece_cy, travel_angle_deg):
-							    dx = piece_cx - striker_cx
-							    dy = piece_cy - striker_cy
-							    dist = math.hypot(dx, dy)
-
-							    travel_rad = math.radians(travel_angle_deg)
-							    along = dx * math.cos(travel_rad) + dy * math.sin(travel_rad)
-
-							    b = math.sqrt(max(dist**2 - along**2, 0))
-							    return b
-
-							θ = arcsin( b / (R₁ + R₂) )
-							"""
-
-
-
-							xx,yy=pieces[p[0]]["coord"]
-
-							dx=xx-x
-							dy=yy-y
-
-							distance=math.hypot(dx,dy)
-
-							if distance<=striker_r+piece_r:
-
-								a_=angle(math.degrees(math.atan2(dy,dx)))
-
-
-
-
-
-								x2=(striker_r)*math.sin(math.radians(a_))+x
-								y2=(striker_r)*math.cos(math.radians(a_))+y
-
-							
-
-
-
-								
-
-								if p[0]=="striker":
-									_r=striker_r
-								else:
-									_r=piece_r
-
-								rr=math.sqrt((xx-x2)**2+(yy-y2)**2)
-
-								if rr<=_r+2:
-
-									dm_coord=[cx,cy,x,y]
-
-									a=a_#angle(get_ang([x2,y2],[xx,yy])+180)
-
-									#print(a_,a)
-
-									
-
-									dm_piece_mv=[a,xx,yy]
-
-
-
-
-									draw_move_()
-
-									return
+					return
 
 
 
 							
 
-							r_+=1
 
 
 
@@ -1354,8 +1254,8 @@ def draw_move(e):
 
 			
 
-		except:
-			pass
+		except Exception as e:
+			print(e)
 
 
 dm_coord=[0,0,0,0]
