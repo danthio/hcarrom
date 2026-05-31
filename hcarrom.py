@@ -22,16 +22,24 @@ def load_im():
 	global striker_r,piece_r
 	global quit,home
 
-	#striker_im,black_im
+	#striker_im
+
+
+	im=Image.new("RGBA",(500,500),(0,0,0,0))
+	draw=ImageDraw.Draw(im)
+
+	draw.ellipse((16,16,500-16-1,500-16-1),fill=(255,255,0,255),outline=(0,0,0,255),width=32)
+
+	im=im.resize((int(round(striker_r*2,0)),int(round(striker_r*2,0))), Image.LANCZOS)
+
+	striker_im=im
+
+	#black_im
 
 	im=Image.new("RGBA",(500,500),(0,0,0,0))
 	draw=ImageDraw.Draw(im)
 
 	draw.ellipse((16,16,500-16-1,500-16-1),fill=(0,0,0,255),outline=(255,255,255,255),width=32)
-
-	im=im.resize((int(round(striker_r*2,0)),int(round(striker_r*2,0))), Image.LANCZOS)
-
-	striker_im=im
 
 	im=im.resize((int(round(piece_r*2,0)),int(round(piece_r*2,0))), Image.LANCZOS)
 
@@ -168,6 +176,10 @@ def intro2():
 	global pos_intro2
 	global intro2_im1,intro2_im2
 	global home
+	global w,h
+
+	can["height"]=h
+	root.geometry(f"{w}x{h}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
 
 	pos_intro2=[]
 
@@ -180,13 +192,13 @@ def intro2():
 	can.create_image(0,0,image=bg2,anchor="nw")
 
 
-	can.create_image(25+3,25+3,image=home,anchor="nw")
+	can.create_image(3,3,image=home,anchor="nw")
 
 	x=200
 
 	y=(h-90)/2
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,255,0),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
 	intro2_im1=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro2_im1,anchor="nw")
@@ -199,7 +211,7 @@ def intro2():
 	y+=60
 
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,255,0),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
 	intro2_im2=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro2_im2,anchor="nw")
@@ -216,7 +228,10 @@ def intro():
 	global w,h
 	global pos_intro
 	global intro_im1,intro_im2
+	global w,h
 
+	can["height"]=h
+	root.geometry(f"{w}x{h}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
 	pos_intro=[]
 
 	st="intro"
@@ -231,7 +246,7 @@ def intro():
 
 	y=(h-90)/2
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,255,0),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
 	intro_im1=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro_im1,anchor="nw")
@@ -244,13 +259,22 @@ def intro():
 	y+=60
 
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,255,0),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
 	intro_im2=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro_im2,anchor="nw")
 	can.create_text(w/2,y+15,text="Disk Pool",font=("FreeMono",13),fill="#000000",anchor="c")
 
 	pos_intro.append([w/2-x/2+15,y, w/2+x/2-15,y+30-1])
+
+
+pwhite=0
+pwred=0
+
+pblack=0
+pbred=0
+
+white_im_,black_im_,red_im_=0,0,0
 
 def main():
 	global can
@@ -261,6 +285,11 @@ def main():
 	global game
 	global quit
 	global w,h
+	global white_im,black_im,red_im, white_im_,black_im_,red_im_
+	global pwhite,pwred,pblack,pbred
+
+	can["height"]=h+30
+	root.geometry(f"{w}x{h+30}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
 
 	st="main"
 
@@ -624,7 +653,51 @@ def main():
 			draw_piece_(i)
 
 
+	white_im_=ImageTk.PhotoImage(white_im)
 
+
+	can.create_image(10,int(can["height"])-15,image=white_im_)
+
+	pwhite=can.create_text(10+5+10,int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
+
+	red_im_=ImageTk.PhotoImage(red_im)
+
+	if game=="carrom":
+
+		
+
+
+		can.create_image(10+15+15+5,int(can["height"])-15,image=red_im_)
+
+		pwred=can.create_text(10+5+10+15+15+5,int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
+
+
+
+	if game=="carrom":
+
+
+
+		black_im_=ImageTk.PhotoImage(black_im)
+
+
+		can.create_image(w-(10+5+10+15+15+5),int(can["height"])-15,image=black_im_)
+
+		pblack=can.create_text(w-(10+5+10+15+15+5)+(5+10),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
+
+		can.create_image(w-(10+5+10+15+15+5)+(15+15+5),int(can["height"])-15,image=red_im_)
+
+		pbSGFSDGsahj.create_text(w-(10+5+10+15+15+5)+(5+10+15+15+5),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
+
+
+	else:
+
+
+		black_im_=ImageTk.PhotoImage(black_im)
+
+
+		can.create_image(w-(10+5+10+5),int(can["height"])-15,image=black_im_)
+
+		pblack=can.create_text(w-(10+5+10+5)+(5+10),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
 
 
 p=0
@@ -775,8 +848,8 @@ def can_b1(e):
 
 		#home
 
-		if 25+3<=e.x<=25+3+25:
-				if 25+3<=e.y<=25+3+25:
+		if 3<=e.x<=25+3:
+				if 3<=e.y<=25+3:
 
 					intro()
 					return
@@ -899,7 +972,7 @@ def can_b1(e):
 				y=(h-yy)/2
 
 
-				im=draw_rounded_rect(x,y,x+xx,y+yy,15,(255,255,255),(255,255,255),150,150,1)
+				im=draw_rounded_rect(x,y,x+xx,y+yy,15,(255,255,255),(255,255,255),255,255,1)
 				quit_im=ImageTk.PhotoImage(im)
 
 				quit_i[0]=can.create_image(x,y,image=quit_im,anchor="nw")
@@ -6620,11 +6693,30 @@ def draw_rounded_rect(x1,y1,x2,y2,r,col1,col2,op1,op2,width):
 game_st2=0
 def check_game():
 
+	global can
 	global pieces,game_st,turn,xrng,yv2,striker_r
 	global game_st2
 	global force
+	global pwhite,pwred,pblack,pbred
 
 	if game_st2==1:
+
+		w,b=0,0
+		for p in pieces:
+
+			if p!="striker":
+
+				if pieces[p]["potted"]==1:
+
+					if p=="red":
+						pass
+					elif p.split(" ")[-1]=="white":
+						w+=1
+					elif p.split(" ")[-1]=="black":
+						b+=1
+
+		can.itemconfig(pwhite,text=str(w))
+		can.itemconfig(pblack,text=str(b))
 
 		con=0
 		for p in pieces:
