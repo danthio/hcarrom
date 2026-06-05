@@ -274,7 +274,7 @@ pwred=0
 pblack=0
 pbred=0
 
-white_im_,black_im_,red_im_=0,0,0
+TY,black_im_,red_im_=0,0,0
 
 def main():
 	global can
@@ -686,7 +686,7 @@ def main():
 
 		can.create_image(w-(10+5+10+15+15+5)+(15+15+5),int(can["height"])-15,image=red_im_)
 
-		pbSGFSDGsahj.create_text(w-(10+5+10+15+15+5)+(5+10+15+15+5),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
+		pwred=can.create_text(w-(10+5+10+15+15+5)+(5+10+15+15+5),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
 
 
 	else:
@@ -698,7 +698,6 @@ def main():
 		can.create_image(w-(10+5+10+5),int(can["height"])-15,image=black_im_)
 
 		pblack=can.create_text(w-(10+5+10+5)+(5+10),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
-
 
 p=0
 #r=30
@@ -755,6 +754,7 @@ def can_b1(e):
 	global game
 	global dm_vs
 	global quit_im,quit_st,quit_coord,quit_i
+	global go_st,go_coord
 
 
 	#global r
@@ -922,6 +922,35 @@ def can_b1(e):
 				return
 
 	elif st=="main":
+
+		if go_st==1:
+
+
+			x1,y1,x2,y2=go_coord
+
+			if x1<=e.x<=x1+(x2-x1)/2:
+				if y1<=e.y<=y2:
+
+					for i in go_i:
+
+						can.delete(i)
+
+					intro()
+					go_st=0
+					return
+
+			if x1+(x2-x1)/2<=e.x<=x2:
+				if y1<=e.y<=y2:
+
+					root.destroy()
+
+					return
+
+
+
+			return
+
+
 
 		if quit_st==1:
 
@@ -1304,6 +1333,9 @@ def collusions(pc):
 			if a3<0:
 				a3=360+a3
 
+			a1=angle(a1)
+			a2=angle(a2)
+			a3=angle(a3)
 
 			if a3==aa:
 				aa2=aa+180
@@ -1905,7 +1937,7 @@ def draw_move_(con=0):
 	global dm_vs,dm_coord
 	global st
 	global dm_piece_mv
-	global quit_st
+	global quit_st,go_st
 
 	if st=="main":
 
@@ -1914,7 +1946,7 @@ def draw_move_(con=0):
 
 			can.delete(i)
 
-		if quit_st==1:
+		if quit_st==1 or go_st==1:
 			return
 
 
@@ -3058,6 +3090,7 @@ def move_1_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["1 white"]["potted"]==1:
 
@@ -3108,6 +3141,8 @@ def move_1_w():
 
 
 				if pieces["1 white"]["data"]==1:
+
+					moves.append("1 white")
 
 					pieces["1 white"]["potted"]=1
 
@@ -3237,6 +3272,7 @@ def move_2_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["2 white"]["potted"]==1:
 
@@ -3287,6 +3323,8 @@ def move_2_w():
 
 
 				if pieces["2 white"]["data"]==1:
+
+					moves.append("2 white")
 
 					pieces["2 white"]["potted"]=1
 
@@ -3418,6 +3456,7 @@ def move_3_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["3 white"]["potted"]==1:
 
@@ -3468,6 +3507,7 @@ def move_3_w():
 
 
 				if pieces["3 white"]["data"]==1:
+					moves.append("3 white")
 
 					pieces["3 white"]["potted"]=1
 
@@ -3598,6 +3638,7 @@ def move_4_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["4 white"]["potted"]==1:
 
@@ -3648,6 +3689,8 @@ def move_4_w():
 
 
 				if pieces["4 white"]["data"]==1:
+
+					moves.append("4 white")
 
 					pieces["4 white"]["potted"]=1
 
@@ -3778,6 +3821,7 @@ def move_5_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["5 white"]["potted"]==1:
 
@@ -3828,6 +3872,7 @@ def move_5_w():
 
 
 				if pieces["5 white"]["data"]==1:
+					moves.append("5 white")
 
 					pieces["5 white"]["potted"]=1
 
@@ -3961,6 +4006,7 @@ def move_6_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["6 white"]["potted"]==1:
 
@@ -4011,6 +4057,8 @@ def move_6_w():
 
 
 				if pieces["6 white"]["data"]==1:
+
+					moves.append("6 white")
 
 					pieces["6 white"]["potted"]=1
 
@@ -4141,6 +4189,7 @@ def move_7_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["7 white"]["potted"]==1:
 
@@ -4191,6 +4240,7 @@ def move_7_w():
 
 
 				if pieces["7 white"]["data"]==1:
+					moves.append("7 white")
 
 					pieces["7 white"]["potted"]=1
 
@@ -4321,6 +4371,7 @@ def move_8_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["8 white"]["potted"]==1:
 
@@ -4371,6 +4422,7 @@ def move_8_w():
 
 
 				if pieces["8 white"]["data"]==1:
+					moves.append("8 white")
 
 					pieces["8 white"]["potted"]=1
 
@@ -4502,6 +4554,7 @@ def move_9_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["9 white"]["potted"]==1:
 
@@ -4552,6 +4605,7 @@ def move_9_w():
 
 
 				if pieces["9 white"]["data"]==1:
+					moves.append("9 white")
 
 					pieces["9 white"]["potted"]=1
 
@@ -4683,6 +4737,7 @@ def move_1_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["1 black"]["potted"]==1:
 
@@ -4737,8 +4792,10 @@ def move_1_b():
                 
 
                 if pieces["1 black"]["data"]==1:
+                	
 
                     pieces["1 black"]["potted"]=1
+                    moves.append("1 black")
 
                     pieces["1 black"]["start_time"]=0
                     pieces["1 black"]["speed"]=0
@@ -4868,6 +4925,7 @@ def move_2_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["2 black"]["potted"]==1:
 
@@ -4922,8 +4980,10 @@ def move_2_b():
                 
 
                 if pieces["2 black"]["data"]==1:
+                	
 
                     pieces["2 black"]["potted"]=1
+                    moves.append("2 black")
 
                     pieces["2 black"]["start_time"]=0
                     pieces["2 black"]["speed"]=0
@@ -5053,6 +5113,7 @@ def move_3_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["3 black"]["potted"]==1:
 
@@ -5107,8 +5168,10 @@ def move_3_b():
                 
 
                 if pieces["3 black"]["data"]==1:
+                	
 
                     pieces["3 black"]["potted"]=1
+                    moves.append("3 black")
 
                     pieces["3 black"]["start_time"]=0
                     pieces["3 black"]["speed"]=0
@@ -5237,6 +5300,7 @@ def move_4_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["4 black"]["potted"]==1:
 
@@ -5291,8 +5355,10 @@ def move_4_b():
                 
 
                 if pieces["4 black"]["data"]==1:
+                	
 
                     pieces["4 black"]["potted"]=1
+                    moves.append("4 black")
 
                     pieces["4 black"]["start_time"]=0
                     pieces["4 black"]["speed"]=0
@@ -5423,6 +5489,7 @@ def move_5_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["5 black"]["potted"]==1:
 
@@ -5477,8 +5544,10 @@ def move_5_b():
                 
 
                 if pieces["5 black"]["data"]==1:
+                	
 
                     pieces["5 black"]["potted"]=1
+                    moves.append("5 black")
 
                     pieces["5 black"]["start_time"]=0
                     pieces["5 black"]["speed"]=0
@@ -5608,6 +5677,7 @@ def move_6_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["6 black"]["potted"]==1:
 
@@ -5662,8 +5732,10 @@ def move_6_b():
                 
 
                 if pieces["6 black"]["data"]==1:
+                	
 
                     pieces["6 black"]["potted"]=1
+                    moves.append("6 black")
 
                     pieces["6 black"]["start_time"]=0
                     pieces["6 black"]["speed"]=0
@@ -5794,6 +5866,7 @@ def move_7_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["7 black"]["potted"]==1:
 
@@ -5848,8 +5921,10 @@ def move_7_b():
                 
 
                 if pieces["7 black"]["data"]==1:
+                	
 
                     pieces["7 black"]["potted"]=1
+                    moves.append("7 black")
 
                     pieces["7 black"]["start_time"]=0
                     pieces["7 black"]["speed"]=0
@@ -5978,6 +6053,7 @@ def move_8_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["8 black"]["potted"]==1:
 
@@ -6033,7 +6109,10 @@ def move_8_b():
 
                 if pieces["8 black"]["data"]==1:
 
+                	
+
                     pieces["8 black"]["potted"]=1
+                    moves.append("8 black")
 
                     pieces["8 black"]["start_time"]=0
                     pieces["8 black"]["speed"]=0
@@ -6163,6 +6242,7 @@ def move_9_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["9 black"]["potted"]==1:
 
@@ -6218,7 +6298,10 @@ def move_9_b():
 
                 if pieces["9 black"]["data"]==1:
 
+                	
+
                     pieces["9 black"]["potted"]=1
+                    moves.append("9 black")
 
                     pieces["9 black"]["start_time"]=0
                     pieces["9 black"]["speed"]=0
@@ -6352,6 +6435,7 @@ def move_red():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["red"]["potted"]==1:
 
@@ -6406,8 +6490,10 @@ def move_red():
                 
 
                 if pieces["red"]["data"]==1:
+                	
 
                     pieces["red"]["potted"]=1
+                    moves.append("red")
 
                     pieces["red"]["start_time"]=0
                     pieces["red"]["speed"]=0
@@ -6690,16 +6776,208 @@ def draw_rounded_rect(x1,y1,x2,y2,r,col1,col2,op1,op2,width):
 
 	return im
 
+moves=[]
+def validate_moves():
+	global pieces
+	global moves
+	global game
+	global game_st
+	global turn
+	global striker_r,piece_r
+
+
+	def reposition(p):
+
+		def check_pos(x,y):
+			global pieces
+
+			for i in pieces:
+
+				if i=="striker":
+					r=striker_r
+				else:
+					r=piece_r
+
+				x2,y2=pieces[i]["coord"]
+
+				r_=math.sqrt((x-x2)**2+(y-y2)**2)
+
+				if r_<=r+piece_r:
+
+					return -1
+
+				else:
+					return [x,y]
+
+		cx,cy=243,243
+
+		v=check_pos(cx,cy)
+
+		if not v==-1:
+			return v
+
+
+		a=360/6
+		a_=180
+
+		r=piece_r*2+4
+
+		for _ in range(6):
+
+			x=r*math.sin(math.radians(a_))+cx
+			y=r*math.cos(math.radians(a_))+cy
+
+
+			v=check_pos(x,y)
+
+			if not v==-1:
+				return v
+
+			a_+=a
+
+
+
+		a=360/12
+		a_=180
+
+		r=piece_r*4+8
+
+		for _ in range(6):
+
+			x=r*math.sin(math.radians(a_))+cx
+			y=r*math.cos(math.radians(a_))+cy
+
+
+			v=check_pos(x,y)
+
+			if not v==-1:
+				return v
+
+			a_+=a
+
+
+
+		a=360/24
+		a_=180
+
+		r=piece_r*6+12
+
+		for _ in range(6):
+
+			x=r*math.sin(math.radians(a_))+cx
+			y=r*math.cos(math.radians(a_))+cy
+
+
+			v=check_pos(x,y)
+
+			if not v==-1:
+				return v
+
+			a_+=a
+
+
+
+
+	# disk pool
+
+	if turn==1:
+
+		if moves[0].split(" ")[-1]=="white":
+			con=0
+		else:
+			con=1
+
+			for i in moves:
+
+				if i.split(" ")[-1]=="white":
+
+
+					pieces[i]["coord"]=reposition(i)
+					pieces[i]["potted"]=0
+
+					print(pieces[i]["coord"])
+
+					draw_piece_(i,1)
+
+	elif turn==0:
+
+
+
+		if moves[0].split(" ")[-1]=="black":
+			con=0
+		else:
+			con=1
+
+			for i in moves:
+
+				if i.split(" ")[-1]=="black":
+
+					pieces[i]["coord"]=reposition(i)
+					pieces[i]["potted"]=0
+					print(pieces[i]["coord"])
+
+					draw_piece_(i,1)
+
+	return con
+
+
+
+	#print(moves)
+
+
 game_st2=0
+
+go_im=0
+go_st=0
+go_coord=[]
+go_i=[0,0,0,0,0,0,0]
+
+def go(winner):
+	global go_st,go_im,go_coord,go_st
+	global bg2
+
+	go_st=1
+
+	draw_move_()
+
+	go_i[6]=can.create_image(0,0,image=bg2,anchor="nw")
+
+	xx,yy=250,100
+
+	x=(w-xx)/2
+	y=(h-yy)/2
+
+
+	im=draw_rounded_rect(x,y,x+xx,y+yy,15,(255,255,255),(255,255,255),255,255,1)
+	go_im=ImageTk.PhotoImage(im)
+
+	go_i[0]=can.create_image(x,y,image=go_im,anchor="nw")
+
+	go_i[1]=can.create_text(x+xx/2,y+20, text=f"{winner} wins!", font=("FreeMono",13),fill="#000000")
+
+	go_i[2]=can.create_line(x,y+yy-30, x+xx,y+yy-30,fill="#000000")
+
+	go_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy,fill="#000000")
+
+	go_i[4]=can.create_text(x+xx/4,y+yy-15,text="Main Menu",font=("FreeMono",13),fill="#000000")
+
+	go_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="Quit",font=("FreeMono",13),fill="#000000")
+
+	go_coord=[x,y+yy-30, x+xx,y+yy]
+
+
 def check_game():
 
 	global can
 	global pieces,game_st,turn,xrng,yv2,striker_r
-	global game_st2
+	global game_st,game_st2
 	global force
 	global pwhite,pwred,pblack,pbred
+	global moves
 
 	if game_st2==1:
+
+		
 
 		w,b=0,0
 		for p in pieces:
@@ -6728,20 +7006,103 @@ def check_game():
 
 		if con==0:
 
-			if turn==0:
-				turn=1
-				pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
-			elif turn==1:
-				turn=0				
-				pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
 
-			draw_piece_("striker",1)	
+			con_=1
+
+
+			if len(moves)>0:
+				con_=validate_moves()
+
+
+				w,b=0,0
+				for p in pieces:
+
+					if p!="striker":
+
+						if pieces[p]["potted"]==1:
+
+							if p=="red":
+								pass
+							elif p.split(" ")[-1]=="white":
+								w+=1
+							elif p.split(" ")[-1]=="black":
+								b+=1
+
+				can.itemconfig(pwhite,text=str(w))
+				can.itemconfig(pblack,text=str(b))
+
+
+			moves=[]
+			game_st=0
+
+			game_st2=0
+			force=0
+
+			if con_==1:
+
+
+				if turn==0:
+					turn=1
+					pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
+				elif turn==1:
+					turn=0				
+					pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+
+				draw_piece_("striker",1)	
+
+			else:
+
+
+				if turn==0:
+					pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+					
+				elif turn==1:
+					pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
+
+				draw_piece_("striker",1)
+
 
 
 			#check if game is finished
-			game_st=0
-			game_st2=0
-			force=0
+
+
+
+			w,b=0,0
+			for p in pieces:
+
+				if p!="striker":
+
+					if pieces[p]["potted"]==1:
+
+						if p=="red":
+							pass
+						elif p.split(" ")[-1]=="white":
+							w+=1
+						elif p.split(" ")[-1]=="black":
+							b+=1
+
+
+			if game=="disk pool":
+
+				if w==9:
+
+					winner="White"
+					go(winner)
+
+				elif b==9:
+
+					winner="Black"
+					go(winner)
+
+
+				
+
+			
+
+
+
+
+
 
 	root.after(2,check_game)
 
