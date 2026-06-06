@@ -287,6 +287,10 @@ def main():
 	global w,h
 	global white_im,black_im,red_im, white_im_,black_im_,red_im_
 	global pwhite,pwred,pblack,pbred
+	global moves,moves_,_red_,_red2_
+
+	moves,moves_,_red_,_red2_=[],[],None,None
+
 
 	can["height"]=h+30
 	root.geometry(f"{w}x{h+30}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
@@ -314,6 +318,7 @@ def main():
 						"speed":0,
 						"move st":0,
 						"im":0,
+						"potted":0,
 
 						},
 
@@ -686,7 +691,7 @@ def main():
 
 		can.create_image(w-(10+5+10+15+15+5)+(15+15+5),int(can["height"])-15,image=red_im_)
 
-		pwred=can.create_text(w-(10+5+10+15+15+5)+(5+10+15+15+5),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
+		pbred=can.create_text(w-(10+5+10+15+15+5)+(5+10+15+15+5),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
 
 
 	else:
@@ -1210,6 +1215,7 @@ def can_b1_release(e):
 
 		if game_st==1:
 			game_st=2
+			pieces["striker"]["potted"]=0
 			pieces["striker"]["start_time"]=time.time()
 			pieces["striker"]["move st"]=1
 
@@ -1218,10 +1224,16 @@ def can_b1_release(e):
 def collusions(pc):
 	global pieces
 	global striker_r,piece_r
+	global first_move
 
 
 	if pieces[pc]["current_v"]==0:
 		return
+
+
+
+
+
 
 	ar=[]
 
@@ -1286,6 +1298,11 @@ def collusions(pc):
 		r=math.sqrt((x1-x2)**2+(y1-y2)**2)
 
 		if r<=r1+r2:
+
+
+			if pc=="striker":
+				first_move.append(p_)
+
 
 			aa=angle(get_ang([x1,y1],[x2,y2])+180)
 
@@ -2905,6 +2922,15 @@ def move_striker():
 	global st
 	global turn
 
+	"""
+
+	if pieces["striker"]["potted"]==1:
+		print("aaass")
+
+		root.after(2,move_1_w)
+		return
+	"""
+
 	if st=="main":
 
 
@@ -2940,7 +2966,7 @@ def move_striker():
 					pieces["striker"]["st"]=1
 
 				except Exception as e:
-					print(e)#pieces["striker"]["data"],"error")
+					print(pieces["striker"]["data"],"error")
 			elif pieces["striker"]["st"]==1:
 				game_st2=1
 
@@ -2950,6 +2976,8 @@ def move_striker():
 				if pieces["striker"]["data"]==1:
 
 					pieces["striker"]["start_time"]=0
+					pieces["striker"]["potted"]=1
+					pieces["striker"]["coord"]=[-100,100]
 					pieces["striker"]["speed"]=0
 					pieces["striker"]["initial_v"]=0
 					pieces["striker"]["current_v"]=0
@@ -3013,6 +3041,7 @@ def move_striker():
 
 
 					pieces["striker"]["start_time"]=0
+
 					pieces["striker"]["speed"]=0
 					pieces["striker"]["initial_v"]=0
 					pieces["striker"]["current_v"]=0
@@ -6777,6 +6806,7 @@ def draw_rounded_rect(x1,y1,x2,y2,r,col1,col2,op1,op2,width):
 	return im
 
 moves=[]
+_red_,_red2_=None,None
 def validate_moves():
 	global pieces
 	global moves
@@ -6784,12 +6814,17 @@ def validate_moves():
 	global game_st
 	global turn
 	global striker_r,piece_r
+	global first_move
+	global moves_
+	global _red_,_red2_
 
 
 	def reposition(p):
 
 		def check_pos(x,y):
-			global pieces
+			global pieces,striker_r,piece_r
+
+			con=0
 
 			for i in pieces:
 
@@ -6802,16 +6837,20 @@ def validate_moves():
 
 				r_=math.sqrt((x-x2)**2+(y-y2)**2)
 
-				if r_<=r+piece_r:
+				if r_<r+piece_r:
 
-					return -1
+					con=1
+					break
 
-				else:
-					return [x,y]
+			if con==0:
+				return [x,y]
+			else:
+				return -1
 
 		cx,cy=243,243
 
 		v=check_pos(cx,cy)
+
 
 		if not v==-1:
 			return v
@@ -6878,13 +6917,13 @@ def validate_moves():
 
 
 
+
+
 	# disk pool
 
 	if turn==1:
 
-		if moves[0].split(" ")[-1]=="white":
-			con=0
-		else:
+		if pieces["striker"]["potted"]==1:
 			con=1
 
 			for i in moves:
@@ -6895,28 +6934,363 @@ def validate_moves():
 					pieces[i]["coord"]=reposition(i)
 					pieces[i]["potted"]=0
 
-					print(pieces[i]["coord"])
+					#print(pieces[i]["coord"])
 
 					draw_piece_(i,1)
+
+			if game=="carrom":
+
+				try:
+					v=moves.index("red")
+					_red_,_red2_=None,None
+
+					pieces["red"]["coord"]=reposition("red")
+					pieces["red"]["potted"]=0
+
+					draw_piece_("red",1)
+				except:
+					pass
+
+
+
+		elif first_move[0].split(" ")[-1]=="white" or first_move[0]=="red":
+			if moves[0].split(" ")[-1]=="white" or moves[0]=="red":
+
+				con=0
+
+
+				if game=="carrom":
+					if _red_==None:
+
+						try:
+							v=moves.index("red")
+
+
+
+							_red2_=1
+							con_=0
+							for m in moves:
+
+								if m.split(" ")[-1]=="white":
+									con_=1
+
+							if con_==1:
+								_red_=1
+
+
+
+
+							return con
+
+
+
+
+						except:
+							pass
+
+
+					if _red_==None:
+
+
+
+						if pieces["red"]["potted"]==1:
+
+							try:
+
+								v=moves_[-2].index("red")
+
+
+
+								if _red2_==1:
+
+
+									con_=0
+
+									for m in moves:
+
+										if m.split(" ")[-1]=="white":
+
+											
+											con_=1
+
+									if con_==1:
+										_red_=1
+
+							except:
+								pass
+
+
+
+
+
+			else:
+				con=1
+
+
+
+		else:
+			con=1
+
+
+			if game=="carrom":
+
+
+
+
+				if _red_==None:
+
+
+
+					if pieces["red"]["potted"]==1:
+
+						try:
+
+							v=moves_[-2].index("red")
+
+
+
+							if _red2_==1:
+
+
+								con_=0
+
+								for m in moves:
+
+									if m.split(" ")[-1]=="white":
+
+										
+										con_=1
+
+								if con_==0:
+									_red_=None
+									_red2_=None
+									pieces["red"]["coord"]=reposition("red")
+									pieces["red"]["potted"]=0
+
+									draw_piece_("red",1)									
+
+						except:
+							pass
+
+
+
+
+
+
+
+			for i in moves:
+
+				if i.split(" ")[-1]=="white":
+
+
+					pieces[i]["coord"]=reposition(i)
+					pieces[i]["potted"]=0
+
+					#print(pieces[i]["coord"])
+
+					draw_piece_(i,1)
+
+			if game=="carrom":
+
+				try:
+
+					v=moves.index("red")
+
+					_red_,_red2_=None,None
+
+					pieces["red"]["coord"]=reposition("red")
+					pieces["red"]["potted"]=0
+
+					draw_piece_("red",1)
+				except:
+					pass
 
 	elif turn==0:
 
 
-
-		if moves[0].split(" ")[-1]=="black":
-			con=0
-		else:
+		if pieces["striker"]["potted"]==1:
 			con=1
 
 			for i in moves:
 
 				if i.split(" ")[-1]=="black":
 
+
 					pieces[i]["coord"]=reposition(i)
 					pieces[i]["potted"]=0
-					print(pieces[i]["coord"])
+
+					#print(pieces[i]["coord"])
 
 					draw_piece_(i,1)
+
+			if game=="carrom":
+
+				try:
+					
+					v=moves.index("red")
+					_red_,_red2_=None,None
+
+					pieces["red"]["coord"]=reposition("red")
+					pieces["red"]["potted"]=0
+
+					draw_piece_("red",1)
+				except:
+					pass
+
+
+		elif first_move[0].split(" ")[-1]=="black" or first_move[0]=="red":
+			if moves[0].split(" ")[-1]=="black" or moves[0]=="red":
+
+				con=0
+
+
+				if game=="carrom":
+					if _red_==None:
+
+						try:
+							v=moves.index("red")
+
+
+
+							_red2_=0
+							con_=0
+							for m in moves:
+
+								if m.split(" ")[-1]=="black":
+									con_=1
+
+							if con_==1:
+								_red_=0
+
+
+
+
+							return con
+
+
+
+
+						except:
+							pass
+
+
+					if _red_==None:
+
+
+
+						if pieces["red"]["potted"]==1:
+
+							try:
+
+								v=moves_[-2].index("red")
+
+
+								if _red2_==0:
+
+
+									con_=0
+
+									for m in moves:
+
+										if m.split(" ")[-1]=="black":
+
+											
+											con_=1
+
+									if con_==1:
+										_red_=0
+
+							except:
+								pass
+
+
+
+
+
+			else:
+				con=1
+
+
+
+		else:
+			con=1
+
+
+			if game=="carrom":
+
+
+
+
+
+				if _red_==None:
+
+
+
+					if pieces["red"]["potted"]==1:
+
+						try:
+
+							v=moves_[-2].index("red")
+
+
+
+							if _red2_==0:
+
+
+								con_=0
+
+								for m in moves:
+
+									if m.split(" ")[-1]=="black":
+
+										
+										con_=1
+
+								if con_==0:
+									_red_=None
+									_red2_=None
+									pieces["red"]["coord"]=reposition("red")
+									pieces["red"]["potted"]=0
+
+									draw_piece_("red",1)									
+
+						except:
+							pass
+
+
+
+
+
+
+
+
+
+
+			for i in moves:
+
+				if i.split(" ")[-1]=="black":
+
+
+					pieces[i]["coord"]=reposition(i)
+					pieces[i]["potted"]=0
+
+					#print(pieces[i]["coord"])
+
+					draw_piece_(i,1)
+
+
+			if game=="carrom":
+
+				try:
+					v=moves.index("red")
+					_red_,_red2_=None,None
+
+					pieces["red"]["coord"]=reposition("red")
+					pieces["red"]["potted"]=0
+
+					draw_piece_("red",1)
+				except:
+					pass
 
 	return con
 
@@ -6965,7 +7339,8 @@ def go(winner):
 
 	go_coord=[x,y+yy-30, x+xx,y+yy]
 
-
+moves_=[]
+first_move=[]
 def check_game():
 
 	global can
@@ -6973,28 +7348,49 @@ def check_game():
 	global game_st,game_st2
 	global force
 	global pwhite,pwred,pblack,pbred
-	global moves
+	global moves,moves_
+	global first_move
+	global turn
+	global _red2_
 
 	if game_st2==1:
 
 		
 
-		w,b=0,0
+		w,b,r=0,0,None
 		for p in pieces:
 
 			if p!="striker":
 
 				if pieces[p]["potted"]==1:
 
-					if p=="red":
-						pass
-					elif p.split(" ")[-1]=="white":
+					if p.split(" ")[-1]=="white":
 						w+=1
 					elif p.split(" ")[-1]=="black":
 						b+=1
 
 		can.itemconfig(pwhite,text=str(w))
 		can.itemconfig(pblack,text=str(b))
+
+
+
+		#print(_red2_)
+		if pieces["red"]["potted"]==1:
+
+
+
+			if _red2_==None:
+				can.itemconfig(pwred,text=str(0))
+				can.itemconfig(pbred,text=str(0))
+
+			elif _red2_==1:
+				can.itemconfig(pwred,text=str(1))
+			elif _red2_==0:
+				can.itemconfig(pbred,text=str(1))
+
+		#print(pieces["red"]["potted"])
+
+
 
 		con=0
 		for p in pieces:
@@ -7010,6 +7406,11 @@ def check_game():
 			con_=1
 
 
+			moves_.append(moves)
+
+			print(moves_)
+
+
 			if len(moves)>0:
 				con_=validate_moves()
 
@@ -7021,9 +7422,7 @@ def check_game():
 
 						if pieces[p]["potted"]==1:
 
-							if p=="red":
-								pass
-							elif p.split(" ")[-1]=="white":
+							if p.split(" ")[-1]=="white":
 								w+=1
 							elif p.split(" ")[-1]=="black":
 								b+=1
@@ -7032,11 +7431,27 @@ def check_game():
 				can.itemconfig(pblack,text=str(b))
 
 
+
+				if pieces["red"]["potted"]==1:
+
+					if _red2_==None:
+						can.itemconfig(pwred,text=str(0))
+						can.itemconfig(pbred,text=str(0))
+
+					elif _red2_==1:
+						can.itemconfig(pwred,text=str(1))
+					elif _red2_==0:
+						can.itemconfig(pbred,text=str(1))
+
+			pieces["striker"]["potted"]=0
+
 			moves=[]
+			first_move=[]
 			game_st=0
 
 			game_st2=0
 			force=0
+			
 
 			if con_==1:
 
@@ -7082,17 +7497,27 @@ def check_game():
 							b+=1
 
 
-			if game=="disk pool":
 
-				if w==9:
+			if w==9:
 
-					winner="White"
-					go(winner)
+				winner="White"
+				if game=="carrom":
 
-				elif b==9:
+					if pieces["red"]["potted"]==0:
+						winner="Black"
 
-					winner="Black"
-					go(winner)
+				go(winner)
+
+			elif b==9:
+
+				winner="Black"
+
+				if game=="carrom":
+
+					if pieces["red"]["potted"]==0:
+						winner="White"
+
+				go(winner)
 
 
 				
@@ -7119,6 +7544,7 @@ pieces={"striker":{"coord":[0,0],
 					"speed":0,
 					"move st":0,
 					"im":0,
+					"potted":0,
 
 					},
 
