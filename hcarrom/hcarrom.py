@@ -12,22 +12,34 @@ striker_im=0
 black_im=0
 white_im=0
 red_im=0
+
+home=0
+quit=0
 def load_im():
 	global w,h
 	global bg,bg2,circle
 	global striker_im,black_im,white_im,red_im
 	global striker_r,piece_r
+	global quit,home
 
-	#striker_im,black_im
+	#striker_im
+
 
 	im=Image.new("RGBA",(500,500),(0,0,0,0))
 	draw=ImageDraw.Draw(im)
 
-	draw.ellipse((16,16,500-16-1,500-16-1),fill=(0,0,0,255),outline=(255,255,255,255),width=16)
+	draw.ellipse((16,16,500-16-1,500-16-1),fill=(255,255,0,255),outline=(0,0,0,255),width=32)
 
 	im=im.resize((int(round(striker_r*2,0)),int(round(striker_r*2,0))), Image.LANCZOS)
 
 	striker_im=im
+
+	#black_im
+
+	im=Image.new("RGBA",(500,500),(0,0,0,0))
+	draw=ImageDraw.Draw(im)
+
+	draw.ellipse((16,16,500-16-1,500-16-1),fill=(0,0,0,255),outline=(255,255,255,255),width=32)
 
 	im=im.resize((int(round(piece_r*2,0)),int(round(piece_r*2,0))), Image.LANCZOS)
 
@@ -40,7 +52,7 @@ def load_im():
 	im=Image.new("RGBA",(500,500),(0,0,0,0))
 	draw=ImageDraw.Draw(im)
 
-	draw.ellipse((16,16,500-16-1,500-16-1),fill=(255,255,255,255),outline=(0,0,0,255),width=16)
+	draw.ellipse((16,16,500-16-1,500-16-1),fill=(255,255,255,255),outline=(0,0,0,255),width=32)
 
 	im=im.resize((int(round(piece_r*2,0)),int(round(piece_r*2,0))), Image.LANCZOS)
 
@@ -53,7 +65,7 @@ def load_im():
 	im=Image.new("RGBA",(500,500),(0,0,0,0))
 	draw=ImageDraw.Draw(im)
 
-	draw.ellipse((16,16,500-16-1,500-16-1),fill=(255,0,0,255),outline=(0,0,0,255),width=16)
+	draw.ellipse((16,16,500-16-1,500-16-1),fill=(255,0,0,255),outline=(0,0,0,255),width=32)
 
 	im=im.resize((int(round(piece_r*2,0)),int(round(piece_r*2,0))), Image.LANCZOS)
 
@@ -128,27 +140,98 @@ def load_im():
 
 	bg=ImageTk.PhotoImage(im) 
 
-	im=Image.new("RGBA",(500,500),(0,0,0,0))
-	draw=ImageDraw.Draw(im)
 
-	draw.ellipse((0,0,500,500),fill=(255,0,0,255),outline=(255,0,0,255))
-
-	im=im.resize((30,30))
-
-	circle=ImageTk.PhotoImage(im)
-
-	im=Image.new("RGBA",(w,h),(0,0,0,160))
+	#darker layer
+	im=Image.new("RGBA",(w,h+30),(0,0,0,200))
 	bg2=ImageTk.PhotoImage(im)
+
+	#home
+
+	im=Image.open("data/home.png")
+	im=im.resize((25,25))
+
+	home=ImageTk.PhotoImage(im)
+
+
+	#quit
+	im=Image.open("data/quit.png")
+	im=im.resize((25,25))
+
+	quit=ImageTk.PhotoImage(im)
+
+
 
 
 st=""
+
+
+pos_intro2=[]
+
+intro2_im1,intro2_im2=0,0,
+
+def intro2():
+	global bg,bg2
+	global st
+	global w,h
+	global pos_intro2
+	global intro2_im1,intro2_im2
+	global home
+	global w,h
+
+	can["height"]=h
+	root.geometry(f"{w}x{h}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
+
+	pos_intro2=[]
+
+	st="intro2"
+
+	can.delete("all")
+
+	can.create_image(0,0,image=bg,anchor="nw")
+
+	can.create_image(0,0,image=bg2,anchor="nw")
+
+
+	can.create_image(3,3,image=home,anchor="nw")
+
+	x=200
+
+	y=(h-90)/2
+
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,255),(255,0,255),255,255,1)
+	intro2_im1=ImageTk.PhotoImage(im)
+
+	can.create_image(w/2-x/2,y,image=intro2_im1,anchor="nw")
+
+	can.create_text(w/2,y+15,text="2 Player",font=("FreeMono",13),fill="#000000",anchor="c")
+
+	pos_intro2.append([w/2-x/2+15,y, w/2+x/2-15,y+30-1])
+
+
+	y+=60
+
+
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,255),(255,0,255),255,255,1)
+	intro2_im2=ImageTk.PhotoImage(im)
+
+	can.create_image(w/2-x/2,y,image=intro2_im2,anchor="nw")
+	can.create_text(w/2,y+15,text="Play vs CPU",font=("FreeMono",13),fill="#000000",anchor="c")
+
+	pos_intro2.append([w/2-x/2+15,y, w/2+x/2-15,y+30-1])
+
 pos_intro=[]
+
+intro_im1,intro_im2=0,0,
 def intro():
-	global bg2,circle
+	global bg,bg2
 	global st
 	global w,h
 	global pos_intro
+	global intro_im1,intro_im2
+	global w,h
 
+	can["height"]=h
+	root.geometry(f"{w}x{h}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
 	pos_intro=[]
 
 	st="intro"
@@ -163,10 +246,10 @@ def intro():
 
 	y=(h-90)/2
 
-	can.create_image(w/2-x/2,y,image=circle,anchor="nw")
-	can.create_image(w/2+x/2-30,y,image=circle,anchor="nw")
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,255),(255,0,255),255,255,1)
+	intro_im1=ImageTk.PhotoImage(im)
 
-	can.create_rectangle(w/2-x/2+15,y, w/2+x/2-15,y+30-1,fill="#ff0000",outline="#ff0000")
+	can.create_image(w/2-x/2,y,image=intro_im1,anchor="nw")
 
 	can.create_text(w/2,y+15,text="Carrom",font=("FreeMono",13),fill="#000000",anchor="c")
 
@@ -176,20 +259,44 @@ def intro():
 	y+=60
 
 
-	can.create_image(w/2-x/2,y,image=circle,anchor="nw")
-	can.create_image(w/2+x/2-30,y,image=circle,anchor="nw")
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,255),(255,0,255),255,255,1)
+	intro_im2=ImageTk.PhotoImage(im)
 
-	can.create_rectangle(w/2-x/2+15,y, w/2+x/2-15,y+30-1,fill="#ff0000",outline="#ff0000")
-
+	can.create_image(w/2-x/2,y,image=intro_im2,anchor="nw")
 	can.create_text(w/2,y+15,text="Disk Pool",font=("FreeMono",13),fill="#000000",anchor="c")
 
 	pos_intro.append([w/2-x/2+15,y, w/2+x/2-15,y+30-1])
 
+
+pwhite=0
+pwred=0
+
+pblack=0
+pbred=0
+
+TY,black_im_,red_im_=0,0,0
+
 def main():
+	global can
 	global bg
 	global st
 	global pieces
 	global striker_r,piece_r
+	global game
+	global quit
+	global w,h
+	global white_im,black_im,red_im, white_im_,black_im_,red_im_
+	global pwhite,pwred,pblack,pbred
+	global moves,moves_,_red_,_red2_
+	global turn 
+
+	turn=1
+
+	moves,moves_,_red_,_red2_=[],[],None,None
+
+
+	can["height"]=h+30
+	root.geometry(f"{w}x{h+30}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
 
 	st="main"
 
@@ -197,6 +304,338 @@ def main():
 
 
 	can.create_image(0,0,image=bg,anchor="nw")
+
+	can.create_image(w-3-25,3,image=quit,anchor="nw")
+
+
+
+	pieces={"striker":{"coord":[0,0],
+						"coord_":[0,0],
+						"angle":0,
+						"proj_ang":None,
+						"st":0,
+						"data":[],
+						"initial_v":0,
+						"current_v":0,
+						"start_time":0,
+						"speed":0,
+						"move st":0,
+						"im":0,
+						"potted":0,
+
+						},
+
+
+		"1 white":{"coord":[243.0,220.0],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+
+		"2 white":{"coord":[253.39230484541326,237.0],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+
+
+		"3 white":{"coord":[262.9185842870421,231.50000000000003],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+		"4 white":{"coord":[262.9185842870421,254.5],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+
+		"5 white":{"coord":[243.0,255.0],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+		"6 white":{"coord":[243.0,266.0],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+		"7 white":{"coord":[223.08141571295792,254.5],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+
+		"8 white":{"coord":[223.08141571295792,231.5],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+		"9 white":{"coord":[232.60769515458674,237.0],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+		"1 black":{"coord":[243.0,231.0],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+		"2 black":{"coord":[254.5,223.0814157129579],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+
+		"3 black":{"coord":[253.39230484541326,249.0],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+		"4 black":{"coord":[266.0,243.0],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+
+		"5 black":{"coord":[254.5,262.9185842870421],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+		"6 black":{"coord":[231.5,262.9185842870421],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+		"7 black":{"coord":[232.60769515458674,249.0],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+
+		"8 black":{"coord":[220.0,243.0],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+		"9 black":{"coord":[231.5,223.08141571295792],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+
+		"red":{"coord":[243,243],
+							"coord_":[0,0],
+							"angle":0,
+							"proj_ang":None,
+							"st":0,
+							"data":[],
+							"initial_v":0,
+							"current_v":0,
+							"start_time":0,
+							"speed":0,
+							"potted":0,
+							"move st":0,
+							"im":0,
+							},
+
+			}
+
+
+
+
+
+
+	yv1,yv2=82,404
+
+	xrng=(102*w/500,383*w/500)
+
+
+	if turn==0:
+		pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+	elif turn==1:
+		pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
 
 	for i in pieces:
 
@@ -206,16 +645,68 @@ def main():
 			draw_piece_(i)
 
 		else:
+
+
+			pieces[i]["potted"]=0
+
+			if game=="disk pool" and i=="red":
+				pieces["red"]["potted"]=1
+				pieces["red"]["coord"]=[-100,100]
+
+
+
 			if pieces[i]["potted"]==1:
 				continue
 
-			#pieces[i]["potted"]==0
 
 			draw_piece_(i)
 
 
+	white_im_=ImageTk.PhotoImage(white_im)
 
 
+	can.create_image(10,int(can["height"])-15,image=white_im_)
+
+	pwhite=can.create_text(10+5+10,int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
+
+	red_im_=ImageTk.PhotoImage(red_im)
+
+	if game=="carrom":
+
+		
+
+
+		can.create_image(10+15+15+5,int(can["height"])-15,image=red_im_)
+
+		pwred=can.create_text(10+5+10+15+15+5,int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
+
+
+
+	if game=="carrom":
+
+
+
+		black_im_=ImageTk.PhotoImage(black_im)
+
+
+		can.create_image(w-(10+5+10+15+15+5),int(can["height"])-15,image=black_im_)
+
+		pblack=can.create_text(w-(10+5+10+15+15+5)+(5+10),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
+
+		can.create_image(w-(10+5+10+15+15+5)+(15+15+5),int(can["height"])-15,image=red_im_)
+
+		pbred=can.create_text(w-(10+5+10+15+15+5)+(5+10+15+15+5),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
+
+
+	else:
+
+
+		black_im_=ImageTk.PhotoImage(black_im)
+
+
+		can.create_image(w-(10+5+10+5),int(can["height"])-15,image=black_im_)
+
+		pblack=can.create_text(w-(10+5+10+5)+(5+10),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
 
 p=0
 #r=30
@@ -254,18 +745,25 @@ def force_():
 
 
 
-	root.after(2,force_)
+	root.after(100,force_)
 
 drag_st=0
 game_st=0
 game=""
+
+quit_im=0
+quit_st=0
+quit_coord=[]
+quit_i=[0,0,0,0,0,0,0]
 def can_b1(e):
 	global st
 	global drag_st,game_st
 	global pieces
-	global pos_intro
+	global pos_intro,pos_intro2
 	global game
 	global dm_vs
+	global quit_im,quit_st,quit_coord,quit_i
+	global go_st,go_coord
 
 
 	#global r
@@ -286,7 +784,7 @@ def can_b1(e):
 
 			game="carrom"
 
-			main()
+			intro2()
 
 			return
 
@@ -298,7 +796,7 @@ def can_b1(e):
 		if r<=15:
 			game="carrom"
 
-			main()
+			intro2()
 
 			return
 
@@ -309,7 +807,7 @@ def can_b1(e):
 				game="carrom"
 				
 
-				main()
+				intro2()
 
 				return
 
@@ -327,7 +825,7 @@ def can_b1(e):
 
 			game="disk pool"
 
-			main()
+			intro2()
 
 			return
 
@@ -340,7 +838,7 @@ def can_b1(e):
 
 			game="disk pool"
 
-			main()
+			intro2()
 
 			return
 
@@ -350,14 +848,311 @@ def can_b1(e):
 				
 				game="disk pool"
 
-				main()
+				intro2()
 
+
+				return
+
+	elif st=="intro2":
+
+		#home
+
+		if 3<=e.x<=25+3:
+				if 3<=e.y<=25+3:
+
+					intro()
+					return
+		#2 player
+		
+		cx,cy=pos_intro2[0][0],pos_intro2[0][1]+15
+
+		r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+		if r<=15:
+
+
+			main()
+
+			return
+
+
+		cx,cy=pos_intro2[0][2],pos_intro2[0][1]+15
+
+		r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+		if r<=15:
+
+			main()
+
+			return
+
+		if pos_intro2[0][0]<=e.x<=pos_intro2[0][2]:
+
+			if pos_intro2[0][1]<=e.y<=pos_intro2[0][3]:
+
+				
+
+				main()
 
 				return
 
 
 
+		#play vs cpu
+
+
+
+		cx,cy=pos_intro2[1][0],pos_intro2[1][1]+15
+
+		r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+		if r<=15:
+
+			
+
+			return
+
+
+		cx,cy=pos_intro2[1][2],pos_intro2[1][1]+15
+
+		r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+		if r<=15:
+
+
+			return
+
+		if pos_intro2[1][0]<=e.x<=pos_intro2[1][2]:
+
+			if pos_intro2[1][1]<=e.y<=pos_intro2[1][3]:
+				
+
+
+				return
+
 	elif st=="main":
+
+		if go_st==1:
+
+
+			x1,y1,x2,y2=go_coord
+
+			if x1<=e.x<=x1+15:
+				if y2-15<=e.y<=y2:
+
+					cx,cy=x1+15,y2-15
+
+					r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+					if r<=15:
+
+						for i in go_i:
+
+							can.delete(i)
+
+						intro()
+						go_st=0
+						return
+
+
+			if x1<=e.x<=x1+(x2-x1)/2:
+				if y1<=e.y<=y2-15:
+
+					for i in go_i:
+
+						can.delete(i)
+
+					intro()
+					go_st=0
+					return
+
+			if x1+15<=e.x<=x1+(x2-x1)/2:
+				if y1<=e.y<=y2:
+
+					for i in go_i:
+
+						can.delete(i)
+
+					intro()
+					go_st=0
+					return
+
+
+			if x2-15<=e.x<=x2:
+				if y2-15<=e.y<=y2:
+
+					cx,cy=x2-15,y2-15
+
+					r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+					if r<=15:
+
+						root.destroy()
+
+						return
+
+
+
+
+
+
+			if x1+(x2-x1)/2<=e.x<=x2:
+				if y1<=e.y<=y2-15:
+
+					root.destroy()
+
+					return
+
+			if x1+(x2-x1)/2<=e.x<=x2-15:
+				if y1<=e.y<=y2:
+
+					root.destroy()
+
+					return
+
+
+
+			return
+
+
+
+		if quit_st==1:
+
+
+
+
+			x1,y1,x2,y2=quit_coord
+
+			if x1<=e.x<=x1+15:
+				if y2-15<=e.y<=y2:
+
+					cx,cy=x1+15,y2-15
+
+					r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+					if r<=15:
+
+						for i in quit_i:
+
+							can.delete(i)
+
+						intro()
+						quit_st=0
+						return
+
+
+			if x1<=e.x<=x1+(x2-x1)/2:
+				if y1<=e.y<=y2-15:
+
+					for i in quit_i:
+
+						can.delete(i)
+
+					intro()
+					quit_st=0
+					return
+
+
+			if x1+15<=e.x<=x1+(x2-x1)/2:
+				if y1<=e.y<=y2:
+
+					for i in quit_i:
+
+						can.delete(i)
+
+					intro()
+					quit_st=0
+					return
+
+
+			if x2-15<=e.x<=x2:
+				if y2-15<=e.y<=y2:
+
+					cx,cy=x2-15,y2-15
+
+					r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
+
+					if r<=15:
+
+						quit_st=0
+
+						for i in quit_i:
+
+							can.delete(i)
+
+						draw_move_()
+
+						return
+
+
+			if x1+(x2-x1)/2<=e.x<=x2:
+				if y1<=e.y<=y2-15:
+
+					quit_st=0
+
+					for i in quit_i:
+
+						can.delete(i)
+
+					draw_move_()
+
+					return
+
+
+			if x1+(x2-x1)/2<=e.x<=x2-15:
+				if y1<=e.y<=y2:
+
+					quit_st=0
+
+					for i in quit_i:
+
+						can.delete(i)
+
+					draw_move_()
+
+					return
+
+
+
+			return
+
+
+		if w-3-25<=e.x<=w-3:
+			if 3<=e.y<=3+25:
+
+				quit_st=1
+
+				draw_move_()
+
+				quit_i[6]=can.create_image(0,0,image=bg2,anchor="nw")
+
+				xx,yy=250,100
+
+				x=(w-xx)/2
+				y=(h-yy)/2
+
+
+				im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,255),180,255,1)
+				quit_im=ImageTk.PhotoImage(im)
+
+				quit_i[0]=can.create_image(x,y,image=quit_im,anchor="nw")
+
+				quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff00ff")
+
+				quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#777777")
+
+				quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#777777")
+
+				quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff00ff")
+
+				quit_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="No",font=("FreeMono",13),fill="#ff00ff")
+
+				quit_coord=[x,y+yy-30, x+xx,y+yy]
+
+				return
+
+
+
 
 
 
@@ -546,6 +1341,7 @@ def can_b1_release(e):
 
 		if game_st==1:
 			game_st=2
+			pieces["striker"]["potted"]=0
 			pieces["striker"]["start_time"]=time.time()
 			pieces["striker"]["move st"]=1
 
@@ -554,10 +1350,16 @@ def can_b1_release(e):
 def collusions(pc):
 	global pieces
 	global striker_r,piece_r
+	global first_move
 
 
 	if pieces[pc]["current_v"]==0:
 		return
+
+
+
+
+
 
 	ar=[]
 
@@ -575,6 +1377,11 @@ def collusions(pc):
 		ar.append([p_,r])
 
 	ar=sorted(ar,key=lambda x:x[1])
+
+
+
+
+
 
 	for i in ar:
 
@@ -610,120 +1417,117 @@ def collusions(pc):
 		x1,y1=pieces[pc]["coord"]
 		x2,y2=pieces[p_]["coord"]
 
-		dx=x2-x1
-		dy=y2-y1
+		
 
 
-		distance=math.hypot(dx,dy)
 
-		if distance<=r1+r2:
+		r=math.sqrt((x1-x2)**2+(y1-y2)**2)
 
-			a_=math.degrees(math.atan2(dy,dx))-90
-
-
-			#for a_ in range(360):
+		if r<=r1+r2:
 
 
 			if pc=="striker":
-
-				rr=striker_r
-			else:
-				rr=piece_r
-
-			x1=(rr)*math.sin(math.radians(a_))+x1
-			y1=(rr)*math.cos(math.radians(a_))+y1
+				first_move.append(p_)
 
 
+			aa=angle(get_ang([x1,y1],[x2,y2])+180)
 
-			_r=math.sqrt((x2-x1)**2+(y2-y1)**2)
-
-			if p_=="striker":
-
-				rr=striker_r
-			else:
-				rr=piece_r
-
-
-			if _r<=rr:
 				
-				a=get_ang([x1,y1],[x2,y2])
-
-
-
-				aa=angle(a+180)
 
 
 
 
 
-				if pieces[p_]["move st"]==0:
-					pieces[p_]["move st"]=1
 
-					pieces[p_]["angle"]=aa
-					pieces[p_]["initial_v"]=pieces[pc]["current_v"]
-					pieces[p_]["current_v"]=0
-					pieces[p_]["start_time"]=time.time()
+
+
+			if pieces[p_]["move st"]==0:
+				pieces[p_]["move st"]=1
+
+				pieces[p_]["angle"]=aa
+				pieces[p_]["initial_v"]=pieces[pc]["current_v"]
+				pieces[p_]["current_v"]=0
+				pieces[p_]["start_time"]=time.time()
+			else:
+				pieces[p_]["proj_ang"]=aa
+				pieces[p_]["st"]=0
+				pieces[p_]["initial_v"]=pieces[pc]["current_v"]
+				pieces[p_]["current_v"]=0
+				pieces[p_]["start_time"]=time.time()
+
+
+
+			a1=pieces[pc]["angle"]
+
+
+			x1,y1=pieces[pc]["coord"]
+			x2,y2=pieces[p_]["coord"]
+
+			a2=get_ang([x2,y2],[x1,y1])
+
+
+			a3=a1+180
+
+
+
+			a1=angle(a1)
+			a2=angle(a2)
+			a3=angle(a3)
+
+			if a3==aa:
+				aa2=aa+180
+
+
+
+
+
+			elif a1>a2:
+
+				da=angle(aa+90)-angle(aa-90)
+				if da<0:
+					da=-da
+
+				if da>180:
+					#print(111)
+
+					if 0<=angle(a2+180)<=90:
+
+						if 180<=angle(a1+180)<360:
+							print("ok")
+							aa2=aa+90
+						else:
+							aa2=aa-90
+
+
+				
+					else:
+
+						aa2=aa-90
 				else:
-					pieces[p_]["proj_ang"]=aa
-					pieces[p_]["st"]=0
-					pieces[p_]["initial_v"]=pieces[pc]["current_v"]
-					pieces[p_]["current_v"]=0
-					pieces[p_]["start_time"]=time.time()
-
-
-
-				a1=pieces[pc]["angle"]
-
-				if a1<0:
-					a1=360+a1
-
-				x1,y1=pieces[pc]["coord"]
-				x2,y2=pieces[p_]["coord"]
-
-				a2=get_ang([x2,y2],[x1,y1])
-
-				if a2<0:
-					a2=360+a2
-
-
-				a3=a1+180
-
-				if a3<0:
-					a3=360+a3
-
-
-				if a3==aa:
-					aa2=aa+180
-
-				elif a1>a2:
-
 					aa2=aa+90
-				elif a1<a2:
-					aa2=aa-90
+
+			elif a1<a2:
 
 
 
-				if aa2>360:
-					aa2=aa2-360
-				elif aa2<0:
-					aa2=360+aa2
-				elif aa2==360:
-					aa2=0
+
+				aa2=aa-90
+
+			aa2=angle(aa2)
 
 
 
 
 
+			pieces[pc]["proj_ang"]=aa2
+			pieces[pc]["angle"]=aa2
+			pieces[pc]["st"]=0
+			pieces[pc]["start_time"]=time.time()
+			pieces[pc]["initial_v"]=pieces[pc]["current_v"]
+			pieces[pc]["current_v"]=0
+			#pieces[pc]["move st"]=1
 
-				pieces[pc]["proj_ang"]=aa2
-				pieces[pc]["angle"]=aa2
-				pieces[pc]["st"]=0
-				pieces[pc]["start_time"]=time.time()
-				pieces[pc]["initial_v"]=pieces[pc]["current_v"]
-				pieces[pc]["current_v"]=0
-				#pieces[pc]["move st"]=1
-
-				return 1
+			return 1
 
 def get_ang(p1,p2):
 
@@ -787,8 +1591,10 @@ def draw_move(e):
 	global st
 
 
-
 	if st=="main":
+
+
+
 
 
 
@@ -900,6 +1706,8 @@ def draw_move(e):
 
 				con=0
 
+				ar=[]
+
 				
 
 				for p in pieces_ar:
@@ -920,9 +1728,14 @@ def draw_move(e):
 
 
 
-						if r<12+2:
+						if r<striker_r+piece_r:
 
 							con=1
+
+							a=angle(get_ang([x,y],[x_,y_])+180)
+
+							ar=[p[0],x,y,x_,y_,a]
+
 							break
 
 						r_+=1
@@ -938,90 +1751,25 @@ def draw_move(e):
 
 				if con==1:
 
+					a_=ar[-1]
+
+
+					dm_coord=[cx,cy,ar[1],ar[2]]
+
+
+					dm_piece_mv=[a_,ar[1],ar[2]]
 
 
 
 
+					draw_move_()
 
-
-
-					for p in pieces_ar:
-
-
-				
-						r_=0
-
-						for _ in range(600):
-
-
-
-							x=r_*math.sin(math.radians(ang))+cx
-							y=r_*math.cos(math.radians(ang))+cy
-
-
-
-
-
-
-
-
-
-
-							xx,yy=pieces[p[0]]["coord"]
-
-							dx=xx-x
-							dy=yy-y
-
-							distance=math.hypot(dx,dy)
-
-							if distance<=striker_r+piece_r:
-
-								a_=angle(math.degrees(math.atan2(dy,dx))-90)
-
-
-
-
-
-								x2=(striker_r)*math.sin(math.radians(a_))+x
-								y2=(striker_r)*math.cos(math.radians(a_))+y
-
-							
-
-
-
-								
-
-								if p[0]=="striker":
-									_r=striker_r
-								else:
-									_r=piece_r
-
-								rr=math.sqrt((xx-x2)**2+(yy-y2)**2)
-
-								if rr<=_r+2:
-
-									dm_coord=[cx,cy,x,y]
-
-									a=angle(get_ang([x2,y2],[xx,yy])+180)
-
-									#print(a_,a)
-
-									
-
-									dm_piece_mv=[a,xx,yy]
-
-
-
-
-									draw_move_()
-
-									return
+					return
 
 
 
 							
 
-							r_+=1
 
 
 
@@ -1217,7 +1965,7 @@ def draw_move(e):
 
 
 
-					if x2<boundary[1][0]:
+					if x2<=boundary[1][0]:
 
 						if boundary[1][1]<=y2<=boundary[1][3]:
 
@@ -1249,7 +1997,7 @@ def draw_move(e):
 
 
 
-					if x2>boundary[1][2]:
+					if x2>=boundary[1][2]:
 
 						if boundary[1][1]<=y2<=boundary[1][3]:
 
@@ -1283,7 +2031,7 @@ def draw_move(e):
 					y2=(striker_r+1)*math.cos(math.radians(180))+y
 
 
-					if y2<boundary[1][1]:
+					if y2<=boundary[1][1]:
 
 						if boundary[1][0]<=x2<=boundary[1][2]:
 
@@ -1315,7 +2063,7 @@ def draw_move(e):
 					y2=(striker_r+1)*math.cos(math.radians(0))+y
 
 
-					if y2>boundary[1][3]:
+					if y2>=boundary[1][3]:
 
 						if boundary[1][0]<=x2<=boundary[1][2]:
 
@@ -1342,12 +2090,12 @@ def draw_move(e):
 
 			
 
-		except:
-			pass
+		except Exception as e:
+			print(e)
 
 
 dm_coord=[0,0,0,0]
-dm_vs=[0,0,0,0,0,0]
+dm_vs=[0,0,0,0,0,0,0,0]
 dm_piece_mv=[0,0,0]
 def draw_move_(con=0):
 	global can
@@ -1356,6 +2104,7 @@ def draw_move_(con=0):
 	global dm_vs,dm_coord
 	global st
 	global dm_piece_mv
+	global quit_st,go_st
 
 	if st=="main":
 
@@ -1364,6 +2113,9 @@ def draw_move_(con=0):
 
 			can.delete(i)
 
+		if quit_st==1 or go_st==1:
+			return
+
 
 		if con==0:
 
@@ -1371,15 +2123,40 @@ def draw_move_(con=0):
 
 			rr=100
 
-			dm_vs[0]=can.create_line(cx,cy, x,y,fill="#ff0000")
-			dm_vs[1]=can.create_oval(x-striker_r,y-striker_r, x+striker_r,y+striker_r ,outline="#ff0000")
-			dm_vs[2]=can.create_oval(cx-rr,cy-rr, cx+rr,cy+rr ,outline="#ff0000")
+			dm_vs[0]=can.create_line(cx,cy, x,y,fill="#ff00ff")
+			
+
 
 			im=Image.new("RGBA",(500,500),(0,0,0,0))
 
 			draw=ImageDraw.Draw(im)
 
-			draw.ellipse((0,0, 500,500),fill=(255,0,0,128),outline=(255,0,0,128))
+			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,255,255),width=2)
+			im=im.resize((int(rr*2),int(rr*2)))
+			dm_vs[5]=ImageTk.PhotoImage(im)
+			dm_vs[2]=can.create_image(cx,cy,image=dm_vs[5])
+
+
+			im=Image.new("RGBA",(500,500),(0,0,0,0))
+
+			draw=ImageDraw.Draw(im)
+
+			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,255,255),width=30)
+
+
+			im=im.resize((int(round(striker_r*2,0)),int(round(striker_r*2,0))))
+			#im.show()
+			dm_vs[6]=ImageTk.PhotoImage(im)
+			dm_vs[1]=can.create_image(x,y,image=dm_vs[6])
+
+
+
+
+			im=Image.new("RGBA",(500,500),(0,0,0,0))
+
+			draw=ImageDraw.Draw(im)
+
+			draw.ellipse((0,0, 500,500),fill=(255,0,255,128),outline=(255,0,255,128))
 
 			sz=int(round(pieces["striker"]["initial_v"]*rr/3,0))
 
@@ -1400,11 +2177,11 @@ def draw_move_(con=0):
 
 
 
-				x=50*math.sin(math.radians(dm_piece_mv[0]))+dm_piece_mv[1]
-				y=50*math.cos(math.radians(dm_piece_mv[0]))+dm_piece_mv[2]
+				x=100*math.sin(math.radians(dm_piece_mv[0]))+dm_piece_mv[1]
+				y=100*math.cos(math.radians(dm_piece_mv[0]))+dm_piece_mv[2]
 
 
-				dm_vs[4]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x,y,fill="#ff0000")
+				dm_vs[4]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x,y,fill="#ff00ff")
 
 
 			dm_piece_mv=[0,0,0]
@@ -2320,6 +3097,14 @@ def move_striker():
 	global st
 	global turn
 
+	
+
+	if pieces["striker"]["potted"]==1:
+
+		root.after(2,move_striker)
+		return
+	
+
 	if st=="main":
 
 
@@ -2355,7 +3140,7 @@ def move_striker():
 					pieces["striker"]["st"]=1
 
 				except Exception as e:
-					print(e)#pieces["striker"]["data"],"error")
+					print(pieces["striker"]["data"],"error")
 			elif pieces["striker"]["st"]==1:
 				game_st2=1
 
@@ -2365,6 +3150,8 @@ def move_striker():
 				if pieces["striker"]["data"]==1:
 
 					pieces["striker"]["start_time"]=0
+					pieces["striker"]["potted"]=1
+					pieces["striker"]["coord"]=[-100,100]
 					pieces["striker"]["speed"]=0
 					pieces["striker"]["initial_v"]=0
 					pieces["striker"]["current_v"]=0
@@ -2428,6 +3215,7 @@ def move_striker():
 
 
 					pieces["striker"]["start_time"]=0
+
 					pieces["striker"]["speed"]=0
 					pieces["striker"]["initial_v"]=0
 					pieces["striker"]["current_v"]=0
@@ -2505,6 +3293,7 @@ def move_1_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["1 white"]["potted"]==1:
 
@@ -2555,6 +3344,8 @@ def move_1_w():
 
 
 				if pieces["1 white"]["data"]==1:
+
+					moves.append("1 white")
 
 					pieces["1 white"]["potted"]=1
 
@@ -2684,6 +3475,7 @@ def move_2_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["2 white"]["potted"]==1:
 
@@ -2734,6 +3526,8 @@ def move_2_w():
 
 
 				if pieces["2 white"]["data"]==1:
+
+					moves.append("2 white")
 
 					pieces["2 white"]["potted"]=1
 
@@ -2865,6 +3659,7 @@ def move_3_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["3 white"]["potted"]==1:
 
@@ -2915,6 +3710,7 @@ def move_3_w():
 
 
 				if pieces["3 white"]["data"]==1:
+					moves.append("3 white")
 
 					pieces["3 white"]["potted"]=1
 
@@ -3045,6 +3841,7 @@ def move_4_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["4 white"]["potted"]==1:
 
@@ -3095,6 +3892,8 @@ def move_4_w():
 
 
 				if pieces["4 white"]["data"]==1:
+
+					moves.append("4 white")
 
 					pieces["4 white"]["potted"]=1
 
@@ -3225,6 +4024,7 @@ def move_5_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["5 white"]["potted"]==1:
 
@@ -3275,6 +4075,7 @@ def move_5_w():
 
 
 				if pieces["5 white"]["data"]==1:
+					moves.append("5 white")
 
 					pieces["5 white"]["potted"]=1
 
@@ -3408,6 +4209,7 @@ def move_6_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["6 white"]["potted"]==1:
 
@@ -3458,6 +4260,8 @@ def move_6_w():
 
 
 				if pieces["6 white"]["data"]==1:
+
+					moves.append("6 white")
 
 					pieces["6 white"]["potted"]=1
 
@@ -3588,6 +4392,7 @@ def move_7_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["7 white"]["potted"]==1:
 
@@ -3638,6 +4443,7 @@ def move_7_w():
 
 
 				if pieces["7 white"]["data"]==1:
+					moves.append("7 white")
 
 					pieces["7 white"]["potted"]=1
 
@@ -3768,6 +4574,7 @@ def move_8_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["8 white"]["potted"]==1:
 
@@ -3818,6 +4625,7 @@ def move_8_w():
 
 
 				if pieces["8 white"]["data"]==1:
+					moves.append("8 white")
 
 					pieces["8 white"]["potted"]=1
 
@@ -3949,6 +4757,7 @@ def move_9_w():
 	global st
 	global turn
 	global piece_r
+	global moves
 
 	if pieces["9 white"]["potted"]==1:
 
@@ -3999,6 +4808,7 @@ def move_9_w():
 
 
 				if pieces["9 white"]["data"]==1:
+					moves.append("9 white")
 
 					pieces["9 white"]["potted"]=1
 
@@ -4130,6 +4940,7 @@ def move_1_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["1 black"]["potted"]==1:
 
@@ -4184,8 +4995,10 @@ def move_1_b():
                 
 
                 if pieces["1 black"]["data"]==1:
+                	
 
                     pieces["1 black"]["potted"]=1
+                    moves.append("1 black")
 
                     pieces["1 black"]["start_time"]=0
                     pieces["1 black"]["speed"]=0
@@ -4315,6 +5128,7 @@ def move_2_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["2 black"]["potted"]==1:
 
@@ -4369,8 +5183,10 @@ def move_2_b():
                 
 
                 if pieces["2 black"]["data"]==1:
+                	
 
                     pieces["2 black"]["potted"]=1
+                    moves.append("2 black")
 
                     pieces["2 black"]["start_time"]=0
                     pieces["2 black"]["speed"]=0
@@ -4500,6 +5316,7 @@ def move_3_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["3 black"]["potted"]==1:
 
@@ -4554,8 +5371,10 @@ def move_3_b():
                 
 
                 if pieces["3 black"]["data"]==1:
+                	
 
                     pieces["3 black"]["potted"]=1
+                    moves.append("3 black")
 
                     pieces["3 black"]["start_time"]=0
                     pieces["3 black"]["speed"]=0
@@ -4684,6 +5503,7 @@ def move_4_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["4 black"]["potted"]==1:
 
@@ -4738,8 +5558,10 @@ def move_4_b():
                 
 
                 if pieces["4 black"]["data"]==1:
+                	
 
                     pieces["4 black"]["potted"]=1
+                    moves.append("4 black")
 
                     pieces["4 black"]["start_time"]=0
                     pieces["4 black"]["speed"]=0
@@ -4870,6 +5692,7 @@ def move_5_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["5 black"]["potted"]==1:
 
@@ -4924,8 +5747,10 @@ def move_5_b():
                 
 
                 if pieces["5 black"]["data"]==1:
+                	
 
                     pieces["5 black"]["potted"]=1
+                    moves.append("5 black")
 
                     pieces["5 black"]["start_time"]=0
                     pieces["5 black"]["speed"]=0
@@ -5055,6 +5880,7 @@ def move_6_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["6 black"]["potted"]==1:
 
@@ -5109,8 +5935,10 @@ def move_6_b():
                 
 
                 if pieces["6 black"]["data"]==1:
+                	
 
                     pieces["6 black"]["potted"]=1
+                    moves.append("6 black")
 
                     pieces["6 black"]["start_time"]=0
                     pieces["6 black"]["speed"]=0
@@ -5241,6 +6069,7 @@ def move_7_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["7 black"]["potted"]==1:
 
@@ -5295,8 +6124,10 @@ def move_7_b():
                 
 
                 if pieces["7 black"]["data"]==1:
+                	
 
                     pieces["7 black"]["potted"]=1
+                    moves.append("7 black")
 
                     pieces["7 black"]["start_time"]=0
                     pieces["7 black"]["speed"]=0
@@ -5425,6 +6256,7 @@ def move_8_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["8 black"]["potted"]==1:
 
@@ -5480,7 +6312,10 @@ def move_8_b():
 
                 if pieces["8 black"]["data"]==1:
 
+                	
+
                     pieces["8 black"]["potted"]=1
+                    moves.append("8 black")
 
                     pieces["8 black"]["start_time"]=0
                     pieces["8 black"]["speed"]=0
@@ -5610,6 +6445,7 @@ def move_9_b():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["9 black"]["potted"]==1:
 
@@ -5665,7 +6501,10 @@ def move_9_b():
 
                 if pieces["9 black"]["data"]==1:
 
+                	
+
                     pieces["9 black"]["potted"]=1
+                    moves.append("9 black")
 
                     pieces["9 black"]["start_time"]=0
                     pieces["9 black"]["speed"]=0
@@ -5799,6 +6638,7 @@ def move_red():
     global st
     global turn
     global piece_r
+    global moves
 
     if pieces["red"]["potted"]==1:
 
@@ -5853,8 +6693,10 @@ def move_red():
                 
 
                 if pieces["red"]["data"]==1:
+                	
 
                     pieces["red"]["potted"]=1
+                    moves.append("red")
 
                     pieces["red"]["start_time"]=0
                     pieces["red"]["speed"]=0
@@ -6060,16 +6902,640 @@ def draw_piece_(p,con=0):
 
 		can.coords(_pieces_[p],x,y)
 
+def draw_rounded_rect(x1,y1,x2,y2,r,col1,col2,op1,op2,width):
+
+	w_=int(round((x2-x1)*4,0))
+	h_=int(round((y2-y1)*4,0))
+
+	im=Image.new("RGBA",(w_,h_),(0,0,0,0))
+	draw=ImageDraw.Draw(im)
+
+	r_=r*4
+
+
+	ar=[]
+
+
+	cx,cy=r_,r_
+
+	a_=180
+
+	for a in range(90):
+		x=int(round(r_*math.sin(math.radians(a_))+cx,0))
+		y=int(round(r_*math.cos(math.radians(a_))+cy,0))
+
+		ar.append((x,y))
+
+		a_+=1
+
+
+
+
+	cx,cy=r_,h_-r_-1
+
+	a_=270
+
+	for a in range(90):
+		x=int(round(r_*math.sin(math.radians(a_))+cx,0))
+		y=int(round(r_*math.cos(math.radians(a_))+cy,0))
+
+		ar.append((x,y))
+
+		a_+=1
+
+
+
+
+
+	cx,cy=w_-r_-1,h_-r_-1
+
+	a_=0
+
+	for a in range(90):
+		x=int(round(r_*math.sin(math.radians(a_))+cx,0))
+		y=int(round(r_*math.cos(math.radians(a_))+cy,0))
+
+		ar.append((x,y))
+
+		a_+=1
+
+
+
+	cx,cy=w_-r_-1,r_
+
+	a_=90
+
+	for a in range(90):
+		x=int(round(r_*math.sin(math.radians(a_))+cx,0))
+		y=int(round(r_*math.cos(math.radians(a_))+cy,0))
+
+		ar.append((x,y))
+
+		a_+=1
+
+	draw.polygon(ar,fill=(*col1,op1),outline=(*col2,op2),width=int(width*4))
+
+	im=im.resize((int(x2-x1),int(y2-y1)))
+
+	return im
+
+moves=[]
+_red_,_red2_=None,None
+def validate_moves():
+	global pieces
+	global moves
+	global game
+	global game_st
+	global turn
+	global striker_r,piece_r
+	global first_move
+	global moves_
+	global _red_,_red2_
+
+
+	def reposition(p):
+
+		def check_pos(x,y):
+			global pieces,striker_r,piece_r
+
+			con=0
+
+			for i in pieces:
+
+				if i=="striker":
+					r=striker_r
+				else:
+					r=piece_r
+
+				x2,y2=pieces[i]["coord"]
+
+				r_=math.sqrt((x-x2)**2+(y-y2)**2)
+
+				if r_<r+piece_r:
+
+					con=1
+					break
+
+			if con==0:
+				return [x,y]
+			else:
+				return -1
+
+		cx,cy=243,243
+
+		v=check_pos(cx,cy)
+
+
+		if not v==-1:
+			return v
+
+
+		a=360/6
+		a_=180
+
+		r=piece_r*2+4
+
+		for _ in range(6):
+
+			x=r*math.sin(math.radians(a_))+cx
+			y=r*math.cos(math.radians(a_))+cy
+
+
+			v=check_pos(x,y)
+
+			if not v==-1:
+				return v
+
+			a_-=a
+
+
+
+		a=360/12
+		a_=180
+
+		r=piece_r*4+8
+
+		for _ in range(6):
+
+			x=r*math.sin(math.radians(a_))+cx
+			y=r*math.cos(math.radians(a_))+cy
+
+
+			v=check_pos(x,y)
+
+			if not v==-1:
+				return v
+
+			a_-=a
+
+
+
+		a=360/24
+		a_=180
+
+		r=piece_r*6+12
+
+		for _ in range(6):
+
+			x=r*math.sin(math.radians(a_))+cx
+			y=r*math.cos(math.radians(a_))+cy
+
+
+			v=check_pos(x,y)
+
+			if not v==-1:
+				return v
+
+			a_-=a
+
+
+
+
+
+
+	# disk pool
+
+	if turn==1:
+
+		if pieces["striker"]["potted"]==1:
+			con=1
+
+			for i in moves:
+
+				if i.split(" ")[-1]=="white":
+
+
+					pieces[i]["coord"]=reposition(i)
+					pieces[i]["potted"]=0
+
+					#print(pieces[i]["coord"])
+
+					draw_piece_(i,1)
+
+			if game=="carrom":
+
+				try:
+					v=moves.index("red")
+					_red_,_red2_=None,None
+
+					pieces["red"]["coord"]=reposition("red")
+					pieces["red"]["potted"]=0
+
+					draw_piece_("red",1)
+				except:
+					pass
+
+
+
+		elif first_move[0].split(" ")[-1]=="white" or first_move[0]=="red":
+			if moves[0].split(" ")[-1]=="white" or moves[0]=="red":
+
+				con=0
+
+
+				if game=="carrom":
+					if _red_==None:
+
+						try:
+							v=moves.index("red")
+
+
+
+							_red2_=1
+							con_=0
+							for m in moves:
+
+								if m.split(" ")[-1]=="white":
+									con_=1
+
+							if con_==1:
+								_red_=1
+
+
+
+
+							return con
+
+
+
+
+						except:
+							pass
+
+
+					if _red_==None:
+
+
+
+						if pieces["red"]["potted"]==1:
+
+							try:
+
+								v=moves_[-2].index("red")
+
+
+
+								if _red2_==1:
+
+
+									con_=0
+
+									for m in moves:
+
+										if m.split(" ")[-1]=="white":
+
+											
+											con_=1
+
+									if con_==1:
+										_red_=1
+
+							except:
+								pass
+
+
+
+
+
+			else:
+				con=1
+
+
+
+		else:
+			con=1
+
+
+			if game=="carrom":
+
+
+
+
+				if pieces["red"]["potted"]==1 and _red_==None and _red2_==1:
+
+
+
+
+					try:
+
+						v=moves_[-2].index("red")
+
+						_red_=None
+						_red2_=None
+						pieces["red"]["coord"]=reposition("red")
+						pieces["red"]["potted"]=0
+
+						draw_piece_("red",1)									
+
+					except:
+						pass
+
+
+
+
+
+
+
+			for i in moves:
+
+				if i.split(" ")[-1]=="white":
+
+
+					pieces[i]["coord"]=reposition(i)
+					pieces[i]["potted"]=0
+
+					#print(pieces[i]["coord"])
+
+					draw_piece_(i,1)
+
+			if game=="carrom":
+
+				try:
+
+					v=moves.index("red")
+
+					_red_,_red2_=None,None
+
+					pieces["red"]["coord"]=reposition("red")
+					pieces["red"]["potted"]=0
+
+					draw_piece_("red",1)
+				except:
+					pass
+
+	elif turn==0:
+
+
+		if pieces["striker"]["potted"]==1:
+			con=1
+
+			for i in moves:
+
+				if i.split(" ")[-1]=="black":
+
+
+					pieces[i]["coord"]=reposition(i)
+					pieces[i]["potted"]=0
+
+					#print(pieces[i]["coord"])
+
+					draw_piece_(i,1)
+
+			if game=="carrom":
+
+				try:
+					
+					v=moves.index("red")
+					_red_,_red2_=None,None
+
+					pieces["red"]["coord"]=reposition("red")
+					pieces["red"]["potted"]=0
+
+					draw_piece_("red",1)
+				except:
+					pass
+
+
+		elif first_move[0].split(" ")[-1]=="black" or first_move[0]=="red":
+			if moves[0].split(" ")[-1]=="black" or moves[0]=="red":
+
+				con=0
+
+
+				if game=="carrom":
+					if _red_==None:
+
+						try:
+							v=moves.index("red")
+
+
+
+							_red2_=0
+							con_=0
+							for m in moves:
+
+								if m.split(" ")[-1]=="black":
+									con_=1
+
+							if con_==1:
+								_red_=0
+
+
+
+
+							return con
+
+
+
+
+						except:
+							pass
+
+
+					if _red_==None:
+
+
+
+						if pieces["red"]["potted"]==1:
+
+							try:
+
+								v=moves_[-2].index("red")
+
+
+								if _red2_==0:
+
+
+									con_=0
+
+									for m in moves:
+
+										if m.split(" ")[-1]=="black":
+
+											
+											con_=1
+
+									if con_==1:
+										_red_=0
+
+							except:
+								pass
+
+
+
+
+
+			else:
+				con=1
+
+
+
+		else:
+			con=1
+
+
+			if game=="carrom":
+
+
+
+
+
+				if pieces["red"]["potted"]==1 and _red_==None and _red2_==0:
+
+
+
+
+					try:
+
+						v=moves_[-2].index("red")
+
+
+
+
+						_red_=None
+						_red2_=None
+						pieces["red"]["coord"]=reposition("red")
+						pieces["red"]["potted"]=0
+
+						draw_piece_("red",1)									
+
+					except:
+						pass
+
+
+
+
+
+
+
+
+
+
+			for i in moves:
+
+				if i.split(" ")[-1]=="black":
+
+
+					pieces[i]["coord"]=reposition(i)
+					pieces[i]["potted"]=0
+
+					#print(pieces[i]["coord"])
+
+					draw_piece_(i,1)
+
+
+			if game=="carrom":
+
+				try:
+					v=moves.index("red")
+					_red_,_red2_=None,None
+
+					pieces["red"]["coord"]=reposition("red")
+					pieces["red"]["potted"]=0
+
+					draw_piece_("red",1)
+				except:
+					pass
+
+	return con
+
+
+
+	#print(moves)
 
 
 game_st2=0
+
+go_im=0
+go_st=0
+go_coord=[]
+go_i=[0,0,0,0,0,0,0]
+
+def go(winner):
+	global go_st,go_im,go_coord,go_st
+	global bg2
+
+	go_st=1
+
+	draw_move_()
+
+	go_i[6]=can.create_image(0,0,image=bg2,anchor="nw")
+
+	xx,yy=250,100
+
+	x=(w-xx)/2
+	y=(h-yy)/2
+
+
+	im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,255),180,255,1)
+	go_im=ImageTk.PhotoImage(im)
+
+	go_i[0]=can.create_image(x,y,image=go_im,anchor="nw")
+
+	go_i[1]=can.create_text(x+xx/2,y+20, text=f"{winner} wins!", font=("FreeMono",13),fill="#ff00ff")
+
+	go_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#777777")
+
+	go_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#777777")
+
+	go_i[4]=can.create_text(x+xx/4,y+yy-15,text="Main Menu",font=("FreeMono",13),fill="#ff00ff")
+
+	go_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="Quit",font=("FreeMono",13),fill="#ff00ff")
+
+	go_coord=[x,y+yy-30, x+xx,y+yy]
+
+moves_=[]
+first_move=[]
 def check_game():
 
+	global can
 	global pieces,game_st,turn,xrng,yv2,striker_r
-	global game_st2
+	global game_st,game_st2
 	global force
+	global pwhite,pwred,pblack,pbred
+	global moves,moves_
+	global first_move
+	global turn
+	global _red2_
 
 	if game_st2==1:
+
+		
+
+		w,b,r=0,0,None
+		for p in pieces:
+
+			if p!="striker":
+
+				if pieces[p]["potted"]==1:
+
+					if p.split(" ")[-1]=="white":
+						w+=1
+					elif p.split(" ")[-1]=="black":
+						b+=1
+
+		can.itemconfig(pwhite,text=str(w))
+		can.itemconfig(pblack,text=str(b))
+
+
+
+		#print(_red2_)
+		if pieces["red"]["potted"]==1:
+
+
+
+			if _red2_==None:
+				can.itemconfig(pwred,text=str(0))
+				can.itemconfig(pbred,text=str(0))
+
+			elif _red2_==1:
+				can.itemconfig(pwred,text=str(1))
+			elif _red2_==0:
+				can.itemconfig(pbred,text=str(1))
+
+		#print(pieces["red"]["potted"])
+
+
 
 		con=0
 		for p in pieces:
@@ -6081,20 +7547,132 @@ def check_game():
 
 		if con==0:
 
-			if turn==0:
-				turn=1
-				pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
-			elif turn==1:
-				turn=0				
-				pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
 
-			draw_piece_("striker",1)	
+			con_=1
+
+
+			moves_.append(moves)
+
+			#print(moves_)
+
+
+			if len(moves)>0:
+				con_=validate_moves()
+
+
+				w,b=0,0
+				for p in pieces:
+
+					if p!="striker":
+
+						if pieces[p]["potted"]==1:
+
+							if p.split(" ")[-1]=="white":
+								w+=1
+							elif p.split(" ")[-1]=="black":
+								b+=1
+
+				can.itemconfig(pwhite,text=str(w))
+				can.itemconfig(pblack,text=str(b))
+
+
+
+				if pieces["red"]["potted"]==1:
+
+					if _red2_==None:
+						can.itemconfig(pwred,text=str(0))
+						can.itemconfig(pbred,text=str(0))
+
+					elif _red2_==1:
+						can.itemconfig(pwred,text=str(1))
+					elif _red2_==0:
+						can.itemconfig(pbred,text=str(1))
+
+			pieces["striker"]["potted"]=0
+
+			moves=[]
+			first_move=[]
+			game_st=0
+
+			game_st2=0
+			force=0
+			
+
+			if con_==1:
+
+
+				if turn==0:
+					turn=1
+					pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
+				elif turn==1:
+					turn=0				
+					pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+
+				draw_piece_("striker",1)	
+
+			else:
+
+
+				if turn==0:
+					pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+					
+				elif turn==1:
+					pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
+
+				draw_piece_("striker",1)
+
 
 
 			#check if game is finished
-			game_st=0
-			game_st2=0
-			force=0
+
+
+
+			w,b=0,0
+			for p in pieces:
+
+				if p!="striker":
+
+					if pieces[p]["potted"]==1:
+
+						if p=="red":
+							pass
+						elif p.split(" ")[-1]=="white":
+							w+=1
+						elif p.split(" ")[-1]=="black":
+							b+=1
+
+
+
+			if w==9:
+
+				winner="White"
+				if game=="carrom":
+
+					if pieces["red"]["potted"]==0:
+						winner="Black"
+
+				go(winner)
+
+			elif b==9:
+
+				winner="Black"
+
+				if game=="carrom":
+
+					if pieces["red"]["potted"]==0:
+						winner="White"
+
+				go(winner)
+
+
+				
+
+			
+
+
+
+
+
 
 	root.after(2,check_game)
 
@@ -6111,6 +7689,7 @@ pieces={"striker":{"coord":[0,0],
 					"speed":0,
 					"move st":0,
 					"im":0,
+					"potted":0,
 
 					},
 
@@ -6347,7 +7926,7 @@ pieces={"striker":{"coord":[0,0],
 						"im":0,
 						},
 
-	"7 black":{"coord":[243.0,255.0],
+	"7 black":{"coord":[232.60769515458674,249.0],
 						"coord_":[0,0],
 						"angle":0,
 						"proj_ang":None,
@@ -6416,6 +7995,7 @@ pieces={"striker":{"coord":[0,0],
 
 w,h=500,500
 root=tk.Tk()
+root.resizable(0,0)
 
 
 can=tk.Canvas(width=w,height=h,bg="#000000",relief="flat",highlightthickness=0,border=0)
