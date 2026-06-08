@@ -102,6 +102,7 @@ pieces=[]
 
 root=tk.Tk()
 root.geometry(f"{500}x{500}")
+root.resizable((0,0))
 
 can=tk.Canvas(width=500,height=500,relief="flat",highlightthickness=0,border=0,bg="#00ffff")
 can.place(in_=root,x=0,y=0)
@@ -109,5 +110,201 @@ can.place(in_=root,x=0,y=0)
 can.bind("<Button-1>",b1)
 can.bind("<Motion>",get_val)
 
+
 pieces_coord()
 root.mainloop()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def move_red():
+    global pieces
+    global game_st
+    global st
+    global turn
+    global piece_r
+
+    if pieces["red"]["potted"]==1:
+
+        root.after(1,move_red)
+        return
+
+    if st=="main":
+
+        if pieces["red"]["move st"]==1:
+
+
+
+
+
+            
+
+            
+
+
+            collusions("red")
+            if pieces["red"]["st"]==0:
+                
+
+                try:
+
+                    #print(pieces["red"]["proj_ang"])
+
+                    pieces["red"]["coord_"]=pieces["red"]["coord"]
+                    if pieces["red"]["proj_ang"]!=None:
+                        pieces["red"]["data"]=get_pos("red",pieces["red"]["coord"][0],pieces["red"]["coord"][1],0,angle(pieces["red"]["proj_ang"]),0,0)
+                        pieces["red"]["proj_ang"]=None
+                        pieces["red"]["angle"]=angle(pieces["red"]["proj_ang"])
+                    else:
+
+                        pieces["red"]["data"]=get_pos("red",pieces["red"]["coord"][0],pieces["red"]["coord"][1],0,angle(pieces["red"]["angle"]),0,0)
+                    
+                    #print(pieces["red"]["data"])
+                    pieces["red"]["coord"]=[pieces["red"]["data"][0],pieces["red"]["data"][1]]
+                    pieces["red"]["angle"]=angle(pieces["red"]["data"][3])
+
+                    draw_piece_("red",1)
+
+
+                    pieces["red"]["st"]=1
+
+                except:
+                    print(pieces["red"]["data"],"error")
+            elif pieces["red"]["st"]==1:
+
+                pieces["red"]["data"]=get_pos("red",pieces["red"]["coord_"][0],pieces["red"]["coord_"][1],pieces["red"]["data"][2],angle(pieces["red"]["angle"]),pieces["red"]["data"][4],1)
+
+                
+
+                if pieces["red"]["data"]==1:
+
+                    pieces["red"]["potted"]=1
+
+                    pieces["red"]["start_time"]=0
+                    pieces["red"]["speed"]=0
+                    pieces["red"]["initial_v"]=0
+                    pieces["red"]["current_v"]=0
+
+                    pieces["red"]["proj_ang"]=None
+                    pieces["red"]["angle"]=0
+                    
+                    pieces["red"]["st"]=0
+                    pieces["red"]["initial_v"]=0
+
+                    pieces["red"]["move st"]=0
+
+                    
+
+                    pieces["red"]["coord"]=[-100,100]
+
+                    draw_piece_("red",1)        
+
+                    root.after(1,move_red)
+                    return
+
+
+                elif pieces["red"]["data"]==2:
+                    pieces["red"]["st"]=0
+                    pieces["red"]["angle"]=angle(pieces["red"]["proj_ang"])
+                    draw_piece_("red",1)    
+
+
+                else:
+
+                    pieces["red"]["angle"]=angle(pieces["red"]["data"][3])
+                    pieces["red"]["coord"]=[pieces["red"]["data"][0],pieces["red"]["data"][1]]
+
+
+                    pieces["red"]["coord"]=[pieces["red"]["data"][0],pieces["red"]["data"][1]]
+                    
+
+                    
+
+                    try:
+
+
+                        if len(pieces["red"]["data"][4])==3:
+
+
+
+                            pieces["red"]["proj_ang"]=angle(pieces["red"]["data"][4][1])
+
+                    except:
+                        pass
+
+                    draw_piece_("red",1)
+
+
+                pieces["red"]["current_v"]=pieces["red"]["initial_v"]-0.05*9.8*(time.time()-pieces["red"]["start_time"])
+                #print("red"," - ",pieces["red"]["current_v"])
+
+                if int(pieces["red"]["current_v"])<0:
+
+
+
+                    pieces["red"]["start_time"]=0
+                    pieces["red"]["speed"]=0
+                    pieces["red"]["initial_v"]=0
+                    pieces["red"]["current_v"]=0
+
+
+
+                    pieces["red"]["proj_ang"]=None
+                    pieces["red"]["angle"]=0
+                    
+                    pieces["red"]["st"]=0
+                    pieces["red"]["move st"]=0
+
+                    
+
+                    draw_piece_("red",1)        
+
+                    root.after(1,move_red)
+                    return
+                else:
+
+                    pieces["red"]["speed"]=int(round((1-pieces["red"]["current_v"]/3)*10,0))
+
+                    if pieces["red"]["speed"]<1:
+                        pieces["red"]["speed"]=1
+
+                
+
+
+
+
+               
+
+                root.after(pieces["red"]["speed"],move_red)
+                return
+
+
+            root.after(1,move_red)
+            return
+
+
+                    
+
+
+
+
+        else:
+            pieces["red"]["st"]=0
+            root.after(1,move_red)
+            return
+
+
+    else:
+        root.after(1,move_red)
+        return
