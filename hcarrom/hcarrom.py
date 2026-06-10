@@ -708,6 +708,9 @@ def main():
 
 		pblack=can.create_text(w-(10+5+10+5)+(5+10),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
 
+
+	can.create_text(w/2,h+15,text=game, font=("FreeMono",13),fill="#ff00ff")
+
 p=0
 #r=30
 cx,cy=0,0
@@ -1474,8 +1477,66 @@ def collusions(pc):
 			a2=angle(a2)
 			a3=angle(a3)
 
+			#print(a2,a1)
+
+			_a1=angle(aa+90)
+			_a2=angle(aa-90)
+
+
+
+			def check_h(a):
+
+				if 90<=a<=270:
+					return 1
+				else:
+					return 0
+
+				
+				
+
+
+
+
+
 			if a3==aa:
 				aa2=aa+180
+
+
+			elif check_h(a1)==check_h(_a1):
+				aa2=_a1
+
+			elif check_h(a1)==check_h(_a2):
+				aa2=_a2
+
+
+			"""
+
+			elif 0<=aa<=90:
+				aa2=aa-90
+			elif 90<=aa<=180:
+				aa2=aa+90
+			elif 180<=aa<=270:
+				aa2=aa-90
+			elif 270<=aa<360:
+				aa2=aa+90
+
+
+			
+
+			elif y1>y2:
+
+				if aa>180:
+					aa2=aa-90
+				elif aa<180:
+					aa2=aa+90
+			elif y1<y2:
+
+
+				if 200<=aa<360:
+					aa2=aa+90
+
+				elif aa>0:
+					aa2=aa-90
 
 
 
@@ -1493,7 +1554,6 @@ def collusions(pc):
 					if 0<=angle(a2+180)<=90:
 
 						if 180<=angle(a1+180)<360:
-							print("ok")
 							aa2=aa+90
 						else:
 							aa2=aa-90
@@ -1512,6 +1572,7 @@ def collusions(pc):
 
 
 				aa2=aa-90
+			"""
 
 			aa2=angle(aa2)
 
@@ -7996,6 +8057,8 @@ pieces={"striker":{"coord":[0,0],
 w,h=500,500
 root=tk.Tk()
 root.resizable(0,0)
+root.title("hcarrom")
+root.iconbitmap("data/icon.ico")
 
 
 can=tk.Canvas(width=w,height=h,bg="#000000",relief="flat",highlightthickness=0,border=0)
