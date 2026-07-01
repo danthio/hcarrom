@@ -1348,7 +1348,65 @@ def can_b1_release(e):
 			pieces["striker"]["start_time"]=time.time()
 			pieces["striker"]["move st"]=1
 
-ccc=0
+def det_ang(a_1,a_2):
+
+	a_1=int(a_1)
+	a_2=int(a_2)
+
+	_a1_=a_2
+	_a2_=a_2
+
+
+	acx=0
+
+	for a in range(360):
+
+
+		if _a1_==a_1:
+
+			break
+
+
+		_a1_-=1
+
+		acx+=1
+
+		if _a1_==-1:
+
+			_a1_=359
+
+
+
+	acy=0
+
+
+	for a in range(360):
+
+
+
+
+		if _a2_==a_1:
+
+			break
+
+		_a2_+=1
+
+		acy+=1
+
+		if _a2_==361:
+
+			_a2_=1
+
+
+	#print(acx,acy)
+
+	if acx<=acy:
+		return acx
+	elif acy<acx:
+		return acy
+
+
+
 
 def collusions(pc):
 	global pieces
@@ -1484,65 +1542,6 @@ def collusions(pc):
 			_a2=angle(aa-90)
 
 
-			def det_ang(a_1,a_2):
-
-				a_1=int(a_1)
-				a_2=int(a_2)
-
-				_a1_=a_2
-				_a2_=a_2
-
-
-				acx=0
-
-				for a in range(360):
-
-
-					if _a1_==a_1:
-
-						break
-
-
-					_a1_-=1
-
-					acx+=1
-
-					if _a1_==-1:
-
-						_a1_=359
-
-
-
-				acy=0
-
-
-				for a in range(360):
-
-
-
-
-					if _a2_==a_1:
-
-						break
-
-					_a2_+=1
-
-					acy+=1
-
-					if _a2_==361:
-
-						_a2_=1
-
-
-				#print(acx,acy)
-
-				if acx<acy:
-					return acx
-				elif acy<acx:
-					return acy
-
-
-
 
 
 			ax=det_ang(angle(a1+180),_a1)
@@ -1553,20 +1552,12 @@ def collusions(pc):
 
 			#print(ax,ay)
 
-			try:
-				if ax>ay:
-					aa2=_a1
-				elif ay>ax:
-					aa2=_a2
-				else:
-					aa2=aa+180
-
-			except:
-
-				print(angle(a1+180),_a1)
-				print(angle(a1+180),_a2)
+			if ax>ay:
+				aa2=_a1
+			elif ay>ax:
+				aa2=_a2
+			else:
 				aa2=aa+180
-
 			aa2=angle(aa2)
 
 
@@ -1788,7 +1779,24 @@ def draw_move(e):
 
 							a=angle(get_ang([x,y],[x_,y_])+180)
 
-							ar=[p[0],x,y,x_,y_,a]
+
+							ax=det_ang(angle(pieces["striker"]["angle"]+180),angle(a+90))
+							ay=det_ang(angle(pieces["striker"]["angle"]+180),angle(a-90))
+
+
+
+
+							#print(ax,ay)
+
+							if ax>ay:
+								aa2=angle(a+90)
+							elif ay>ax:
+								aa2=angle(a-90)
+							else:
+								aa2=angle(a+180)
+
+
+							ar=[p[0],x,y,x_,y_,a,angle(aa2)]
 
 							break
 
@@ -1805,13 +1813,13 @@ def draw_move(e):
 
 				if con==1:
 
-					a_=ar[-1]
+					a_=ar[-2]
 
 
 					dm_coord=[cx,cy,ar[1],ar[2]]
 
 
-					dm_piece_mv=[a_,ar[1],ar[2]]
+					dm_piece_mv=[a_,ar[1],ar[2],ar[-1]]
 
 
 
@@ -2227,7 +2235,7 @@ def draw_move_(con=0):
 
 
 
-			if not dm_piece_mv==[0,0,0]:
+			if not dm_piece_mv==[0,0,0,0]:
 
 
 
@@ -2235,10 +2243,14 @@ def draw_move_(con=0):
 				y=100*math.cos(math.radians(dm_piece_mv[0]))+dm_piece_mv[2]
 
 
+				x2=50*math.sin(math.radians(dm_piece_mv[-1]))+dm_piece_mv[1]
+				y2=50*math.cos(math.radians(dm_piece_mv[-1]))+dm_piece_mv[2]
+
+
 				dm_vs[4]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x,y,fill="#ff0000")
+				dm_vs[7]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x2,y2,fill="#ff0000")
 
-
-			dm_piece_mv=[0,0,0]
+			dm_piece_mv=[0,0,0,0]
 
 
 
