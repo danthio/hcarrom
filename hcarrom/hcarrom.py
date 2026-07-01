@@ -7304,10 +7304,9 @@ def validate_moves():
 		return 1
 
 
-	print(first_move)
+	#print(first_move)
 
-
-	# disk pool
+	#####
 
 	if turn==1:
 
