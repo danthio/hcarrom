@@ -7155,8 +7155,156 @@ def validate_moves():
 			a_-=a
 
 
+	def cancel_0():
+
+		global game
+		global pieces
+		global _red2_,_red_
+		global moves,moves_
 
 
+		con=1
+
+
+		if game=="carrom":
+
+
+
+
+
+			if pieces["red"]["potted"]==1 and _red_==None and _red2_==0:
+
+
+
+
+				try:
+
+					v=moves_[-2].index("red")
+
+
+
+
+					_red_=None
+					_red2_=None
+					pieces["red"]["coord"]=reposition("red")
+					pieces["red"]["potted"]=0
+
+					draw_piece_("red",1)									
+
+				except:
+					pass
+
+
+
+
+
+
+
+
+
+
+		for i in moves:
+
+			if i.split(" ")[-1]=="black":
+
+
+				pieces[i]["coord"]=reposition(i)
+				pieces[i]["potted"]=0
+
+				#print(pieces[i]["coord"])
+
+				draw_piece_(i,1)
+
+
+		if game=="carrom":
+
+			try:
+				v=moves.index("red")
+				_red_,_red2_=None,None
+
+				pieces["red"]["coord"]=reposition("red")
+				pieces["red"]["potted"]=0
+
+				draw_piece_("red",1)
+			except:
+				pass
+
+		return 1
+
+
+	def cancel_1():
+		global game
+		global pieces
+		global _red2_,_red_
+		global moves,moves_
+
+
+		con=1
+
+
+
+
+		if game=="carrom":
+
+
+
+
+			if pieces["red"]["potted"]==1 and _red_==None and _red2_==1:
+
+
+
+
+				try:
+
+					v=moves_[-2].index("red")
+
+					_red_=None
+					_red2_=None
+					pieces["red"]["coord"]=reposition("red")
+					pieces["red"]["potted"]=0
+
+					draw_piece_("red",1)									
+
+				except:
+					pass
+
+
+
+
+
+
+
+		for i in moves:
+
+			if i.split(" ")[-1]=="white":
+
+
+				pieces[i]["coord"]=reposition(i)
+				pieces[i]["potted"]=0
+
+				#print(pieces[i]["coord"])
+
+				draw_piece_(i,1)
+
+		if game=="carrom":
+
+			try:
+
+				v=moves.index("red")
+
+				_red_,_red2_=None,None
+
+				pieces["red"]["coord"]=reposition("red")
+				pieces["red"]["potted"]=0
+
+				draw_piece_("red",1)
+			except:
+				pass
+
+		return 1
+
+
+	print(first_move)
 
 
 	# disk pool
@@ -7193,142 +7341,91 @@ def validate_moves():
 
 
 
-		elif first_move[0].split(" ")[-1]=="white" or first_move[0]=="red":
-			if moves[0].split(" ")[-1]=="white" or moves[0]=="red":
+		elif len(first_move)>0:
 
-				con=0
+			if first_move[0].split(" ")[-1]=="white" or first_move[0]=="red":
 
+				if len(moves)>0:
+					
+					if moves[0].split(" ")[-1]=="white" or moves[0]=="red":
 
-				if game=="carrom":
-					if _red_==None:
-
-						try:
-							v=moves.index("red")
+						con=0
 
 
+						if game=="carrom":
+							if _red_==None:
 
-							_red2_=1
-							con_=0
-							for m in moves:
-
-								if m.split(" ")[-1]=="white":
-									con_=1
-
-							if con_==1:
-								_red_=1
+								try:
+									v=moves.index("red")
 
 
 
-
-							return con
-
-
-
-
-						except:
-							pass
-
-
-					if _red_==None:
-
-
-
-						if pieces["red"]["potted"]==1:
-
-							try:
-
-								v=moves_[-2].index("red")
-
-
-
-								if _red2_==1:
-
-
+									_red2_=1
 									con_=0
-
 									for m in moves:
 
 										if m.split(" ")[-1]=="white":
-
-											
 											con_=1
 
 									if con_==1:
 										_red_=1
 
-							except:
-								pass
+
+
+
+									return con
+
+
+
+
+								except:
+									pass
+
+
+							if _red_==None:
+
+
+
+								if pieces["red"]["potted"]==1:
+
+									try:
+
+										v=moves_[-2].index("red")
+
+
+
+										if _red2_==1:
+
+
+											con_=0
+
+											for m in moves:
+
+												if m.split(" ")[-1]=="white":
+
+													
+													con_=1
+
+											if con_==1:
+												_red_=1
+
+									except:
+										pass
 
 
 
 
 
+					else:
+						con=cancel_1()
+				else:
+
+					con=cancel_1()
 			else:
-				con=1
 
-
-
+				con=cancel_1()
 		else:
-			con=1
-
-
-			if game=="carrom":
-
-
-
-
-				if pieces["red"]["potted"]==1 and _red_==None and _red2_==1:
-
-
-
-
-					try:
-
-						v=moves_[-2].index("red")
-
-						_red_=None
-						_red2_=None
-						pieces["red"]["coord"]=reposition("red")
-						pieces["red"]["potted"]=0
-
-						draw_piece_("red",1)									
-
-					except:
-						pass
-
-
-
-
-
-
-
-			for i in moves:
-
-				if i.split(" ")[-1]=="white":
-
-
-					pieces[i]["coord"]=reposition(i)
-					pieces[i]["potted"]=0
-
-					#print(pieces[i]["coord"])
-
-					draw_piece_(i,1)
-
-			if game=="carrom":
-
-				try:
-
-					v=moves.index("red")
-
-					_red_,_red2_=None,None
-
-					pieces["red"]["coord"]=reposition("red")
-					pieces["red"]["potted"]=0
-
-					draw_piece_("red",1)
-				except:
-					pass
-
+			con=cancel_1()
 	elif turn==0:
 
 
@@ -7362,146 +7459,89 @@ def validate_moves():
 					pass
 
 
-		elif first_move[0].split(" ")[-1]=="black" or first_move[0]=="red":
-			if moves[0].split(" ")[-1]=="black" or moves[0]=="red":
+		elif len(first_move)>0:
+			if first_move[0].split(" ")[-1]=="black" or first_move[0]=="red":
 
-				con=0
+				if len(moves)>0:
 
+					if moves[0].split(" ")[-1]=="black" or moves[0]=="red":
 
-				if game=="carrom":
-					if _red_==None:
-
-						try:
-							v=moves.index("red")
+						con=0
 
 
+						if game=="carrom":
+							if _red_==None:
 
-							_red2_=0
-							con_=0
-							for m in moves:
-
-								if m.split(" ")[-1]=="black":
-									con_=1
-
-							if con_==1:
-								_red_=0
+								try:
+									v=moves.index("red")
 
 
 
-
-							return con
-
-
-
-
-						except:
-							pass
-
-
-					if _red_==None:
-
-
-
-						if pieces["red"]["potted"]==1:
-
-							try:
-
-								v=moves_[-2].index("red")
-
-
-								if _red2_==0:
-
-
+									_red2_=0
 									con_=0
-
 									for m in moves:
 
 										if m.split(" ")[-1]=="black":
-
-											
 											con_=1
 
 									if con_==1:
 										_red_=0
 
-							except:
-								pass
+
+
+
+									return con
+
+
+
+
+								except:
+									pass
+
+
+							if _red_==None:
+
+
+
+								if pieces["red"]["potted"]==1:
+
+									try:
+
+										v=moves_[-2].index("red")
+
+
+										if _red2_==0:
+
+
+											con_=0
+
+											for m in moves:
+
+												if m.split(" ")[-1]=="black":
+
+													
+													con_=1
+
+											if con_==1:
+												_red_=0
+
+									except:
+										pass
 
 
 
 
 
+					else:
+						con=cancel_0()
+				else:
+					con=cancel_0()
 			else:
-				con=1
 
-
-
+				con=cancel_0()
 		else:
-			con=1
+			con=cancel_0()
 
-
-			if game=="carrom":
-
-
-
-
-
-				if pieces["red"]["potted"]==1 and _red_==None and _red2_==0:
-
-
-
-
-					try:
-
-						v=moves_[-2].index("red")
-
-
-
-
-						_red_=None
-						_red2_=None
-						pieces["red"]["coord"]=reposition("red")
-						pieces["red"]["potted"]=0
-
-						draw_piece_("red",1)									
-
-					except:
-						pass
-
-
-
-
-
-
-
-
-
-
-			for i in moves:
-
-				if i.split(" ")[-1]=="black":
-
-
-					pieces[i]["coord"]=reposition(i)
-					pieces[i]["potted"]=0
-
-					#print(pieces[i]["coord"])
-
-					draw_piece_(i,1)
-
-
-			if game=="carrom":
-
-				try:
-					v=moves.index("red")
-					_red_,_red2_=None,None
-
-					pieces["red"]["coord"]=reposition("red")
-					pieces["red"]["potted"]=0
-
-					draw_piece_("red",1)
-				except:
-					pass
 
 	return con
 
@@ -7622,37 +7662,43 @@ def check_game():
 			#print(moves_)
 
 
-			if len(moves)>0:
-				con_=validate_moves()
+			#if len(moves)>0:
+			con_=validate_moves()
 
 
-				w,b=0,0
-				for p in pieces:
+			w,b=0,0
+			for p in pieces:
 
-					if p!="striker":
+				if p!="striker":
 
-						if pieces[p]["potted"]==1:
+					if pieces[p]["potted"]==1:
 
-							if p.split(" ")[-1]=="white":
-								w+=1
-							elif p.split(" ")[-1]=="black":
-								b+=1
+						if p.split(" ")[-1]=="white":
+							w+=1
+						elif p.split(" ")[-1]=="black":
+							b+=1
 
-				can.itemconfig(pwhite,text=str(w))
-				can.itemconfig(pblack,text=str(b))
+			can.itemconfig(pwhite,text=str(w))
+			can.itemconfig(pblack,text=str(b))
 
 
 
-				if pieces["red"]["potted"]==1:
+			if pieces["red"]["potted"]==1:
 
-					if _red2_==None:
-						can.itemconfig(pwred,text=str(0))
-						can.itemconfig(pbred,text=str(0))
+				if _red2_==None:
+					can.itemconfig(pwred,text=str(0))
+					can.itemconfig(pbred,text=str(0))
 
-					elif _red2_==1:
-						can.itemconfig(pwred,text=str(1))
-					elif _red2_==0:
-						can.itemconfig(pbred,text=str(1))
+				elif _red2_==1:
+					can.itemconfig(pwred,text=str(1))
+				elif _red2_==0:
+					can.itemconfig(pbred,text=str(1))
+			else:
+
+				can.itemconfig(pwred,text=str(0))
+				can.itemconfig(pbred,text=str(0))
+
+
 
 			pieces["striker"]["potted"]=0
 
