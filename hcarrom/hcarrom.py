@@ -2153,7 +2153,7 @@ def draw_move(e):
 			
 
 		except Exception as e:
-			print(e)
+			print("draw_move()",e)
 
 
 dm_coord=[0,0,0,0]
@@ -3154,7 +3154,8 @@ def angle(a):
 
 		return a
 
-	except:
+	except  Exception as e:
+		print("angle()",e)
 		return a
 
 def move_striker():
@@ -3206,7 +3207,7 @@ def move_striker():
 					pieces["striker"]["st"]=1
 
 				except Exception as e:
-					print(pieces["striker"]["data"],"error")
+					print("move_striker()",e)
 			elif pieces["striker"]["st"]==1:
 				game_st2=1
 
@@ -3268,8 +3269,8 @@ def move_striker():
 
 							pieces["striker"]["proj_ang"]=angle(pieces["striker"]["data"][4][1])
 
-					except:
-						pass
+					except Exception as e:
+						print("move_striker",e)
 
 					draw_piece_("striker" ,1)
 
@@ -3402,8 +3403,8 @@ def move_1_w():
 
 					pieces["1 white"]["st"]=1
 
-				except:
-					pass#print(pieces["1 white"]["data"],"error")
+				except Exception as e:
+					print("1white",e)
 			elif pieces["1 white"]["st"]==1:
 
 				pieces["1 white"]["data"]=get_pos("1 white",pieces["1 white"]["coord_"][0],pieces["1 white"]["coord_"][1],pieces["1 white"]["data"][2],angle(pieces["1 white"]["angle"]),pieces["1 white"]["data"][4],1)
@@ -3464,8 +3465,8 @@ def move_1_w():
 
 							pieces["1 white"]["proj_ang"]=angle(pieces["1 white"]["data"][4][1])
 
-					except:
-						pass
+					except Exception as e:
+						print("1white",e)
 
 					draw_piece_("1 white",1)
 
@@ -3584,8 +3585,8 @@ def move_2_w():
 
 					pieces["2 white"]["st"]=1
 
-				except:
-					pass#print(pieces["2 white"]["data"],"error")
+				except Exception as e:
+					print("2white",e)
 			elif pieces["2 white"]["st"]==1:
 
 				pieces["2 white"]["data"]=get_pos("2 white",pieces["2 white"]["coord_"][0],pieces["2 white"]["coord_"][1],pieces["2 white"]["data"][2],angle(pieces["2 white"]["angle"]),pieces["2 white"]["data"][4],1)
@@ -3646,8 +3647,8 @@ def move_2_w():
 
 							pieces["2 white"]["proj_ang"]=angle(pieces["2 white"]["data"][4][1])
 
-					except:
-						pass
+					except Exception as e:
+						print("2white",e)
 
 					draw_piece_("2 white",1)
 
@@ -3768,8 +3769,8 @@ def move_3_w():
 
 					pieces["3 white"]["st"]=1
 
-				except:
-					pass#print(pieces["3 white"]["data"],"error")
+				except Exception as e:
+						print("3white",e)
 			elif pieces["3 white"]["st"]==1:
 
 				pieces["3 white"]["data"]=get_pos("3 white",pieces["3 white"]["coord_"][0],pieces["3 white"]["coord_"][1],pieces["3 white"]["data"][2],angle(pieces["3 white"]["angle"]),pieces["3 white"]["data"][4],1)
@@ -3829,8 +3830,8 @@ def move_3_w():
 
 							pieces["3 white"]["proj_ang"]=angle(pieces["3 white"]["data"][4][1])
 
-					except:
-						pass
+					except Exception as e:
+						print("2white",e)
 
 					draw_piece_("3 white",1)
 
@@ -3950,8 +3951,8 @@ def move_4_w():
 
 					pieces["4 white"]["st"]=1
 
-				except:
-					pass#print(pieces["4 white"]["data"],"error")
+				except Exception as e:
+						print("4white",e)
 			elif pieces["4 white"]["st"]==1:
 
 				pieces["4 white"]["data"]=get_pos("4 white",pieces["4 white"]["coord_"][0],pieces["4 white"]["coord_"][1],pieces["4 white"]["data"][2],angle(pieces["4 white"]["angle"]),pieces["4 white"]["data"][4],1)
@@ -4012,8 +4013,8 @@ def move_4_w():
 
 							pieces["4 white"]["proj_ang"]=angle(pieces["4 white"]["data"][4][1])
 
-					except:
-						pass
+					except Exception as e:
+						print("4white",e)
 
 					draw_piece_("4 white",1)
 
@@ -4133,8 +4134,8 @@ def move_5_w():
 
 					pieces["5 white"]["st"]=1
 
-				except:
-					pass#print(pieces["5 white"]["data"],"error")
+				except Exception as e:
+						print("5white",e)
 			elif pieces["5 white"]["st"]==1:
 
 				pieces["5 white"]["data"]=get_pos("5 white",pieces["5 white"]["coord_"][0],pieces["5 white"]["coord_"][1],pieces["5 white"]["data"][2],angle(pieces["5 white"]["angle"]),pieces["5 white"]["data"][4],1)
@@ -4194,8 +4195,8 @@ def move_5_w():
 
 							pieces["5 white"]["proj_ang"]=angle(pieces["5 white"]["data"][4][1])
 
-					except:
-						pass
+					except Exception as e:
+						print("5white",e)
 
 					draw_piece_("5 white",1)
 
@@ -4318,8 +4319,8 @@ def move_6_w():
 
 					pieces["6 white"]["st"]=1
 
-				except:
-					pass#print(pieces["6 white"]["data"],"error")
+				except Exception as e:
+						print("6white",e)
 			elif pieces["6 white"]["st"]==1:
 
 				pieces["6 white"]["data"]=get_pos("6 white",pieces["6 white"]["coord_"][0],pieces["6 white"]["coord_"][1],pieces["6 white"]["data"][2],angle(pieces["6 white"]["angle"]),pieces["6 white"]["data"][4],1)
@@ -4380,8 +4381,8 @@ def move_6_w():
 
 							pieces["6 white"]["proj_ang"]=angle(pieces["6 white"]["data"][4][1])
 
-					except:
-						pass
+					except Exception as e:
+						print("6white",e)
 
 					draw_piece_("6 white",1)
 
@@ -4501,8 +4502,8 @@ def move_7_w():
 
 					pieces["7 white"]["st"]=1
 
-				except:
-					pass#print(pieces["7 white"]["data"],"error")
+				except Exception as e:
+						print("7white",e)
 			elif pieces["7 white"]["st"]==1:
 
 				pieces["7 white"]["data"]=get_pos("7 white",pieces["7 white"]["coord_"][0],pieces["7 white"]["coord_"][1],pieces["7 white"]["data"][2],angle(pieces["7 white"]["angle"]),pieces["7 white"]["data"][4],1)
@@ -4562,8 +4563,8 @@ def move_7_w():
 
 							pieces["7 white"]["proj_ang"]=angle(pieces["7 white"]["data"][4][1])
 
-					except:
-						pass
+					except Exception as e:
+						print("7white",e)
 
 					draw_piece_("7 white",1)
 
@@ -4683,8 +4684,8 @@ def move_8_w():
 
 					pieces["8 white"]["st"]=1
 
-				except:
-					pass#print(pieces["8 white"]["data"],"error")
+				except Exception as e:
+						print("8white",e)
 			elif pieces["8 white"]["st"]==1:
 
 				pieces["8 white"]["data"]=get_pos("8 white",pieces["8 white"]["coord_"][0],pieces["8 white"]["coord_"][1],pieces["8 white"]["data"][2],angle(pieces["8 white"]["angle"]),pieces["8 white"]["data"][4],1)
@@ -4744,8 +4745,8 @@ def move_8_w():
 
 							pieces["8 white"]["proj_ang"]=angle(pieces["8 white"]["data"][4][1])
 
-					except:
-						pass
+					except Exception as e:
+						print("8white",e)
 
 					draw_piece_("8 white",1)
 
@@ -4866,8 +4867,8 @@ def move_9_w():
 
 					pieces["9 white"]["st"]=1
 
-				except:
-					pass#print(pieces["9 white"]["data"],"error")
+				except Exception as e:
+						print("9white",e)
 			elif pieces["9 white"]["st"]==1:
 
 				pieces["9 white"]["data"]=get_pos("9 white",pieces["9 white"]["coord_"][0],pieces["9 white"]["coord_"][1],pieces["9 white"]["data"][2],angle(pieces["9 white"]["angle"]),pieces["9 white"]["data"][4],1)
@@ -4927,8 +4928,8 @@ def move_9_w():
 
 							pieces["9 white"]["proj_ang"]=angle(pieces["9 white"]["data"][4][1])
 
-					except:
-						pass
+					except Exception as e:
+						print("9white",e)
 
 					draw_piece_("9 white",1)
 
@@ -5052,8 +5053,8 @@ def move_1_b():
 
                     pieces["1 black"]["st"]=1
 
-                except:
-                    pass#print(pieces["1 black"]["data"],"error")
+                except Exception as e:
+                	print("1black",e)
             elif pieces["1 black"]["st"]==1:
 
                 pieces["1 black"]["data"]=get_pos("1 black",pieces["1 black"]["coord_"][0],pieces["1 black"]["coord_"][1],pieces["1 black"]["data"][2],angle(pieces["1 black"]["angle"]),pieces["1 black"]["data"][4],1)
@@ -5115,8 +5116,9 @@ def move_1_b():
 
                             pieces["1 black"]["proj_ang"]=angle(pieces["1 black"]["data"][4][1])
 
-                    except:
-                        pass
+                    except Exception as e:
+                    	print("1black",e)
+
 
                     draw_piece_("1 black",1)
 
@@ -5240,8 +5242,8 @@ def move_2_b():
 
                     pieces["2 black"]["st"]=1
 
-                except:
-                    pass#print(pieces["2 black"]["data"],"error")
+                except Exception as e:
+                    	print("2black",e)
             elif pieces["2 black"]["st"]==1:
 
                 pieces["2 black"]["data"]=get_pos("2 black",pieces["2 black"]["coord_"][0],pieces["2 black"]["coord_"][1],pieces["2 black"]["data"][2],angle(pieces["2 black"]["angle"]),pieces["2 black"]["data"][4],1)
@@ -5303,8 +5305,8 @@ def move_2_b():
 
                             pieces["2 black"]["proj_ang"]=angle(pieces["2 black"]["data"][4][1])
 
-                    except:
-                        pass
+                    except Exception as e:
+                    	print("2black",e)
 
                     draw_piece_("2 black",1)
 
@@ -5428,8 +5430,8 @@ def move_3_b():
 
                     pieces["3 black"]["st"]=1
 
-                except:
-                    pass#print(pieces["3 black"]["data"],"error")
+                except Exception as e:
+                    	print("3black",e)
             elif pieces["3 black"]["st"]==1:
 
                 pieces["3 black"]["data"]=get_pos("3 black",pieces["3 black"]["coord_"][0],pieces["3 black"]["coord_"][1],pieces["3 black"]["data"][2],angle(pieces["3 black"]["angle"]),pieces["3 black"]["data"][4],1)
@@ -5491,8 +5493,8 @@ def move_3_b():
 
                             pieces["3 black"]["proj_ang"]=angle(pieces["3 black"]["data"][4][1])
 
-                    except:
-                        pass
+                    except Exception as e:
+                    	print("3black",e)
 
                     draw_piece_("3 black",1)
 
@@ -5615,8 +5617,8 @@ def move_4_b():
 
                     pieces["4 black"]["st"]=1
 
-                except:
-                    pass#print(pieces["4 black"]["data"],"error")
+                except Exception as e:
+                    	print("4black",e)
             elif pieces["4 black"]["st"]==1:
 
                 pieces["4 black"]["data"]=get_pos("4 black",pieces["4 black"]["coord_"][0],pieces["4 black"]["coord_"][1],pieces["4 black"]["data"][2],angle(pieces["4 black"]["angle"]),pieces["4 black"]["data"][4],1)
@@ -5678,8 +5680,8 @@ def move_4_b():
 
                             pieces["4 black"]["proj_ang"]=angle(pieces["4 black"]["data"][4][1])
 
-                    except:
-                        pass
+                    except Exception as e:
+                    	print("4black",e)
 
                     draw_piece_("4 black",1)
 
@@ -5804,8 +5806,8 @@ def move_5_b():
 
                     pieces["5 black"]["st"]=1
 
-                except:
-                    pass#print(pieces["5 black"]["data"],"error")
+                except Exception as e:
+                    	print("5black",e)
             elif pieces["5 black"]["st"]==1:
 
                 pieces["5 black"]["data"]=get_pos("5 black",pieces["5 black"]["coord_"][0],pieces["5 black"]["coord_"][1],pieces["5 black"]["data"][2],angle(pieces["5 black"]["angle"]),pieces["5 black"]["data"][4],1)
@@ -5867,8 +5869,8 @@ def move_5_b():
 
                             pieces["5 black"]["proj_ang"]=angle(pieces["5 black"]["data"][4][1])
 
-                    except:
-                        pass
+                    except Exception as e:
+                    	print("5black",e)
 
                     draw_piece_("5 black",1)
 
@@ -5992,8 +5994,8 @@ def move_6_b():
 
                     pieces["6 black"]["st"]=1
 
-                except:
-                    pass#print(pieces["6 black"]["data"],"error")
+                except Exception as e:
+                    	print("6black",e)
             elif pieces["6 black"]["st"]==1:
 
                 pieces["6 black"]["data"]=get_pos("6 black",pieces["6 black"]["coord_"][0],pieces["6 black"]["coord_"][1],pieces["6 black"]["data"][2],angle(pieces["6 black"]["angle"]),pieces["6 black"]["data"][4],1)
@@ -6055,8 +6057,8 @@ def move_6_b():
 
                             pieces["6 black"]["proj_ang"]=angle(pieces["6 black"]["data"][4][1])
 
-                    except:
-                        pass
+                    except Exception as e:
+                    	print("6black",e)
 
                     draw_piece_("6 black",1)
 
@@ -6181,8 +6183,8 @@ def move_7_b():
 
                     pieces["7 black"]["st"]=1
 
-                except:
-                    pass#print(pieces["7 black"]["data"],"error")
+                except Exception as e:
+                    	print("7black",e)
             elif pieces["7 black"]["st"]==1:
 
                 pieces["7 black"]["data"]=get_pos("7 black",pieces["7 black"]["coord_"][0],pieces["7 black"]["coord_"][1],pieces["7 black"]["data"][2],angle(pieces["7 black"]["angle"]),pieces["7 black"]["data"][4],1)
@@ -6244,8 +6246,8 @@ def move_7_b():
 
                             pieces["7 black"]["proj_ang"]=angle(pieces["7 black"]["data"][4][1])
 
-                    except:
-                        pass
+                    except Exception as e:
+                    	print("7black",e)
 
                     draw_piece_("7 black",1)
 
@@ -6368,8 +6370,8 @@ def move_8_b():
 
                     pieces["8 black"]["st"]=1
 
-                except:
-                    pass#print(pieces["8 black"]["data"],"error")
+                except Exception as e:
+                    	print("8black",e)
             elif pieces["8 black"]["st"]==1:
 
                 pieces["8 black"]["data"]=get_pos("8 black",pieces["8 black"]["coord_"][0],pieces["8 black"]["coord_"][1],pieces["8 black"]["data"][2],angle(pieces["8 black"]["angle"]),pieces["8 black"]["data"][4],1)
@@ -6432,8 +6434,8 @@ def move_8_b():
 
                             pieces["8 black"]["proj_ang"]=angle(pieces["8 black"]["data"][4][1])
 
-                    except:
-                        pass
+                    except Exception as e:
+                    	print("8black",e)
 
                     draw_piece_("8 black",1)
 
@@ -6557,8 +6559,8 @@ def move_9_b():
 
                     pieces["9 black"]["st"]=1
 
-                except:
-                    pass#print(pieces["9 black"]["data"],"error")
+                except Exception as e:
+                    	print("9black",e)
             elif pieces["9 black"]["st"]==1:
 
                 pieces["9 black"]["data"]=get_pos("9 black",pieces["9 black"]["coord_"][0],pieces["9 black"]["coord_"][1],pieces["9 black"]["data"][2],angle(pieces["9 black"]["angle"]),pieces["9 black"]["data"][4],1)
@@ -6621,8 +6623,8 @@ def move_9_b():
 
                             pieces["9 black"]["proj_ang"]=angle(pieces["9 black"]["data"][4][1])
 
-                    except:
-                        pass
+                    except Exception as e:
+                    	print("9black",e)
 
                     draw_piece_("9 black",1)
 
@@ -6750,8 +6752,8 @@ def move_red():
 
                     pieces["red"]["st"]=1
 
-                except:
-                    pass#print(pieces["red"]["data"],"error")
+                except Exception as e:
+                    	print("red",e)
             elif pieces["red"]["st"]==1:
 
                 pieces["red"]["data"]=get_pos("red",pieces["red"]["coord_"][0],pieces["red"]["coord_"][1],pieces["red"]["data"][2],angle(pieces["red"]["angle"]),pieces["red"]["data"][4],1)
@@ -6813,8 +6815,8 @@ def move_red():
 
                             pieces["red"]["proj_ang"]=angle(pieces["red"]["data"][4][1])
 
-                    except:
-                        pass
+                    except Exception as e:
+                    	print("red",e)
 
                     draw_piece_("red",1)
 
