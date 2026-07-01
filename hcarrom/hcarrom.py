@@ -198,7 +198,7 @@ def intro2():
 
 	y=(h-90)/2
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,255),(255,0,255),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
 	intro2_im1=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro2_im1,anchor="nw")
@@ -211,7 +211,7 @@ def intro2():
 	y+=60
 
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,255),(255,0,255),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
 	intro2_im2=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro2_im2,anchor="nw")
@@ -246,7 +246,7 @@ def intro():
 
 	y=(h-90)/2
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,255),(255,0,255),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
 	intro_im1=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro_im1,anchor="nw")
@@ -259,7 +259,7 @@ def intro():
 	y+=60
 
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,255),(255,0,255),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
 	intro_im2=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro_im2,anchor="nw")
@@ -709,7 +709,7 @@ def main():
 		pblack=can.create_text(w-(10+5+10+5)+(5+10),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
 
 
-	can.create_text(w/2,h+15,text=game, font=("FreeMono",13),fill="#ff00ff")
+	can.create_text(w/2,h+15,text=game, font=("FreeMono",13),fill="#ff0000")
 
 p=0
 #r=30
@@ -1135,20 +1135,20 @@ def can_b1(e):
 				y=(h-yy)/2
 
 
-				im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,255),180,255,1)
+				im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,0),180,255,1)
 				quit_im=ImageTk.PhotoImage(im)
 
 				quit_i[0]=can.create_image(x,y,image=quit_im,anchor="nw")
 
-				quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff00ff")
+				quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff0000")
 
 				quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#777777")
 
 				quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#777777")
 
-				quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff00ff")
+				quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff0000")
 
-				quit_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="No",font=("FreeMono",13),fill="#ff00ff")
+				quit_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="No",font=("FreeMono",13),fill="#ff0000")
 
 				quit_coord=[x,y+yy-30, x+xx,y+yy]
 
@@ -1348,12 +1348,13 @@ def can_b1_release(e):
 			pieces["striker"]["start_time"]=time.time()
 			pieces["striker"]["move st"]=1
 
-
+ccc=0
 
 def collusions(pc):
 	global pieces
 	global striker_r,piece_r
 	global first_move
+	global ccc
 
 
 	if pieces[pc]["current_v"]==0:
@@ -1483,96 +1484,88 @@ def collusions(pc):
 			_a2=angle(aa-90)
 
 
+			def det_ang(a_1,a_2):
 
-			def check_h(a):
+				a_1=int(a_1)
+				a_2=int(a_2)
 
-				if 90<=a<=270:
-					return 1
+				_a1_=a_2
+				_a2_=a_2
+
+
+				acx=0
+
+				for a in range(360):
+
+
+					if _a1_==a_1:
+
+						break
+
+
+					_a1_-=1
+
+					acx+=1
+
+					if _a1_==-1:
+
+						_a1_=359
+
+
+
+				acy=0
+
+
+				for a in range(360):
+
+
+
+
+					if _a2_==a_1:
+
+						break
+
+					_a2_+=1
+
+					acy+=1
+
+					if _a2_==361:
+
+						_a2_=1
+
+
+				#print(acx,acy)
+
+				if acx<acy:
+					return acx
+				elif acy<acx:
+					return acy
+
+
+
+
+
+			ax=det_ang(angle(a1+180),_a1)
+			ay=det_ang(angle(a1+180),_a2)
+
+
+
+
+			#print(ax,ay)
+
+			try:
+				if ax>ay:
+					aa2=_a1
+				elif ay>ax:
+					aa2=_a2
 				else:
-					return 0
+					aa2=aa+180
 
-				
-				
+			except:
 
-
-
-
-
-			if a3==aa:
+				print(angle(a1+180),_a1)
+				print(angle(a1+180),_a2)
 				aa2=aa+180
-
-
-			elif check_h(a1)==check_h(_a1):
-				aa2=_a1
-
-			elif check_h(a1)==check_h(_a2):
-				aa2=_a2
-
-
-			"""
-
-			elif 0<=aa<=90:
-				aa2=aa-90
-			elif 90<=aa<=180:
-				aa2=aa+90
-			elif 180<=aa<=270:
-				aa2=aa-90
-			elif 270<=aa<360:
-				aa2=aa+90
-
-
-			
-
-			elif y1>y2:
-
-				if aa>180:
-					aa2=aa-90
-				elif aa<180:
-					aa2=aa+90
-			elif y1<y2:
-
-
-				if 200<=aa<360:
-					aa2=aa+90
-
-				elif aa>0:
-					aa2=aa-90
-
-
-
-
-
-			elif a1>a2:
-
-				da=angle(aa+90)-angle(aa-90)
-				if da<0:
-					da=-da
-
-				if da>180:
-					#print(111)
-
-					if 0<=angle(a2+180)<=90:
-
-						if 180<=angle(a1+180)<360:
-							aa2=aa+90
-						else:
-							aa2=aa-90
-
-
-				
-					else:
-
-						aa2=aa-90
-				else:
-					aa2=aa+90
-
-			elif a1<a2:
-
-
-
-
-				aa2=aa-90
-			"""
 
 			aa2=angle(aa2)
 
@@ -2184,7 +2177,7 @@ def draw_move_(con=0):
 
 			rr=100
 
-			dm_vs[0]=can.create_line(cx,cy, x,y,fill="#ff00ff")
+			dm_vs[0]=can.create_line(cx,cy, x,y,fill="#ff0000")
 			
 
 
@@ -2192,7 +2185,7 @@ def draw_move_(con=0):
 
 			draw=ImageDraw.Draw(im)
 
-			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,255,255),width=2)
+			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,0,255),width=2)
 			im=im.resize((int(rr*2),int(rr*2)))
 			dm_vs[5]=ImageTk.PhotoImage(im)
 			dm_vs[2]=can.create_image(cx,cy,image=dm_vs[5])
@@ -2202,7 +2195,7 @@ def draw_move_(con=0):
 
 			draw=ImageDraw.Draw(im)
 
-			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,255,255),width=30)
+			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,0,255),width=30)
 
 
 			im=im.resize((int(round(striker_r*2,0)),int(round(striker_r*2,0))))
@@ -2217,7 +2210,7 @@ def draw_move_(con=0):
 
 			draw=ImageDraw.Draw(im)
 
-			draw.ellipse((0,0, 500,500),fill=(255,0,255,128),outline=(255,0,255,128))
+			draw.ellipse((0,0, 500,500),fill=(255,0,0,128),outline=(255,0,0,128))
 
 			sz=int(round(pieces["striker"]["initial_v"]*rr/3,0))
 
@@ -2242,7 +2235,7 @@ def draw_move_(con=0):
 				y=100*math.cos(math.radians(dm_piece_mv[0]))+dm_piece_mv[2]
 
 
-				dm_vs[4]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x,y,fill="#ff00ff")
+				dm_vs[4]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x,y,fill="#ff0000")
 
 
 			dm_piece_mv=[0,0,0]
@@ -3305,8 +3298,8 @@ def move_striker():
 
 					pieces["striker"]["speed"]=int(round((1-pieces["striker"]["current_v"]/3)*10,0))
 
-					if pieces["striker"]["speed"]<2:
-						pieces["striker"]["speed"]=2
+					if pieces["striker"]["speed"]<1:
+						pieces["striker"]["speed"]=1
 
 				
 
@@ -3496,8 +3489,8 @@ def move_1_w():
 
 					pieces["1 white"]["speed"]=int(round((1-pieces["1 white"]["current_v"]/3)*10,0))
 
-					if pieces["1 white"]["speed"]<2:
-						pieces["1 white"]["speed"]=2
+					if pieces["1 white"]["speed"]<1:
+						pieces["1 white"]["speed"]=1
 
 
 					#print(pieces["1 white"]["speed"])
@@ -3678,8 +3671,8 @@ def move_2_w():
 
 					pieces["2 white"]["speed"]=int(round((1-pieces["2 white"]["current_v"]/3)*10,0))
 
-					if pieces["2 white"]["speed"]<2:
-						pieces["2 white"]["speed"]=2
+					if pieces["2 white"]["speed"]<1:
+						pieces["2 white"]["speed"]=1
 
 
 					#print(pieces["2 white"]["speed"])
@@ -3861,8 +3854,8 @@ def move_3_w():
 
 					pieces["3 white"]["speed"]=int(round((1-pieces["3 white"]["current_v"]/3)*10,0))
 
-					if pieces["3 white"]["speed"]<2:
-						pieces["3 white"]["speed"]=2
+					if pieces["3 white"]["speed"]<1:
+						pieces["3 white"]["speed"]=1
 
 
 					#print(pieces["3 white"]["speed"])
@@ -4044,8 +4037,8 @@ def move_4_w():
 
 					pieces["4 white"]["speed"]=int(round((1-pieces["4 white"]["current_v"]/3)*10,0))
 
-					if pieces["4 white"]["speed"]<2:
-						pieces["4 white"]["speed"]=2
+					if pieces["4 white"]["speed"]<1:
+						pieces["4 white"]["speed"]=1
 
 
 					#print(pieces["4 white"]["speed"])
@@ -4226,8 +4219,8 @@ def move_5_w():
 
 					pieces["5 white"]["speed"]=int(round((1-pieces["5 white"]["current_v"]/3)*10,0))
 
-					if pieces["5 white"]["speed"]<2:
-						pieces["5 white"]["speed"]=2
+					if pieces["5 white"]["speed"]<1:
+						pieces["5 white"]["speed"]=1
 
 
 					#print(pieces["5 white"]["speed"])
@@ -4412,8 +4405,8 @@ def move_6_w():
 
 					pieces["6 white"]["speed"]=int(round((1-pieces["6 white"]["current_v"]/3)*10,0))
 
-					if pieces["6 white"]["speed"]<2:
-						pieces["6 white"]["speed"]=2
+					if pieces["6 white"]["speed"]<1:
+						pieces["6 white"]["speed"]=1
 
 
 					#print(pieces["6 white"]["speed"])
@@ -4594,8 +4587,8 @@ def move_7_w():
 
 					pieces["7 white"]["speed"]=int(round((1-pieces["7 white"]["current_v"]/3)*10,0))
 
-					if pieces["7 white"]["speed"]<2:
-						pieces["7 white"]["speed"]=2
+					if pieces["7 white"]["speed"]<1:
+						pieces["7 white"]["speed"]=1
 
 
 					#print(pieces["7 white"]["speed"])
@@ -4776,8 +4769,8 @@ def move_8_w():
 
 					pieces["8 white"]["speed"]=int(round((1-pieces["8 white"]["current_v"]/3)*10,0))
 
-					if pieces["8 white"]["speed"]<2:
-						pieces["8 white"]["speed"]=2
+					if pieces["8 white"]["speed"]<1:
+						pieces["8 white"]["speed"]=1
 
 
 					#print(pieces["8 white"]["speed"])
@@ -4959,8 +4952,8 @@ def move_9_w():
 
 					pieces["9 white"]["speed"]=int(round((1-pieces["9 white"]["current_v"]/3)*10,0))
 
-					if pieces["9 white"]["speed"]<2:
-						pieces["9 white"]["speed"]=2
+					if pieces["9 white"]["speed"]<1:
+						pieces["9 white"]["speed"]=1
 
 
 					#print(pieces["9 white"]["speed"])
@@ -5146,8 +5139,8 @@ def move_1_b():
 
                     pieces["1 black"]["speed"]=int(round((1-pieces["1 black"]["current_v"]/3)*10,0))
 
-                    if pieces["1 black"]["speed"]<2:
-                        pieces["1 black"]["speed"]=2
+                    if pieces["1 black"]["speed"]<1:
+                        pieces["1 black"]["speed"]=1
 
                 
 
@@ -5334,8 +5327,8 @@ def move_2_b():
 
                     pieces["2 black"]["speed"]=int(round((1-pieces["2 black"]["current_v"]/3)*10,0))
 
-                    if pieces["2 black"]["speed"]<2:
-                        pieces["2 black"]["speed"]=2
+                    if pieces["2 black"]["speed"]<1:
+                        pieces["2 black"]["speed"]=1
 
                 
 
@@ -5522,8 +5515,8 @@ def move_3_b():
 
                     pieces["3 black"]["speed"]=int(round((1-pieces["3 black"]["current_v"]/3)*10,0))
 
-                    if pieces["3 black"]["speed"]<2:
-                        pieces["3 black"]["speed"]=2
+                    if pieces["3 black"]["speed"]<1:
+                        pieces["3 black"]["speed"]=1
 
                 
 
@@ -5709,8 +5702,8 @@ def move_4_b():
 
                     pieces["4 black"]["speed"]=int(round((1-pieces["4 black"]["current_v"]/3)*10,0))
 
-                    if pieces["4 black"]["speed"]<2:
-                        pieces["4 black"]["speed"]=2
+                    if pieces["4 black"]["speed"]<1:
+                        pieces["4 black"]["speed"]=1
 
                 
 
@@ -5898,8 +5891,8 @@ def move_5_b():
 
                     pieces["5 black"]["speed"]=int(round((1-pieces["5 black"]["current_v"]/3)*10,0))
 
-                    if pieces["5 black"]["speed"]<2:
-                        pieces["5 black"]["speed"]=2
+                    if pieces["5 black"]["speed"]<1:
+                        pieces["5 black"]["speed"]=1
 
                 
 
@@ -6086,8 +6079,8 @@ def move_6_b():
 
                     pieces["6 black"]["speed"]=int(round((1-pieces["6 black"]["current_v"]/3)*10,0))
 
-                    if pieces["6 black"]["speed"]<2:
-                        pieces["6 black"]["speed"]=2
+                    if pieces["6 black"]["speed"]<1:
+                        pieces["6 black"]["speed"]=1
 
                 
 
@@ -6275,8 +6268,8 @@ def move_7_b():
 
                     pieces["7 black"]["speed"]=int(round((1-pieces["7 black"]["current_v"]/3)*10,0))
 
-                    if pieces["7 black"]["speed"]<2:
-                        pieces["7 black"]["speed"]=2
+                    if pieces["7 black"]["speed"]<1:
+                        pieces["7 black"]["speed"]=1
 
                 
 
@@ -6463,8 +6456,8 @@ def move_8_b():
 
                     pieces["8 black"]["speed"]=int(round((1-pieces["8 black"]["current_v"]/3)*10,0))
 
-                    if pieces["8 black"]["speed"]<2:
-                        pieces["8 black"]["speed"]=2
+                    if pieces["8 black"]["speed"]<1:
+                        pieces["8 black"]["speed"]=1
 
                 
 
@@ -6652,8 +6645,8 @@ def move_9_b():
 
                     pieces["9 black"]["speed"]=int(round((1-pieces["9 black"]["current_v"]/3)*10,0))
 
-                    if pieces["9 black"]["speed"]<2:
-                        pieces["9 black"]["speed"]=2
+                    if pieces["9 black"]["speed"]<1:
+                        pieces["9 black"]["speed"]=1
 
                 
 
@@ -6844,8 +6837,8 @@ def move_red():
 
                     pieces["red"]["speed"]=int(round((1-pieces["red"]["current_v"]/3)*10,0))
 
-                    if pieces["red"]["speed"]<2:
-                        pieces["red"]["speed"]=2
+                    if pieces["red"]["speed"]<1:
+                        pieces["red"]["speed"]=1
 
                 
 
@@ -7528,20 +7521,20 @@ def go(winner):
 	y=(h-yy)/2
 
 
-	im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,255),180,255,1)
+	im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,0),180,255,1)
 	go_im=ImageTk.PhotoImage(im)
 
 	go_i[0]=can.create_image(x,y,image=go_im,anchor="nw")
 
-	go_i[1]=can.create_text(x+xx/2,y+20, text=f"{winner} wins!", font=("FreeMono",13),fill="#ff00ff")
+	go_i[1]=can.create_text(x+xx/2,y+20, text=f"{winner} wins!", font=("FreeMono",13),fill="#ff0000")
 
 	go_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#777777")
 
 	go_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#777777")
 
-	go_i[4]=can.create_text(x+xx/4,y+yy-15,text="Main Menu",font=("FreeMono",13),fill="#ff00ff")
+	go_i[4]=can.create_text(x+xx/4,y+yy-15,text="Main Menu",font=("FreeMono",13),fill="#ff0000")
 
-	go_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="Quit",font=("FreeMono",13),fill="#ff00ff")
+	go_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="Quit",font=("FreeMono",13),fill="#ff0000")
 
 	go_coord=[x,y+yy-30, x+xx,y+yy]
 
