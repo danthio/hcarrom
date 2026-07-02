@@ -1302,9 +1302,9 @@ def can_b1(e):
 
 				quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff0000")
 
-				quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#777777")
+				quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770000")
 
-				quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#777777")
+				quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770000")
 
 				quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff0000")
 
@@ -3354,7 +3354,7 @@ def angle(a):
 		return a
 
 	except  Exception as e:
-		print("angle()",e)
+		#print("angle()",e)
 		return a
 
 def move_striker():
@@ -3391,8 +3391,8 @@ def move_striker():
 					pieces["striker"]["coord_"]=pieces["striker"]["coord"]
 					if pieces["striker"]["proj_ang"]!=None:
 						pieces["striker"]["data"]=get_pos("striker",pieces["striker"]["coord"][0],pieces["striker"]["coord"][1],0,angle(pieces["striker"]["proj_ang"]),0,0)
-						pieces["striker"]["proj_ang"]=None
 						pieces["striker"]["angle"]=angle(pieces["striker"]["proj_ang"])
+						pieces["striker"]["proj_ang"]=None
 					else:
 
 						pieces["striker"]["data"]=get_pos("striker",pieces["striker"]["coord"][0],pieces["striker"]["coord"][1],0,angle(pieces["striker"]["angle"]),0,0)
@@ -3587,8 +3587,9 @@ def move_1_w():
 					pieces["1 white"]["coord_"]=pieces["1 white"]["coord"]
 					if pieces["1 white"]["proj_ang"]!=None:
 						pieces["1 white"]["data"]=get_pos("1 white",pieces["1 white"]["coord"][0],pieces["1 white"]["coord"][1],0,angle(pieces["1 white"]["proj_ang"]),0,0)
-						pieces["1 white"]["proj_ang"]=None
+						
 						pieces["1 white"]["angle"]=angle(pieces["1 white"]["proj_ang"])
+						pieces["1 white"]["proj_ang"]=None
 					else:
 
 						pieces["1 white"]["data"]=get_pos("1 white",pieces["1 white"]["coord"][0],pieces["1 white"]["coord"][1],0,angle(pieces["1 white"]["angle"]),0,0)
@@ -3769,8 +3770,9 @@ def move_2_w():
 					pieces["2 white"]["coord_"]=pieces["2 white"]["coord"]
 					if pieces["2 white"]["proj_ang"]!=None:
 						pieces["2 white"]["data"]=get_pos("2 white",pieces["2 white"]["coord"][0],pieces["2 white"]["coord"][1],0,angle(pieces["2 white"]["proj_ang"]),0,0)
-						pieces["2 white"]["proj_ang"]=None
+						
 						pieces["2 white"]["angle"]=angle(pieces["2 white"]["proj_ang"])
+						pieces["2 white"]["proj_ang"]=None
 					else:
 
 						pieces["2 white"]["data"]=get_pos("2 white",pieces["2 white"]["coord"][0],pieces["2 white"]["coord"][1],0,angle(pieces["2 white"]["angle"]),0,0)
@@ -3953,8 +3955,9 @@ def move_3_w():
 					pieces["3 white"]["coord_"]=pieces["3 white"]["coord"]
 					if pieces["3 white"]["proj_ang"]!=None:
 						pieces["3 white"]["data"]=get_pos("3 white",pieces["3 white"]["coord"][0],pieces["3 white"]["coord"][1],0,angle(pieces["3 white"]["proj_ang"]),0,0)
-						pieces["3 white"]["proj_ang"]=None
+						
 						pieces["3 white"]["angle"]=angle(pieces["3 white"]["proj_ang"])
+						pieces["3 white"]["proj_ang"]=None
 					else:
 
 						pieces["3 white"]["data"]=get_pos("3 white",pieces["3 white"]["coord"][0],pieces["3 white"]["coord"][1],0,angle(pieces["3 white"]["angle"]),0,0)
@@ -4135,8 +4138,9 @@ def move_4_w():
 					pieces["4 white"]["coord_"]=pieces["4 white"]["coord"]
 					if pieces["4 white"]["proj_ang"]!=None:
 						pieces["4 white"]["data"]=get_pos("4 white",pieces["4 white"]["coord"][0],pieces["4 white"]["coord"][1],0,angle(pieces["4 white"]["proj_ang"]),0,0)
-						pieces["4 white"]["proj_ang"]=None
+						
 						pieces["4 white"]["angle"]=angle(pieces["4 white"]["proj_ang"])
+						pieces["4 white"]["proj_ang"]=None
 					else:
 
 						pieces["4 white"]["data"]=get_pos("4 white",pieces["4 white"]["coord"][0],pieces["4 white"]["coord"][1],0,angle(pieces["4 white"]["angle"]),0,0)
@@ -4318,8 +4322,9 @@ def move_5_w():
 					pieces["5 white"]["coord_"]=pieces["5 white"]["coord"]
 					if pieces["5 white"]["proj_ang"]!=None:
 						pieces["5 white"]["data"]=get_pos("5 white",pieces["5 white"]["coord"][0],pieces["5 white"]["coord"][1],0,angle(pieces["5 white"]["proj_ang"]),0,0)
-						pieces["5 white"]["proj_ang"]=None
+						
 						pieces["5 white"]["angle"]=angle(pieces["5 white"]["proj_ang"])
+						pieces["5 white"]["proj_ang"]=None
 					else:
 
 						pieces["5 white"]["data"]=get_pos("5 white",pieces["5 white"]["coord"][0],pieces["5 white"]["coord"][1],0,angle(pieces["5 white"]["angle"]),0,0)
@@ -4503,8 +4508,9 @@ def move_6_w():
 					pieces["6 white"]["coord_"]=pieces["6 white"]["coord"]
 					if pieces["6 white"]["proj_ang"]!=None:
 						pieces["6 white"]["data"]=get_pos("6 white",pieces["6 white"]["coord"][0],pieces["6 white"]["coord"][1],0,angle(pieces["6 white"]["proj_ang"]),0,0)
-						pieces["6 white"]["proj_ang"]=None
+						
 						pieces["6 white"]["angle"]=angle(pieces["6 white"]["proj_ang"])
+						pieces["6 white"]["proj_ang"]=None
 					else:
 
 						pieces["6 white"]["data"]=get_pos("6 white",pieces["6 white"]["coord"][0],pieces["6 white"]["coord"][1],0,angle(pieces["6 white"]["angle"]),0,0)
@@ -4686,8 +4692,9 @@ def move_7_w():
 					pieces["7 white"]["coord_"]=pieces["7 white"]["coord"]
 					if pieces["7 white"]["proj_ang"]!=None:
 						pieces["7 white"]["data"]=get_pos("7 white",pieces["7 white"]["coord"][0],pieces["7 white"]["coord"][1],0,angle(pieces["7 white"]["proj_ang"]),0,0)
-						pieces["7 white"]["proj_ang"]=None
+						
 						pieces["7 white"]["angle"]=angle(pieces["7 white"]["proj_ang"])
+						pieces["7 white"]["proj_ang"]=None
 					else:
 
 						pieces["7 white"]["data"]=get_pos("7 white",pieces["7 white"]["coord"][0],pieces["7 white"]["coord"][1],0,angle(pieces["7 white"]["angle"]),0,0)
@@ -4868,8 +4875,9 @@ def move_8_w():
 					pieces["8 white"]["coord_"]=pieces["8 white"]["coord"]
 					if pieces["8 white"]["proj_ang"]!=None:
 						pieces["8 white"]["data"]=get_pos("8 white",pieces["8 white"]["coord"][0],pieces["8 white"]["coord"][1],0,angle(pieces["8 white"]["proj_ang"]),0,0)
-						pieces["8 white"]["proj_ang"]=None
+						
 						pieces["8 white"]["angle"]=angle(pieces["8 white"]["proj_ang"])
+						pieces["8 white"]["proj_ang"]=None
 					else:
 
 						pieces["8 white"]["data"]=get_pos("8 white",pieces["8 white"]["coord"][0],pieces["8 white"]["coord"][1],0,angle(pieces["8 white"]["angle"]),0,0)
@@ -5051,8 +5059,9 @@ def move_9_w():
 					pieces["9 white"]["coord_"]=pieces["9 white"]["coord"]
 					if pieces["9 white"]["proj_ang"]!=None:
 						pieces["9 white"]["data"]=get_pos("9 white",pieces["9 white"]["coord"][0],pieces["9 white"]["coord"][1],0,angle(pieces["9 white"]["proj_ang"]),0,0)
-						pieces["9 white"]["proj_ang"]=None
+						
 						pieces["9 white"]["angle"]=angle(pieces["9 white"]["proj_ang"])
+						pieces["9 white"]["proj_ang"]=None
 					else:
 
 						pieces["9 white"]["data"]=get_pos("9 white",pieces["9 white"]["coord"][0],pieces["9 white"]["coord"][1],0,angle(pieces["9 white"]["angle"]),0,0)
@@ -5237,8 +5246,9 @@ def move_1_b():
                     pieces["1 black"]["coord_"]=pieces["1 black"]["coord"]
                     if pieces["1 black"]["proj_ang"]!=None:
                         pieces["1 black"]["data"]=get_pos("1 black",pieces["1 black"]["coord"][0],pieces["1 black"]["coord"][1],0,angle(pieces["1 black"]["proj_ang"]),0,0)
-                        pieces["1 black"]["proj_ang"]=None
+                        
                         pieces["1 black"]["angle"]=angle(pieces["1 black"]["proj_ang"])
+                        pieces["1 black"]["proj_ang"]=None
                     else:
 
                         pieces["1 black"]["data"]=get_pos("1 black",pieces["1 black"]["coord"][0],pieces["1 black"]["coord"][1],0,angle(pieces["1 black"]["angle"]),0,0)
@@ -5426,8 +5436,9 @@ def move_2_b():
                     pieces["2 black"]["coord_"]=pieces["2 black"]["coord"]
                     if pieces["2 black"]["proj_ang"]!=None:
                         pieces["2 black"]["data"]=get_pos("2 black",pieces["2 black"]["coord"][0],pieces["2 black"]["coord"][1],0,angle(pieces["2 black"]["proj_ang"]),0,0)
-                        pieces["2 black"]["proj_ang"]=None
+                        
                         pieces["2 black"]["angle"]=angle(pieces["2 black"]["proj_ang"])
+                        pieces["2 black"]["proj_ang"]=None
                     else:
 
                         pieces["2 black"]["data"]=get_pos("2 black",pieces["2 black"]["coord"][0],pieces["2 black"]["coord"][1],0,angle(pieces["2 black"]["angle"]),0,0)
@@ -5614,8 +5625,9 @@ def move_3_b():
                     pieces["3 black"]["coord_"]=pieces["3 black"]["coord"]
                     if pieces["3 black"]["proj_ang"]!=None:
                         pieces["3 black"]["data"]=get_pos("3 black",pieces["3 black"]["coord"][0],pieces["3 black"]["coord"][1],0,angle(pieces["3 black"]["proj_ang"]),0,0)
-                        pieces["3 black"]["proj_ang"]=None
+                        
                         pieces["3 black"]["angle"]=angle(pieces["3 black"]["proj_ang"])
+                        pieces["3 black"]["proj_ang"]=None
                     else:
 
                         pieces["3 black"]["data"]=get_pos("3 black",pieces["3 black"]["coord"][0],pieces["3 black"]["coord"][1],0,angle(pieces["3 black"]["angle"]),0,0)
@@ -5801,8 +5813,9 @@ def move_4_b():
                     pieces["4 black"]["coord_"]=pieces["4 black"]["coord"]
                     if pieces["4 black"]["proj_ang"]!=None:
                         pieces["4 black"]["data"]=get_pos("4 black",pieces["4 black"]["coord"][0],pieces["4 black"]["coord"][1],0,angle(pieces["4 black"]["proj_ang"]),0,0)
-                        pieces["4 black"]["proj_ang"]=None
+                        
                         pieces["4 black"]["angle"]=angle(pieces["4 black"]["proj_ang"])
+                        pieces["4 black"]["proj_ang"]=None
                     else:
 
                         pieces["4 black"]["data"]=get_pos("4 black",pieces["4 black"]["coord"][0],pieces["4 black"]["coord"][1],0,angle(pieces["4 black"]["angle"]),0,0)
@@ -5990,8 +6003,9 @@ def move_5_b():
                     pieces["5 black"]["coord_"]=pieces["5 black"]["coord"]
                     if pieces["5 black"]["proj_ang"]!=None:
                         pieces["5 black"]["data"]=get_pos("5 black",pieces["5 black"]["coord"][0],pieces["5 black"]["coord"][1],0,angle(pieces["5 black"]["proj_ang"]),0,0)
-                        pieces["5 black"]["proj_ang"]=None
+                        
                         pieces["5 black"]["angle"]=angle(pieces["5 black"]["proj_ang"])
+                        pieces["5 black"]["proj_ang"]=None
                     else:
 
                         pieces["5 black"]["data"]=get_pos("5 black",pieces["5 black"]["coord"][0],pieces["5 black"]["coord"][1],0,angle(pieces["5 black"]["angle"]),0,0)
@@ -6178,8 +6192,9 @@ def move_6_b():
                     pieces["6 black"]["coord_"]=pieces["6 black"]["coord"]
                     if pieces["6 black"]["proj_ang"]!=None:
                         pieces["6 black"]["data"]=get_pos("6 black",pieces["6 black"]["coord"][0],pieces["6 black"]["coord"][1],0,angle(pieces["6 black"]["proj_ang"]),0,0)
-                        pieces["6 black"]["proj_ang"]=None
+                        
                         pieces["6 black"]["angle"]=angle(pieces["6 black"]["proj_ang"])
+                        pieces["6 black"]["proj_ang"]=None
                     else:
 
                         pieces["6 black"]["data"]=get_pos("6 black",pieces["6 black"]["coord"][0],pieces["6 black"]["coord"][1],0,angle(pieces["6 black"]["angle"]),0,0)
@@ -6367,8 +6382,9 @@ def move_7_b():
                     pieces["7 black"]["coord_"]=pieces["7 black"]["coord"]
                     if pieces["7 black"]["proj_ang"]!=None:
                         pieces["7 black"]["data"]=get_pos("7 black",pieces["7 black"]["coord"][0],pieces["7 black"]["coord"][1],0,angle(pieces["7 black"]["proj_ang"]),0,0)
-                        pieces["7 black"]["proj_ang"]=None
+                        
                         pieces["7 black"]["angle"]=angle(pieces["7 black"]["proj_ang"])
+                        pieces["7 black"]["proj_ang"]=None
                     else:
 
                         pieces["7 black"]["data"]=get_pos("7 black",pieces["7 black"]["coord"][0],pieces["7 black"]["coord"][1],0,angle(pieces["7 black"]["angle"]),0,0)
@@ -6554,8 +6570,9 @@ def move_8_b():
                     pieces["8 black"]["coord_"]=pieces["8 black"]["coord"]
                     if pieces["8 black"]["proj_ang"]!=None:
                         pieces["8 black"]["data"]=get_pos("8 black",pieces["8 black"]["coord"][0],pieces["8 black"]["coord"][1],0,angle(pieces["8 black"]["proj_ang"]),0,0)
-                        pieces["8 black"]["proj_ang"]=None
+                        
                         pieces["8 black"]["angle"]=angle(pieces["8 black"]["proj_ang"])
+                        pieces["8 black"]["proj_ang"]=None
                     else:
 
                         pieces["8 black"]["data"]=get_pos("8 black",pieces["8 black"]["coord"][0],pieces["8 black"]["coord"][1],0,angle(pieces["8 black"]["angle"]),0,0)
@@ -6743,8 +6760,9 @@ def move_9_b():
                     pieces["9 black"]["coord_"]=pieces["9 black"]["coord"]
                     if pieces["9 black"]["proj_ang"]!=None:
                         pieces["9 black"]["data"]=get_pos("9 black",pieces["9 black"]["coord"][0],pieces["9 black"]["coord"][1],0,angle(pieces["9 black"]["proj_ang"]),0,0)
-                        pieces["9 black"]["proj_ang"]=None
+                        
                         pieces["9 black"]["angle"]=angle(pieces["9 black"]["proj_ang"])
+                        pieces["9 black"]["proj_ang"]=None
                     else:
 
                         pieces["9 black"]["data"]=get_pos("9 black",pieces["9 black"]["coord"][0],pieces["9 black"]["coord"][1],0,angle(pieces["9 black"]["angle"]),0,0)
@@ -6936,8 +6954,9 @@ def move_red():
                     pieces["red"]["coord_"]=pieces["red"]["coord"]
                     if pieces["red"]["proj_ang"]!=None:
                         pieces["red"]["data"]=get_pos("red",pieces["red"]["coord"][0],pieces["red"]["coord"][1],0,angle(pieces["red"]["proj_ang"]),0,0)
-                        pieces["red"]["proj_ang"]=None
+                        
                         pieces["red"]["angle"]=angle(pieces["red"]["proj_ang"])
+                        pieces["red"]["proj_ang"]=None
                     else:
 
                         pieces["red"]["data"]=get_pos("red",pieces["red"]["coord"][0],pieces["red"]["coord"][1],0,angle(pieces["red"]["angle"]),0,0)
@@ -7729,9 +7748,9 @@ def go(winner):
 
 	go_i[1]=can.create_text(x+xx/2,y+20, text=f"{winner} wins!", font=("FreeMono",13),fill="#ff0000")
 
-	go_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#777777")
+	go_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770000")
 
-	go_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#777777")
+	go_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770000")
 
 	go_i[4]=can.create_text(x+xx/4,y+yy-15,text="Main Menu",font=("FreeMono",13),fill="#ff0000")
 
