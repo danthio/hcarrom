@@ -15,12 +15,14 @@ red_im=0
 
 home=0
 quit=0
+signature=0
 def load_im():
 	global w,h
 	global bg,bg2,circle
 	global striker_im,black_im,white_im,red_im
 	global striker_r,piece_r
 	global quit,home
+	global signature
 
 	#striker_im
 
@@ -160,6 +162,17 @@ def load_im():
 	quit=ImageTk.PhotoImage(im)
 
 
+	im=Image.open("data/signature.png")
+	x,y=im.size
+
+	y=50*y/x
+	x=50
+
+	im=im.resize((int(round(x,0)),int(round(y,0))))
+
+	signature=ImageTk.PhotoImage(im)
+
+
 
 
 st=""
@@ -177,6 +190,7 @@ def intro2():
 	global intro2_im1,intro2_im2
 	global home
 	global w,h
+	global signature
 
 	can["height"]=h
 	root.geometry(f"{w}x{h}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
@@ -189,6 +203,7 @@ def intro2():
 
 	can.create_image(0,0,image=bg,anchor="nw")
 
+	can.create_image(347,441,image=signature,anchor="c")
 	can.create_image(0,0,image=bg2,anchor="nw")
 
 
@@ -229,6 +244,7 @@ def intro():
 	global pos_intro
 	global intro_im1,intro_im2
 	global w,h
+	global signature
 
 	can["height"]=h
 	root.geometry(f"{w}x{h}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
@@ -239,6 +255,8 @@ def intro():
 	can.delete("all")
 
 	can.create_image(0,0,image=bg,anchor="nw")
+
+	can.create_image(347,441,image=signature,anchor="c")
 
 	can.create_image(0,0,image=bg2,anchor="nw")
 
@@ -419,7 +437,7 @@ def draw_turn():
 	except Exception as e:
 		print(e)
 
-	root.after(1,draw_turn)
+	root.after(6,draw_turn)
 
 
 turn0,turn1=0,0
@@ -436,6 +454,7 @@ def main():
 	global pwhite,pwred,pblack,pbred
 	global moves,moves_,_red_,_red2_
 	global turn,turn0,turn1,turnx,turnv,arp0,arp1
+	global signature
 
 	turn=1
 	turnx=1
@@ -455,6 +474,8 @@ def main():
 
 
 	can.create_image(0,0,image=bg,anchor="nw")
+
+	can.create_image(347,441,image=signature,anchor="c")
 
 	can.create_image(w-3-25,3,image=quit,anchor="nw")
 
@@ -800,7 +821,7 @@ def main():
 
 			pieces[i]["potted"]=0
 
-			if game=="disk pool" and i=="red":
+			if game=="Disk Pool" and i=="red":
 				pieces["red"]["potted"]=1
 				pieces["red"]["coord"]=[-100,100]
 
@@ -826,7 +847,7 @@ def main():
 
 	red_im_=ImageTk.PhotoImage(red_im)
 
-	if game=="carrom":
+	if game=="Carrom":
 
 		
 
@@ -837,7 +858,7 @@ def main():
 
 
 
-	if game=="carrom":
+	if game=="Carrom":
 
 
 
@@ -929,6 +950,9 @@ def can_b1(e):
 	global go_st,go_coord
 
 
+	print(e.x,e.y)
+
+
 	#global r
 
 
@@ -937,7 +961,7 @@ def can_b1(e):
 
 	if st=="intro":
 
-		#carrom
+		#Carrom
 		
 		cx,cy=pos_intro[0][0],pos_intro[0][1]+15
 
@@ -945,7 +969,7 @@ def can_b1(e):
 
 		if r<=15:
 
-			game="carrom"
+			game="Carrom"
 
 			intro2()
 
@@ -957,7 +981,7 @@ def can_b1(e):
 		r=math.sqrt((e.x-cx)**2+(e.y-cy)**2)
 
 		if r<=15:
-			game="carrom"
+			game="Carrom"
 
 			intro2()
 
@@ -967,7 +991,7 @@ def can_b1(e):
 
 			if pos_intro[0][1]<=e.y<=pos_intro[0][3]:
 
-				game="carrom"
+				game="Carrom"
 				
 
 				intro2()
@@ -976,7 +1000,7 @@ def can_b1(e):
 
 
 
-		#disk pool
+		#Disk Pool
 
 
 
@@ -986,7 +1010,7 @@ def can_b1(e):
 
 		if r<=15:
 
-			game="disk pool"
+			game="Disk Pool"
 
 			intro2()
 
@@ -999,7 +1023,7 @@ def can_b1(e):
 
 		if r<=15:
 
-			game="disk pool"
+			game="Disk Pool"
 
 			intro2()
 
@@ -1009,7 +1033,7 @@ def can_b1(e):
 
 			if pos_intro[1][1]<=e.y<=pos_intro[1][3]:
 				
-				game="disk pool"
+				game="Disk Pool"
 
 				intro2()
 
@@ -7386,7 +7410,7 @@ def validate_moves():
 		con=1
 
 
-		if game=="carrom":
+		if game=="Carrom":
 
 
 
@@ -7436,7 +7460,7 @@ def validate_moves():
 				draw_piece_(i,1)
 
 
-		if game=="carrom":
+		if game=="Carrom":
 
 			try:
 				v=moves.index("red")
@@ -7464,7 +7488,7 @@ def validate_moves():
 
 
 
-		if game=="carrom":
+		if game=="Carrom":
 
 
 
@@ -7506,7 +7530,7 @@ def validate_moves():
 
 				draw_piece_(i,1)
 
-		if game=="carrom":
+		if game=="Carrom":
 
 			try:
 
@@ -7546,7 +7570,7 @@ def validate_moves():
 						con=0
 
 
-						if game=="carrom":
+						if game=="Carrom":
 							if _red_==None:
 
 								try:
@@ -7637,7 +7661,7 @@ def validate_moves():
 						con=0
 
 
-						if game=="carrom":
+						if game=="Carrom":
 							if _red_==None:
 
 								try:
@@ -7926,7 +7950,7 @@ def check_game():
 			if w==9:
 
 				winner="White"
-				if game=="carrom":
+				if game=="Carrom":
 
 					if pieces["red"]["potted"]==0:
 						winner="Black"
@@ -7937,7 +7961,7 @@ def check_game():
 
 				winner="Black"
 
-				if game=="carrom":
+				if game=="Carrom":
 
 					if pieces["red"]["potted"]==0:
 						winner="White"
@@ -8276,7 +8300,7 @@ pieces={"striker":{"coord":[0,0],
 w,h=500,500
 root=tk.Tk()
 root.resizable(0,0)
-root.title("hcarrom")
+root.title("HCarrom")
 root.iconbitmap("data/icon.ico")
 
 
