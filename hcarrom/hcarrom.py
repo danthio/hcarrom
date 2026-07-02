@@ -276,6 +276,141 @@ pbred=0
 
 TY,black_im_,red_im_=0,0,0
 
+turnx=1
+turnv=0
+arp0,arp1=[],[]
+def draw_turn():
+	global can,turn,turn0,turn1,turnx,turnv
+	global game_st,st
+	global arp0,arp1
+	global w,h
+
+	try:
+		
+		if st=="main":	
+
+			val=int(round(w/2-100+15,0))
+
+			if turnx!=turn:
+
+				turnx=turn
+				turnv=0
+				arp0=can.coords(turn0)
+				arp1=can.coords(turn1)
+
+			if turnv!=val:
+
+
+				turnv+=1
+
+
+				if turn==0:
+
+
+
+
+					ar=[]
+					con=0
+					for v in arp0:
+
+						if con==0:
+
+							x=v-turnv
+							ar.append(x)
+						else:
+							ar.append(v)
+
+
+						if con==0:
+							con=1
+						elif con==1:
+							con=0
+
+					can.coords(turn0,ar)
+
+
+
+
+					ar=[]
+					con=0
+					for v in arp1:
+
+						if con==0:
+
+							x=v-turnv
+							ar.append(x)
+						else:
+							ar.append(v)
+
+
+						if con==0:
+							con=1
+						elif con==1:
+							con=0
+
+
+					can.coords(turn1,ar)
+
+
+
+
+				elif turn==1:
+
+
+
+
+					ar=[]
+					con=0
+					for v in arp0:
+
+						if con==0:
+
+							x=v+turnv
+							ar.append(x)
+						else:
+							ar.append(v)
+
+
+						if con==0:
+							con=1
+						elif con==1:
+							con=0
+
+					can.coords(turn0,ar)
+
+
+
+
+					ar=[]
+					con=0
+					for v in arp1:
+
+						if con==0:
+
+							x=v+turnv
+							ar.append(x)
+						else:
+							ar.append(v)
+
+
+						if con==0:
+							con=1
+						elif con==1:
+							con=0
+
+
+					can.coords(turn1,ar)
+
+
+
+
+	except Exception as e:
+		print(e)
+
+	root.after(1,draw_turn)
+
+
+turn0,turn1=0,0
 def main():
 	global can
 	global bg
@@ -288,9 +423,13 @@ def main():
 	global white_im,black_im,red_im, white_im_,black_im_,red_im_
 	global pwhite,pwred,pblack,pbred
 	global moves,moves_,_red_,_red2_
-	global turn 
+	global turn,turn0,turn1,turnx,turnv,arp0,arp1
 
 	turn=1
+	turnx=1
+	turnv=0
+	arp0,arp1=[],[]
+
 
 	moves,moves_,_red_,_red2_=[],[],None,None
 
@@ -661,6 +800,10 @@ def main():
 
 			draw_piece_(i)
 
+	turn1=can.create_polygon(0,h, w/2-100,h, w/2-100+15,h+30, 0,h+30, fill="#00ff00",outline="#00ff00")
+
+	xx=w-(w/2+100-15)
+	turn0=can.create_polygon(w/2+100+xx,h, w+xx,h, w+xx,h+30, w/2+100-15+xx,h+30,  fill="#00ff00",outline="#00ff00")
 
 	white_im_=ImageTk.PhotoImage(white_im)
 
@@ -709,7 +852,12 @@ def main():
 		pblack=can.create_text(w-(10+5+10+5)+(5+10),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
 
 
+	#can.create_polygon(w/2-100,h, w/2+100,h, w/2+100-15,h+30, w/2-100+15,h+30,fill="#ff0000",outline="#ff0000")
+
 	can.create_text(w/2,h+15,text=game, font=("FreeMono",13),fill="#ff0000")
+
+
+
 
 p=0
 #r=30
@@ -8193,6 +8341,9 @@ move_8_b()
 move_9_b()
 
 move_red()
+
+draw_turn()
+
 
 def update():
 
