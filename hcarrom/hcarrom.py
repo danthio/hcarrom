@@ -1479,6 +1479,7 @@ def can_b1_release(e):
 	global reset_st
 	global pieces
 	global dm_vs
+	global force
 
 
 	if st=="main":
@@ -1824,6 +1825,8 @@ def draw_move(e):
 					a=e.x-cx
 					o=e.y-cy
 
+					if a==0:
+						a=0.00001
 					ang=math.degrees(math.atan(o/a))
 
 					ang=90-ang
@@ -1833,6 +1836,8 @@ def draw_move(e):
 					a=cy-e.y
 					o=e.x-cx
 
+					if a==0:
+						a=0.00001
 
 					ang=math.degrees(math.atan(o/a))
 
@@ -1850,6 +1855,10 @@ def draw_move(e):
 					a=cx-e.x
 					o=e.y-cy
 
+
+					if a==0:
+						a=0.00001
+
 					ang=math.degrees(math.atan(o/a))
 
 					ang+=270
@@ -1860,6 +1869,10 @@ def draw_move(e):
 
 					a=cx-e.x
 					o=cy-e.y
+
+					if a==0:
+						a=0.00001
+
 
 
 					ang=math.degrees(math.atan(o/a))
@@ -2349,7 +2362,7 @@ def draw_move_(con=0):
 			
 
 
-			im=Image.new("RGBA",(500,500),(0,0,0,0))
+			im=Image.new("RGBA",(501,501),(0,0,0,0))
 
 			draw=ImageDraw.Draw(im)
 
@@ -2359,7 +2372,7 @@ def draw_move_(con=0):
 			dm_vs[2]=can.create_image(cx,cy,image=dm_vs[5])
 
 
-			im=Image.new("RGBA",(500,500),(0,0,0,0))
+			im=Image.new("RGBA",(501,501),(0,0,0,0))
 
 			draw=ImageDraw.Draw(im)
 
@@ -2374,7 +2387,7 @@ def draw_move_(con=0):
 
 
 
-			im=Image.new("RGBA",(500,500),(0,0,0,0))
+			im=Image.new("RGBA",(501,501),(0,0,0,0))
 
 			draw=ImageDraw.Draw(im)
 
@@ -2948,6 +2961,10 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 								a=-a
 
 
+							if a==0:
+								a=0.0001
+								
+
 							_a_=math.degrees(math.atan(o/a))
 
 						else:
@@ -2960,6 +2977,11 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 								o=-o
 							if a<0:
 								a=-a
+
+
+							if a==0:
+								a=0.0001
+								
 
 
 							_a_=180-math.degrees(math.atan(o/a))
@@ -3059,6 +3081,9 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 								a=-a
 
 
+							if a==0:
+								a=0.0001
+								
 							_a_=360-math.degrees(math.atan(o/a))
 						else:
 
@@ -3072,6 +3097,9 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 							if a<0:
 								a=-a
 
+
+							if a==0:
+								a=0.0001
 
 							_a_=180+math.degrees(math.atan(o/a))
 
@@ -3158,6 +3186,8 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 						if a<0:
 							a=-a
 
+						if a==0:
+							a=0.0001
 
 						_a_=90-math.degrees(math.atan(o/a))
 					else:
@@ -3172,6 +3202,8 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 						if a<0:
 							a=-a
 
+						if a==0:
+							a=0.0001
 
 						_a_=270+math.degrees(math.atan(o/a))
 
@@ -3242,6 +3274,9 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 						if a<0:
 							a=-a
 
+						if a==0:
+							a=0.0001
+
 
 						_a_=90+math.degrees(math.atan(o/a))
 
@@ -3254,6 +3289,10 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 							o=-o
 						if a<0:
 							a=-a
+
+
+						if a==0:
+							a=0.0001
 
 
 						_a_=270-math.degrees(math.atan(o/a))
@@ -3367,7 +3406,7 @@ def move_striker():
 					pieces["striker"]["st"]=1
 
 				except Exception as e:
-					print("move_striker()",e)
+					print("move_striker() 1",e)
 			elif pieces["striker"]["st"]==1:
 				game_st2=1
 
@@ -3430,7 +3469,7 @@ def move_striker():
 							pieces["striker"]["proj_ang"]=angle(pieces["striker"]["data"][4][1])
 
 					except Exception as e:
-						print("move_striker",e)
+						print("move_striker() 2",e)
 
 					draw_piece_("striker" ,1)
 
@@ -7473,32 +7512,7 @@ def validate_moves():
 	if turn==1:
 
 		if pieces["striker"]["potted"]==1:
-			con=1
-
-			for i in moves:
-
-				if i.split(" ")[-1]=="white":
-
-
-					pieces[i]["coord"]=reposition(i)
-					pieces[i]["potted"]=0
-
-					#print(pieces[i]["coord"])
-
-					draw_piece_(i,1)
-
-			if game=="carrom":
-
-				try:
-					v=moves.index("red")
-					_red_,_red2_=None,None
-
-					pieces["red"]["coord"]=reposition("red")
-					pieces["red"]["potted"]=0
-
-					draw_piece_("red",1)
-				except:
-					pass
+			con=cancel_1()
 
 
 
@@ -7591,33 +7605,7 @@ def validate_moves():
 
 
 		if pieces["striker"]["potted"]==1:
-			con=1
-
-			for i in moves:
-
-				if i.split(" ")[-1]=="black":
-
-
-					pieces[i]["coord"]=reposition(i)
-					pieces[i]["potted"]=0
-
-					#print(pieces[i]["coord"])
-
-					draw_piece_(i,1)
-
-			if game=="carrom":
-
-				try:
-					
-					v=moves.index("red")
-					_red_,_red2_=None,None
-
-					pieces["red"]["coord"]=reposition("red")
-					pieces["red"]["potted"]=0
-
-					draw_piece_("red",1)
-				except:
-					pass
+			con=cancel_0()
 
 
 		elif len(first_move)>0:
