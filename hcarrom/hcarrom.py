@@ -281,6 +281,7 @@ turnv=0
 arp0,arp1=[],[]
 def draw_turn():
 	global can,turn,turn0,turn1,turnx,turnv
+	global pwhite,pwred,pblack,pbred
 	global game_st,st
 	global arp0,arp1
 	global w,h
@@ -351,6 +352,11 @@ def draw_turn():
 
 					can.coords(turn1,ar)
 
+					can.itemconfig(pwhite,fill="#ffffff")
+					can.itemconfig(pwred,fill="#ffffff")
+					can.itemconfig(pblack,fill="#000000")
+					can.itemconfig(pbred,fill="#000000")
+
 
 
 
@@ -403,6 +409,12 @@ def draw_turn():
 
 
 
+					can.itemconfig(pwhite,fill="#000000")
+					can.itemconfig(pwred,fill="#000000")
+					can.itemconfig(pblack,fill="#ffffff")
+					can.itemconfig(pbred,fill="#ffffff")
+
+
 
 	except Exception as e:
 		print(e)
@@ -417,7 +429,7 @@ def main():
 	global st
 	global pieces
 	global striker_r,piece_r
-	global game
+	global gameb
 	global quit
 	global w,h
 	global white_im,black_im,red_im, white_im_,black_im_,red_im_
