@@ -499,7 +499,7 @@ def draw_turn():
 	except Exception as e:
 		print(e)
 
-	root.after(6,draw_turn)
+	root.after(4,draw_turn)
 
 
 turn0,turn1=0,0
@@ -3613,9 +3613,9 @@ def move_pieces(p):
 					return 2
 				else:
 
-					int(round(pieces[p]["initial_v"]-pieces[p]["current_v"],0))
+					#int(round(pieces[p]["initial_v"]-pieces[p]["current_v"],0))
 
-					pieces[p]["speed"]=int(round((1-(pieces[p]["initial_v"]-pieces[p]["current_v"])/3)*4,0))
+					pieces[p]["speed"]=int(round((1-(pieces[p]["current_v"])/3)*8,0))
 
 					if pieces[p]["speed"]<1:
 						pieces[p]["speed"]=1
