@@ -384,8 +384,6 @@ def draw_turn():
 				_turn0=can.coords(turn0)[0]
 				_turn1=can.coords(turn1)[0]
 
-				print(_turn0,_turn1)
-
 
 			if turnv!=val:
 
@@ -842,8 +840,6 @@ def main():
 
 	_turn0=can.coords(turn0)[0]
 	_turn1=can.coords(turn1)[0]
-
-	print(_turn0,_turn1)
 	
 	white_im_=ImageTk.PhotoImage(white_im)
 
@@ -1831,6 +1827,7 @@ def draw_move(e):
 	global st
 
 
+
 	if st=="main":
 
 
@@ -2374,6 +2371,7 @@ def draw_move_(con=0):
 	global st
 	global dm_piece_mv
 	global quit_st,go_st
+	global tcon
 
 	if st=="main":
 
@@ -2381,6 +2379,11 @@ def draw_move_(con=0):
 		for i in dm_vs:
 
 			can.delete(i)
+
+		if tcon==1:
+			return
+
+
 
 		if quit_st==1 or go_st==1:
 			return
@@ -3441,7 +3444,7 @@ def move_pieces(p):
 					pieces[p]["st"]=1
 
 				except Exception as e:
-					print("move_striker() 1",e)
+					print(p," 1",e)
 			elif pieces[p]["st"]==1:
 				game_st2=1
 
@@ -3449,6 +3452,10 @@ def move_pieces(p):
 				
 
 				if pieces[p]["data"]==1:
+
+					if not p=="striker":
+
+						moves.append(p)
 
 					pieces[p]["start_time"]=0
 					pieces[p]["potted"]=1
@@ -4119,7 +4126,6 @@ def validate_moves():
 		return 1
 
 
-	#print(first_move)
 
 	#####
 
@@ -4427,6 +4433,8 @@ def check_game():
 
 			#if len(moves)>0:
 			con_=validate_moves()
+
+			print(con_)
 
 
 			w,b=0,0
