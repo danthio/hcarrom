@@ -84,6 +84,7 @@ def load_im():
 	im=Image.open("data/board.png")
 	im=im.resize((w,h))
 
+
 	x,y=im.size
 
 	x1=0
@@ -139,11 +140,71 @@ def load_im():
 			break
 
 
+
+
+
+
 	im=im.crop((x1,y1,x2,y2))
 
 	w,h=im.size
 
-	bg=ImageTk.PhotoImage(im) 
+
+	im_=Image.new("RGBA",(w,h),(0,0,0,0))
+
+	im_.paste(im,(0,0))
+
+	draw=ImageDraw.Draw(im_)
+
+
+	rr=22
+
+
+	ar=[(0,h-1),(0,h-1-rr)]
+
+	a_=270
+
+	for a in range(90):
+
+		x=rr*math.sin(math.radians(a_))+rr
+		y=rr*math.cos(math.radians(a_))+(h-1-rr)
+
+		x=int(round(x,0))
+		y=int(round(y,0))
+
+		ar.append((x,y))
+
+
+
+		a_+=1
+
+	draw.polygon(ar,fill=(0,0,0,0),outline=(0,0,0,0))
+
+
+	ar=[(w-1,h-1),(w-1,h-1-rr)]
+
+	a_=90
+
+	for a in range(90):
+
+		x=rr*math.sin(math.radians(a_))+w-1-rr
+		y=rr*math.cos(math.radians(a_))+h-1-rr
+
+		x=int(round(x,0))
+		y=int(round(y,0))
+
+		ar.append((x,y))
+
+
+
+		a_-=1
+
+
+	draw.polygon(ar,fill=(0,0,0,0),outline=(0,0,0,0))
+
+	#im_.show()
+
+
+	bg=ImageTk.PhotoImage(im_) 
 
 
 	#darker layer
@@ -177,7 +238,7 @@ def load_im():
 
 	val=int(round(w/2-100+15,0))
 
-	im=Image.new("RGBA",(val,30),(0,0,0,0))
+	im=Image.new("RGBA",(val,30+22),(0,0,0,0))
 	x,y=im.size
 	draw=ImageDraw.Draw(im)
 
@@ -202,7 +263,7 @@ def load_im():
 
 
 
-	im=Image.new("RGBA",(val,30),(0,0,0,0))
+	im=Image.new("RGBA",(val,30+22),(0,0,0,0))
 	x,y=im.size
 	draw=ImageDraw.Draw(im)
 
@@ -217,6 +278,9 @@ def load_im():
 			_x-=1
 
 			op-=255/val
+
+
+
 
 
 	#draw.polygon(((0,0),(15,0),(0,y)),fill=(0,0,0,0),outline=(0,0,0,0))
@@ -399,9 +463,9 @@ def draw_turn():
 
 
 
-						can.coords(turn0,_turn0-turnv,h)
+						can.coords(turn0,_turn0-turnv,h-22)
 
-						can.coords(turn1,_turn1-turnv,h)
+						can.coords(turn1,_turn1-turnv,h-22)
 
 						can.itemconfig(pwhite,fill="#ffffff")
 						can.itemconfig(pwred,fill="#ffffff")
@@ -417,9 +481,9 @@ def draw_turn():
 
 
 
-						can.coords(turn0,_turn0+turnv,h)
+						can.coords(turn0,_turn0+turnv,h-22)
 
-						can.coords(turn1,_turn1+turnv,h)
+						can.coords(turn1,_turn1+turnv,h-22)
 
 
 
@@ -470,6 +534,11 @@ def main():
 	st="main"
 
 	can.delete("all")
+
+	turn0=can.create_image(0,h-22,image=turnh1,anchor="nw")
+
+	xx=w-(w/2+100-15)
+	turn1=can.create_image(w/2+100+xx,h-22,image=turnh2,anchor="nw")
 
 
 	can.create_image(0,0,image=bg,anchor="nw")
@@ -832,10 +901,6 @@ def main():
 
 			draw_piece_(i)
 
-	turn0=can.create_image(0,h,image=turnh1,anchor="nw")
-
-	xx=w-(w/2+100-15)
-	turn1=can.create_image(w/2+100+xx,h,image=turnh2,anchor="nw")
 
 
 	_turn0=can.coords(turn0)[0]
@@ -3548,7 +3613,9 @@ def move_pieces(p):
 					return 2
 				else:
 
-					pieces[p]["speed"]=int(round((1-pieces[p]["current_v"]/3)*10,0))
+					int(round(pieces[p]["initial_v"]-pieces[p]["current_v"],0))
+
+					pieces[p]["speed"]=int(round((1-(pieces[p]["initial_v"]-pieces[p]["current_v"])/3)*4,0))
 
 					if pieces[p]["speed"]<1:
 						pieces[p]["speed"]=1
@@ -4434,7 +4501,6 @@ def check_game():
 			#if len(moves)>0:
 			con_=validate_moves()
 
-			print(con_)
 
 
 			w,b=0,0
