@@ -1636,13 +1636,14 @@ def collusions(pc):
 
 
 
-		if p_ ==pc:
+
+		if pieces[p_]["potted"]==1:
 			continue
 
-		if p_!="striker":
 
-			if pieces[p_]["potted"]==1:
-				continue
+		if pieces[pc]["current_v"]<pieces[p_]["current_v"]:
+			continue
+
 
 
 		if pc=="striker":
