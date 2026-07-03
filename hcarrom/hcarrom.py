@@ -499,7 +499,7 @@ def draw_turn():
 	except Exception as e:
 		print(e)
 
-	root.after(4,draw_turn)
+	root.after(1,draw_turn)
 
 
 turn0,turn1=0,0
@@ -1554,15 +1554,15 @@ def drag(e):
 
 			r=math.sqrt((e.x-x)**2+(e.y-y)**2)
 
-			if r<=striker_r:
-				if xrng[0]<=e.x<=xrng[1]:
-					pieces["striker"]["coord"][0]=e.x
+			#if r<=striker_r:
+			if xrng[0]<=e.x<=xrng[1]:
+				pieces["striker"]["coord"][0]=e.x
 
 
-					for i in dm_vs:
+				for i in dm_vs:
 
-						can.delete(i)
-					draw_piece_("striker",1)
+					can.delete(i)
+				draw_piece_("striker",1)
 
 
 
