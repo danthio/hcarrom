@@ -1,5 +1,6 @@
 from PIL import Image,ImageTk,ImageDraw
 import tkinter as tk
+from tkinter import font
 import math
 import time
 import random
@@ -33,7 +34,7 @@ def load_im():
 	im=Image.new("RGBA",(500,500),(0,0,0,0))
 	draw=ImageDraw.Draw(im)
 
-	draw.ellipse((16,16,500-16-1,500-16-1),fill=(0,255,0,255),outline=(0,0,0,255),width=32)
+	draw.ellipse((16,16,500-16-1,500-16-1),fill=(255,0,255,255),outline=(0,0,0,255),width=32)
 
 	im=im.resize((int(round(striker_r*2,0)),int(round(striker_r*2,0))), Image.LANCZOS)
 
@@ -208,7 +209,7 @@ def load_im():
 
 
 	#darker layer
-	im=Image.new("RGBA",(w,h+30),(0,0,0,200))
+	im=Image.new("RGBA",(w,h+30),(0,0,0,170))
 	bg2=ImageTk.PhotoImage(im)
 
 	#home
@@ -236,7 +237,7 @@ def load_im():
 
 	signature=ImageTk.PhotoImage(im)
 
-	val=int(round(w/2-100+15,0))
+	val=int(round(w/2,0))
 
 	im=Image.new("RGBA",(val,30+22),(0,0,0,0))
 	x,y=im.size
@@ -314,7 +315,7 @@ def intro2():
 	global signature
 
 	can["height"]=h
-	root.geometry(f"{w}x{h}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
+	#root.geometry(f"{w}x{h}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
 
 	pos_intro2=[]
 
@@ -338,7 +339,7 @@ def intro2():
 
 	#print(w/2+x/2-25,y-10-25)
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,((255,0,255)),((255,0,255)),255,255,1)
 	intro2_im1=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro2_im1,anchor="nw")
@@ -351,7 +352,7 @@ def intro2():
 	y+=60
 
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,((255,0,255)),((255,0,255)),255,255,1)
 	intro2_im2=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro2_im2,anchor="nw")
@@ -371,8 +372,10 @@ def intro():
 	global w,h
 	global signature
 
+	root.geometry(f"{w}x{h}")
+
 	can["height"]=h
-	root.geometry(f"{w}x{h}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
+
 	pos_intro=[]
 
 	st="intro"
@@ -389,7 +392,7 @@ def intro():
 
 	y=(h-90)/2
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,((255,0,255)),((255,0,255)),255,255,1)
 	intro_im1=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro_im1,anchor="nw")
@@ -402,7 +405,7 @@ def intro():
 	y+=60
 
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,((255,0,255)),((255,0,255)),255,255,1)
 	intro_im2=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro_im2,anchor="nw")
@@ -440,7 +443,7 @@ def draw_turn():
 
 
 
-			val=int(round(w/2-100+15,0))
+			val=int(round(w/2,0))
 
 			if turnx!=turn:
 
@@ -533,7 +536,9 @@ def main():
 
 
 	can["height"]=h+30
-	root.geometry(f"{w}x{h+30}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
+	x=root.geometry().split("+")[1]
+	y=root.geometry().split("+")[2]
+	root.geometry(f"{w}x{h+30}+{x}+{y}")
 
 	st="main"
 
@@ -541,8 +546,8 @@ def main():
 
 	turn0=can.create_image(0,h-22,image=turnh1,anchor="nw")
 
-	xx=w-(w/2+100-15)
-	turn1=can.create_image(w/2+100+xx,h-22,image=turnh2,anchor="nw")
+	xx=w/2
+	turn1=can.create_image(w/2+xx,h-22,image=turnh2,anchor="nw")
 
 
 	can.create_image(0,0,image=bg,anchor="nw")
@@ -957,9 +962,9 @@ def main():
 		pblack=can.create_text(w-(10+5+10+5)+(5+10),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
 
 
-	#can.create_polygon(w/2-100,h, w/2+100,h, w/2+100-15,h+30, w/2-100+15,h+30,fill="#ff0000",outline="#ff0000")
+	#can.create_polygon(w/2-100,h, w/2+100,h, w/2+100-15,h+30, w/2-100+15,h+30,fill="#ff00ff",outline="#ff00ff")
 
-	can.create_text(w/2,h+15,text=game, font=("FreeMono",13),fill="#00ff00")
+	#can.create_text(w/2,h+15,text=game, font=("FreeMono",13),fill="#ff00ff")
 
 
 
@@ -975,7 +980,7 @@ def draw_piece(x,y,r):
 
 	can.delete(p)
 
-	p=can.create_oval(x-r,y-r, x+r,y+r,fill="#000000",outline="#ff0000")
+	p=can.create_oval(x-r,y-r, x+r,y+r,fill="#000000",outline="#ff00ff")
 
 
 def force_():
@@ -993,9 +998,9 @@ def force_():
 
 		if game_st==1:
 
-			if not pieces["striker"]["initial_v"]+0.3>3:
+			if not pieces["striker"]["initial_v"]+0.5>5:
 
-				pieces["striker"]["initial_v"]+=0.3
+				pieces["striker"]["initial_v"]+=0.5
 				pieces["striker"]["current_v"]=pieces["striker"]["initial_v"]
 
 
@@ -1399,20 +1404,20 @@ def can_b1(e):
 				y=(h-yy)/2
 
 
-				im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,0),140,255,1)
+				im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),((255,0,255)),140,255,1)
 				quit_im=ImageTk.PhotoImage(im)
 
 				quit_i[0]=can.create_image(x,y,image=quit_im,anchor="nw")
 
-				quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff0000")
+				quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff00ff")
 
-				quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770000")
+				quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770077")
 
-				quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770000")
+				quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770077")
 
-				quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff0000")
+				quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff00ff")
 
-				quit_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="No",font=("FreeMono",13),fill="#ff0000")
+				quit_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="No",font=("FreeMono",13),fill="#ff00ff")
 
 				quit_coord=[x,y+yy-30, x+xx,y+yy]
 
@@ -1709,7 +1714,9 @@ def collusions(pc):
 		if p_ ==pc:
 			continue
 
-		if pieces[pc]["speed"]<pieces[p_]["speed"]:
+
+
+		if pieces[pc]["current_v"]<pieces[p_]["current_v"]:
 			continue
 
 
@@ -2484,7 +2491,7 @@ def draw_move_(con=0):
 
 			rr=100
 
-			dm_vs[0]=can.create_line(cx,cy, x,y,fill="#ff0000")
+			dm_vs[0]=can.create_line(cx,cy, x,y,fill="#ff00ff",dash=(1, 3))
 			
 
 
@@ -2492,7 +2499,7 @@ def draw_move_(con=0):
 
 			draw=ImageDraw.Draw(im)
 
-			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,0,255),width=2)
+			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,255,255),width=2)
 			im=im.resize((int(rr*2),int(rr*2)))
 			dm_vs[5]=ImageTk.PhotoImage(im)
 			dm_vs[2]=can.create_image(cx,cy,image=dm_vs[5])
@@ -2502,7 +2509,7 @@ def draw_move_(con=0):
 
 			draw=ImageDraw.Draw(im)
 
-			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,0,255),width=30)
+			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,255,255),width=30)
 
 
 			im=im.resize((int(round(striker_r*2,0)),int(round(striker_r*2,0))))
@@ -2512,19 +2519,24 @@ def draw_move_(con=0):
 
 
 
+			im_=Image.new("RGBA",(201,201),(0,0,0,0))
+			draw_=ImageDraw.Draw(im_)
 
 			im=Image.new("RGBA",(501,501),(0,0,0,0))
 
 			draw=ImageDraw.Draw(im)
 
-			draw.ellipse((0,0, 500,500),fill=(255,0,0,128),outline=(255,0,0,128))
+			draw.ellipse((0,0, 500,500),fill=(255,0,255,80),outline=(255,0,255,80))
+
 
 
 			if reset_st==1:
 				sz=0
 			else:
-				sz=int(round(pieces["striker"]["initial_v"]*rr/3,0))
+				sz=int(round(pieces["striker"]["initial_v"]*rr/5,0))
 
+
+			
 			
 
 
@@ -2532,7 +2544,17 @@ def draw_move_(con=0):
 
 				im=im.resize((sz*2,sz*2))
 
-				dm_vs[3]=ImageTk.PhotoImage(im)
+
+				im_.paste(im,(int(round(100-sz,0)),int(round(100-sz,0))))
+
+				draw_.ellipse(( int(round(100-(striker_r+2),0)),int(round(100-(striker_r+2),0)), int(round(100+(striker_r+2)-1,0)),int(round(100+(striker_r+2)-1,0)) ),fill=(0,0,0,0),outline=(0,0,0,0))
+
+
+
+
+
+
+				dm_vs[3]=ImageTk.PhotoImage(im_)
 
 				dm_vs[4]=can.create_image(cx,cy,image=dm_vs[3])
 
@@ -2550,8 +2572,8 @@ def draw_move_(con=0):
 				y2=50*math.cos(math.radians(dm_piece_mv[-1]))+dm_piece_mv[2]
 
 
-				dm_vs[4]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x,y,fill="#ff0000")
-				dm_vs[7]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x2,y2,fill="#ff0000")
+				dm_vs[4]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x,y,fill="#ff00ff")
+				dm_vs[7]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x2,y2,fill="#ff00ff")
 
 			dm_piece_mv=[0,0,0,0]
 
@@ -2632,7 +2654,7 @@ def draw_boundary():
 
 
 
-	boundary_=can.create_line(ar,fill="#ff0000")
+	boundary_=can.create_line(ar,fill="#ff00ff")
 
 
 """
@@ -3428,7 +3450,7 @@ def move_pieces(p):
 
 					#int(round(pieces[p]["initial_v"]-pieces[p]["current_v"],0))
 
-					pieces[p]["speed"]=int(round((1-(pieces[p]["current_v"])/3)*10,0))
+					pieces[p]["speed"]=int(round((1-pieces[p]["current_v"]/5)*10,0))
 
 					if pieces[p]["speed"]<1:
 						pieces[p]["speed"]=1
@@ -4204,11 +4226,12 @@ game_st2=0
 go_im=0
 go_st=0
 go_coord=[]
-go_i=[0,0,0,0,0,0,0]
+go_i=[0,0,0,0,0,0,0,0]
 
 def go(winner):
 	global go_st,go_im,go_coord,go_st
 	global bg2
+	global white_im_,black_im_
 
 	go_st=1
 
@@ -4222,20 +4245,34 @@ def go(winner):
 	y=(h-yy)/2
 
 
-	im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,0),140,255,1)
+	im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),((255,0,255)),140,255,1)
 	go_im=ImageTk.PhotoImage(im)
 
 	go_i[0]=can.create_image(x,y,image=go_im,anchor="nw")
 
-	go_i[1]=can.create_text(x+xx/2,y+20, text=f"{winner} wins!", font=("FreeMono",13),fill="#ff0000")
+	txt=f"{winner} wins!"
 
-	go_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770000")
+	f=font.Font(family="FreeMono",size=13)
 
-	go_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770000")
+	x_=x+xx/2-f.measure(txt)/2-15
 
-	go_i[4]=can.create_text(x+xx/4,y+yy-15,text="Main Menu",font=("FreeMono",13),fill="#ff0000")
+	if winner=="White":
 
-	go_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="Quit",font=("FreeMono",13),fill="#ff0000")
+		go_i[7]=can.create_image(x_,y+20,image=white_im_,anchor="c")
+	elif winner=="Black":
+		go_i[7]=can.create_image(x_,y+20,image=black_im_,anchor="c")
+
+
+
+	go_i[1]=can.create_text(x+xx/2,y+20, text=f"{winner} wins!", font=("FreeMono",13),fill="#ff00ff")
+
+	go_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770077")
+
+	go_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770077")
+
+	go_i[4]=can.create_text(x+xx/4,y+yy-15,text="Main Menu",font=("FreeMono",13),fill="#ff00ff")
+
+	go_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="Quit",font=("FreeMono",13),fill="#ff00ff")
 
 	go_coord=[x,y+yy-30, x+xx,y+yy]
 
@@ -4758,6 +4795,7 @@ pieces={"striker":{"coord":[0,0],
 
 w,h=500,500
 root=tk.Tk()
+root.geometry(f"{w}x{h}+{int((root.winfo_screenwidth()-w)/2)}+{50}")
 root.resizable(0,0)
 root.title("HCarrom")
 root.iconbitmap("data/icon.ico")
@@ -4787,20 +4825,20 @@ def esc(e):
 		y=(h-yy)/2
 
 
-		im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,0),140,255,1)
+		im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),((255,0,255)),140,255,1)
 		quit_im=ImageTk.PhotoImage(im)
 
 		quit_i[0]=can.create_image(x,y,image=quit_im,anchor="nw")
 
-		quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff0000")
+		quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff00ff")
 
-		quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770000")
+		quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770077")
 
-		quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770000")
+		quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770077")
 
-		quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff0000")
+		quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff00ff")
 
-		quit_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="No",font=("FreeMono",13),fill="#ff0000")
+		quit_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="No",font=("FreeMono",13),fill="#ff00ff")
 
 		quit_coord=[x,y+yy-30, x+xx,y+yy]
 
