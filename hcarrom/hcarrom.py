@@ -33,7 +33,7 @@ def load_im():
 	im=Image.new("RGBA",(500,500),(0,0,0,0))
 	draw=ImageDraw.Draw(im)
 
-	draw.ellipse((16,16,500-16-1,500-16-1),fill=(255,255,0,255),outline=(0,0,0,255),width=32)
+	draw.ellipse((16,16,500-16-1,500-16-1),fill=(0,255,0,255),outline=(0,0,0,255),width=32)
 
 	im=im.resize((int(round(striker_r*2,0)),int(round(striker_r*2,0))), Image.LANCZOS)
 
@@ -324,15 +324,19 @@ def intro2():
 
 	can.create_image(0,0,image=bg,anchor="nw")
 
-	can.create_image(347,441,image=signature,anchor="c")
+	can.create_image(347+40,441,image=signature,anchor="c")
 	can.create_image(0,0,image=bg2,anchor="nw")
 
 
-	can.create_image(3,3,image=home,anchor="nw")
+
+
 
 	x=200
-
 	y=(h-90)/2
+
+	can.create_image(w/2+x/2-25,y-10-25,image=home,anchor="nw")
+
+	#print(w/2+x/2-25,y-10-25)
 
 	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,(255,0,0),(255,0,0),255,255,1)
 	intro2_im1=ImageTk.PhotoImage(im)
@@ -377,7 +381,7 @@ def intro():
 
 	can.create_image(0,0,image=bg,anchor="nw")
 
-	can.create_image(347,441,image=signature,anchor="c")
+	can.create_image(347+40,441,image=signature,anchor="c")
 
 	can.create_image(0,0,image=bg2,anchor="nw")
 
@@ -543,9 +547,9 @@ def main():
 
 	can.create_image(0,0,image=bg,anchor="nw")
 
-	can.create_image(347,441,image=signature,anchor="c")
+	can.create_image(347+40,441,image=signature,anchor="c")
 
-	can.create_image(w-3-25,3,image=quit,anchor="nw")
+	#can.create_image(w-3-25,3,image=quit,anchor="nw")
 
 
 
@@ -955,7 +959,7 @@ def main():
 
 	#can.create_polygon(w/2-100,h, w/2+100,h, w/2+100-15,h+30, w/2-100+15,h+30,fill="#ff0000",outline="#ff0000")
 
-	can.create_text(w/2,h+15,text=game, font=("FreeMono",13),fill="#ff0000")
+	can.create_text(w/2,h+15,text=game, font=("FreeMono",13),fill="#00ff00")
 
 
 
@@ -977,10 +981,15 @@ def draw_piece(x,y,r):
 def force_():
 
 	global pieces
-	global game_st
+	global game_st,reset_st
 	global st
 
 	if st=="main":
+
+		if reset_st==1:
+			root.after(100,force_)
+			return
+
 
 		if game_st==1:
 
@@ -1113,8 +1122,8 @@ def can_b1(e):
 
 		#home
 
-		if 3<=e.x<=25+3:
-				if 3<=e.y<=25+3:
+		if 317.5<=e.x<=317.5+25:
+				if 162.5<=e.y<=162.5+25:
 
 					intro()
 					return
@@ -1372,6 +1381,8 @@ def can_b1(e):
 
 			return
 
+		"""
+
 
 		if w-3-25<=e.x<=w-3:
 			if 3<=e.y<=3+25:
@@ -1388,7 +1399,7 @@ def can_b1(e):
 				y=(h-yy)/2
 
 
-				im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,0),180,255,1)
+				im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,0),140,255,1)
 				quit_im=ImageTk.PhotoImage(im)
 
 				quit_i[0]=can.create_image(x,y,image=quit_im,anchor="nw")
@@ -1406,6 +1417,7 @@ def can_b1(e):
 				quit_coord=[x,y+yy-30, x+xx,y+yy]
 
 				return
+		"""
 
 
 
@@ -1673,10 +1685,6 @@ def collusions(pc):
 		return
 
 
-
-
-
-
 	ar=[]
 
 	for p_ in pieces:
@@ -1694,16 +1702,9 @@ def collusions(pc):
 
 	ar=sorted(ar,key=lambda x:x[1])
 
-
-
-
-
-
 	for i in ar:
 
 		p_=i[0]
-
-
 
 		if p_ ==pc:
 			continue
@@ -1750,83 +1751,82 @@ def collusions(pc):
 
 			aa=angle(get_ang([x1,y1],[x2,y2])+180)
 
-				
-
-
-
-
-
-
-
-
-			if pieces[p_]["move st"]==0:
-				pieces[p_]["move st"]=1
-
-				pieces[p_]["angle"]=aa
-				pieces[p_]["initial_v"]=pieces[pc]["current_v"]
-				pieces[p_]["current_v"]=0
-				pieces[p_]["start_time"]=time.time()
-			else:
-				pieces[p_]["proj_ang"]=aa
-				pieces[p_]["st"]=0
-				pieces[p_]["initial_v"]=pieces[pc]["current_v"]
-				pieces[p_]["current_v"]=0
-				pieces[p_]["start_time"]=time.time()
-
-
-
-			a1=pieces[pc]["angle"]
-
-
-			x1,y1=pieces[pc]["coord"]
-			x2,y2=pieces[p_]["coord"]
-
-			a2=get_ang([x2,y2],[x1,y1])
-
-
-			a3=a1+180
-
-
-
-			a1=angle(a1)
-			a2=angle(a2)
-			a3=angle(a3)
-
-			#print(a2,a1)
+			a1=angle(pieces[pc]["angle"])
 
 			_a1=angle(aa+90)
 			_a2=angle(aa-90)
 
-
-
-
 			ax=det_ang(angle(a1+180),_a1)
 			ay=det_ang(angle(a1+180),_a2)
 
-
-
-
 			#print(ax,ay)
 
+			con=0
 			if ax>ay:
-				aa2=_a1
+				aa2=angle(_a1)
 			elif ay>ax:
-				aa2=_a2
+				aa2=angle(_a2)
 			else:
-				aa2=aa+180
-			aa2=angle(aa2)
+				aa2=angle(aa+180)
+				con=1
 
 
 
+			if con==1:
+
+				v_p_=pieces[pc]["current_v"]
+				v_pc=0
+			else:
+				glancing_ang = abs((aa - pieces[pc]["angle"] + 180) % 360 - 180)
+
+				#print(glancing_ang)
+
+				#p_
+				v_p_=pieces[pc]["current_v"]*math.cos(math.radians(glancing_ang))
+
+				#pc
+
+				v_pc=pieces[pc]["current_v"]*math.sin(math.radians(glancing_ang))
+
+
+
+			"""
+
+			if v_p_==0:
+				pieces[pc]["move st"]=0
+
+			else:
+			"""
+
+			pieces[p_]["proj_ang"]=aa
+			pieces[p_]["start_time"]=time.time()
+			pieces[p_]["initial_v"]=v_p_
+			pieces[p_]["current_v"]=0
+			pieces[p_]["st"]=0
+			pieces[p_]["move st"]=1
+
+
+			#print(pieces[pc]["initial_v"],pieces[pc]["current_v"])
+
+			"""
+			if v_pc==0:
+				pieces[pc]["move st"]=0
+			else:
+
+			"""
 
 
 			pieces[pc]["proj_ang"]=aa2
-			pieces[pc]["angle"]=aa2
-			pieces[pc]["st"]=0
 			pieces[pc]["start_time"]=time.time()
-			pieces[pc]["initial_v"]=pieces[pc]["current_v"]
+			pieces[pc]["initial_v"]=v_pc
 			pieces[pc]["current_v"]=0
-			#pieces[pc]["move st"]=1
+			pieces[pc]["st"]=0
+			pieces[pc]["move st"]=1
+
+
+
+
+
 
 			return 1
 
@@ -2130,9 +2130,13 @@ def draw_move(e):
 
 							r2=math.sqrt((x2-(boundary[1][0]+boundary[0]))**2+(y2-(boundary[1][1]+boundary[0]))**2)
 
-							if r2>boundary[0]:
+							r2=int(round(r2,0))
+							b=int(round(boundary[0],0))
 
+							if r2>=boundary[0]:
 
+								x=(r_-1)*math.sin(math.radians(ang))+cx
+								y=(r_-1)*math.cos(math.radians(ang))+cy
 
 
 
@@ -2173,8 +2177,15 @@ def draw_move(e):
 
 							r2=math.sqrt((x2-(boundary[1][2]-boundary[0]))**2+(y2-(boundary[1][1]+boundary[0]))**2)
 
-							if r2>boundary[0]:
+							r2=int(round(r2,0))
+							b=int(round(boundary[0],0))
 
+							if r2>=boundary[0]:
+
+
+
+								x=(r_-1)*math.sin(math.radians(ang))+cx
+								y=(r_-1)*math.cos(math.radians(ang))+cy
 
 
 
@@ -2219,8 +2230,14 @@ def draw_move(e):
 
 							r2=math.sqrt((x2-(boundary[1][2]-boundary[0]))**2+(y2-(boundary[1][3]-boundary[0]))**2)
 
-							if r2>boundary[0]:
+							r2=int(round(r2,0))
+							b=int(round(boundary[0],0))
 
+							if r2>=boundary[0]:
+
+
+								x=(r_-1)*math.sin(math.radians(ang))+cx
+								y=(r_-1)*math.cos(math.radians(ang))+cy
 
 
 
@@ -2265,9 +2282,15 @@ def draw_move(e):
 
 							r2=math.sqrt((x2-(boundary[1][0]+boundary[0]))**2+(y2-(boundary[1][3]-boundary[0]))**2)
 
-							if r2>boundary[0]:
+							r2=int(round(r2,0))
+							b=int(round(boundary[0],0))
+
+							if r2>=boundary[0]:
 
 
+
+								x=(r_-1)*math.sin(math.radians(ang))+cx
+								y=(r_-1)*math.cos(math.radians(ang))+cy
 
 
 								dm_coord=[cx,cy,x,y]
@@ -2437,6 +2460,7 @@ def draw_move_(con=0):
 	global dm_piece_mv
 	global quit_st,go_st
 	global tcon
+	global reset_st
 
 	if st=="main":
 
@@ -2445,7 +2469,7 @@ def draw_move_(con=0):
 
 			can.delete(i)
 
-		if tcon==1:
+		if tcon==1 or con==2:
 			return
 
 
@@ -2495,7 +2519,11 @@ def draw_move_(con=0):
 
 			draw.ellipse((0,0, 500,500),fill=(255,0,0,128),outline=(255,0,0,128))
 
-			sz=int(round(pieces["striker"]["initial_v"]*rr/3,0))
+
+			if reset_st==1:
+				sz=0
+			else:
+				sz=int(round(pieces["striker"]["initial_v"]*rr/3,0))
 
 			
 
@@ -2749,6 +2777,8 @@ def can_b3(e):
 	reset_st=1
 	pieces["striker"]["initial_v"]=0
 
+	draw_move_(2)
+
 
 	#print(r,coord)
 	#print(r,cx,cy)
@@ -2756,222 +2786,7 @@ def can_b3(e):
 def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 	global boundary
 
-
-	# colliding
-
-	#if collusions(pc)==1:
-
-	#	return 2
-
-	#get_ang
-
-
-
-
-
-
-
-	# border
-
-	"""
-
-
-
-	# 0,0	
-
-	if con==0:
-
-		for _r_ in range(600):
-
-
-			x=_r_*math.sin(math.radians(ang))+cx
-			y=_r_*math.cos(math.radians(ang))+cy
-
-			
-
-			if boundary[1][0]<=x<=boundary[1][0]+boundary[0]:
-				if boundary[1][1]<=y<=boundary[1][1]+boundary[0]:
-
-					con_mv=1
-					break
-
-	conx=0
-	if con_mv==1:
-
-			conx=1
-
-	if conx==1:
-		x=r_*math.sin(math.radians(ang))+cx
-		y=r_*math.cos(math.radians(ang))+cy
-
-		
-
-		r2=math.sqrt((x-(boundary[1][0]+boundary[0]))**2+(y-(boundary[1][1]+boundary[0]))**2)
-
-		if r2<=boundary[0]:
-
-			game_st=0
-
-			###
-
-			return 1
-
-
-		return [x,y,r_+1,ang,con_mv]
-
-	#1,0
-
-	if con==0:
-
-		for _r_ in range(600):
-
-
-			x=_r_*math.sin(math.radians(ang))+cx
-			y=_r_*math.cos(math.radians(ang))+cy
-
-
-
-			if boundary[1][2]-boundary[0]<=x<=boundary[1][2]:
-				if boundary[1][1]<=y<=boundary[1][1]+boundary[0]:
-
-					con_mv=2
-					break
-
-
-	conx=0
-	if con_mv==2:
-
-			conx=1
-
-
-	if conx==1:
-	
-
-		x=r_*math.sin(math.radians(ang))+cx
-		y=r_*math.cos(math.radians(ang))+cy
-
-		r2=math.sqrt((x-(boundary[1][2]-boundary[0]))**2+(y-(boundary[1][1]+boundary[0]))**2)
-
-		if r2<=boundary[0]:
-
-
-			game_st=0
-
-			###
-
-			return 1
-
-
-		return [x,y,r_+1,ang,con_mv]
-
-
-	#1,1
-
-
-	if con==0:
-
-		for _r_ in range(600):
-
-
-			x=_r_*math.sin(math.radians(ang))+cx
-			y=_r_*math.cos(math.radians(ang))+cy
-
-
-			if boundary[1][2]-boundary[0]<=x<=boundary[1][2]:
-				if boundary[1][3]-boundary[0]<=y<=boundary[1][3]:
-
-					con_mv=3
-					break
-
-
-	conx=0
-	if con_mv==3:
-
-			conx=1
-
-
-	if conx==1:		
-
-
-
-
-		x=r_*math.sin(math.radians(ang))+cx
-		y=r_*math.cos(math.radians(ang))+cy
-
-
-
-	
-
-
-		r2=math.sqrt((x-(boundary[1][2]-boundary[0]))**2+(y-(boundary[1][3]-boundary[0]))**2)
-
-		if r2<=boundary[0]:
-
-
-			game_st=0
-
-			###
-
-			return 1
-
-
-
-		return [x,y,r_+1,ang,con_mv]
-
-
-
-	#0,1
-
-
-
-
-	if con==0:
-
-		for _r_ in range(600):
-
-
-			x=_r_*math.sin(math.radians(ang))+cx
-			y=_r_*math.cos(math.radians(ang))+cy
-
-
-			if boundary[1][0]<=x<=boundary[1][0]+boundary[0]:
-				if boundary[1][3]-boundary[0]<=y<=boundary[1][3]:
-
-					con_mv=4
-					break
-
-
-	conx=0
-	if con_mv==4:
-
-			conx=1
-
-	if conx==1:
-
-
-		x=r_*math.sin(math.radians(ang))+cx
-		y=r_*math.cos(math.radians(ang))+cy
-
-
-
-
-		r2=math.sqrt((x-(boundary[1][0]+boundary[0]))**2+(y-(boundary[1][3]-boundary[0]))**2)
-
-		if r2<=boundary[0]:
-
-
-			game_st=0
-
-			###
-
-			return 1
-
-
-
-		return [x,y,r_+1,ang,con_mv]
-
-	"""
-
+	ang=angle(ang)
 
 
 
@@ -3040,7 +2855,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 			y=_r_*math.cos(math.radians(ang))+cy
 
 
-			r=math.sqrt((x-(boundary[1][0]+1))**2+(y-y)**2)
+			r=math.sqrt((x-(boundary[1][0]))**2+(y-y)**2)
 
 			if r<=striker_r:
 				if boundary[1][1]<=y<=boundary[1][3]:
@@ -3094,7 +2909,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 					#print(_a_)
 
-					con_mv=[5,_a_,_r_]
+					con_mv=[5,angle(_a_),_r_]
 
 					break
 
@@ -3124,7 +2939,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-		r=math.sqrt((x-(boundary[1][0]+1))**2+(y-y)**2)
+		r=math.sqrt((x-(boundary[1][0]))**2+(y-y)**2)
 
 
 		if r_==con_mv[2]:
@@ -3136,7 +2951,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-		return [x,y,r_+1,ang,con_mv]
+		return [x,y,r_+1,angle(ang),con_mv]
 
 
 	
@@ -3154,7 +2969,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-			r=math.sqrt((x-(boundary[1][2]-1))**2+(y-y)**2)
+			r=math.sqrt((x-(boundary[1][2]))**2+(y-y)**2)
 
 			if r<=striker_r:
 
@@ -3209,7 +3024,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-					con_mv=[6,_a_,_r_]
+					con_mv=[6,angle(_a_),_r_]
 
 					break
 
@@ -3239,7 +3054,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 		#print(r_)
 
 
-		r=math.sqrt((x-(boundary[1][2]-1))**2+(y-y)**2)
+		r=math.sqrt((x-(boundary[1][2]))**2+(y-y)**2)
 
 		if r_==con_mv[2]:
 
@@ -3250,7 +3065,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 				#####
 
 
-		return [x,y,r_+1,ang,con_mv]
+		return [x,y,r_+1,angle(ang),con_mv]
 
 
 
@@ -3268,7 +3083,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-			r=math.sqrt(((x-x)**2+(y-(boundary[1][1]+1))**2))
+			r=math.sqrt(((x-x)**2+(y-(boundary[1][1]))**2))
 
 
 			if r<=striker_r:
@@ -3309,7 +3124,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 						_a_=270+math.degrees(math.atan(o/a))
 
-					con_mv=[7,_a_,_r_]
+					con_mv=[7,angle(_a_),_r_]
 
 					break
 	conx=0
@@ -3341,7 +3156,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 				#####
 
 
-		return [x,y,r_+1,ang,con_mv]
+		return [x,y,r_+1,angle(ang),con_mv]
 
 
 
@@ -3358,7 +3173,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 			y=_r_*math.cos(math.radians(ang))+cy
 
 
-			r=math.sqrt(((x-x)**2+(y-(boundary[1][3]-1))**2))
+			r=math.sqrt(((x-x)**2+(y-(boundary[1][3]))**2))
 
 
 			if r<=striker_r:
@@ -3401,7 +3216,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-					con_mv=[8,_a_,_r_]
+					con_mv=[8,angle(_a_),_r_]
 
 					break
 
@@ -3438,7 +3253,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-		return [x,y,r_+1,ang,con_mv]
+		return [x,y,r_+1,angle(ang),con_mv]
 
 
 
@@ -3446,17 +3261,20 @@ def angle(a):
 
 	try:
 
-		if a>360:
-			a=a-360
+		a_=360
+
+
+		if a>a_:
+			a=a-a_
 		elif a<0:
-			a=360+a
-		elif a==360:
+			a=a_+a
+		elif a==a_:
 			a=0
 
 		return a
 
 	except  Exception as e:
-		#print("angle()",e)
+		print("angle()",e)
 		return a
 
 
@@ -3494,15 +3312,14 @@ def move_pieces(p):
 					pieces[p]["coord_"]=pieces[p]["coord"]
 					if pieces[p]["proj_ang"]!=None:
 						pieces[p]["data"]=get_pos(p,pieces[p]["coord"][0],pieces[p]["coord"][1],0,angle(pieces[p]["proj_ang"]),0,0)
-						pieces[p]["angle"]=angle(pieces[p]["proj_ang"])
-						pieces[p]["proj_ang"]=None
+
 					else:
 
 						pieces[p]["data"]=get_pos(p,pieces[p]["coord"][0],pieces[p]["coord"][1],0,angle(pieces[p]["angle"]),0,0)
 					
-					#print(pieces[p]["data"])
-					pieces[p]["coord"]=[pieces[p]["data"][0],pieces[p]["data"][1]]
+					pieces[p]["proj_ang"]=None					
 					pieces[p]["angle"]=angle(pieces[p]["data"][3])
+					pieces[p]["coord"]=[pieces[p]["data"][0],pieces[p]["data"][1]]
 
 					draw_piece_(p,1)
 
@@ -3550,8 +3367,9 @@ def move_pieces(p):
 
 				elif pieces[p]["data"]==2:
 					pieces[p]["st"]=0
-					pieces[p]["angle"]=angle(pieces[p]["proj_ang"])
 					draw_piece_(p,1)	
+
+					return 2
 
 
 				else:
@@ -3559,11 +3377,6 @@ def move_pieces(p):
 					pieces[p]["angle"]=angle(pieces[p]["data"][3])
 					pieces[p]["coord"]=[pieces[p]["data"][0],pieces[p]["data"][1]]
 
-
-					pieces[p]["coord"]=[pieces[p]["data"][0],pieces[p]["data"][1]]
-					
-
-					
 
 					try:
 
@@ -3615,7 +3428,7 @@ def move_pieces(p):
 
 					#int(round(pieces[p]["initial_v"]-pieces[p]["current_v"],0))
 
-					pieces[p]["speed"]=int(round((1-(pieces[p]["current_v"])/3)*8,0))
+					pieces[p]["speed"]=int(round((1-(pieces[p]["current_v"])/3)*10,0))
 
 					if pieces[p]["speed"]<1:
 						pieces[p]["speed"]=1
@@ -4409,7 +4222,7 @@ def go(winner):
 	y=(h-yy)/2
 
 
-	im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,0),180,255,1)
+	im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,0),140,255,1)
 	go_im=ImageTk.PhotoImage(im)
 
 	go_i[0]=can.create_image(x,y,image=go_im,anchor="nw")
@@ -4942,11 +4755,54 @@ pieces={"striker":{"coord":[0,0],
 
 
 
+
 w,h=500,500
 root=tk.Tk()
 root.resizable(0,0)
 root.title("HCarrom")
 root.iconbitmap("data/icon.ico")
+
+def esc(e):
+	global quit_st,quit_im,quit_i,quit_coord
+	global bg2
+	global st
+
+	if st=="main":
+
+		if quit_st==1:
+			return
+
+
+
+
+		quit_st=1
+
+		draw_move_()
+
+		quit_i[6]=can.create_image(0,0,image=bg2,anchor="nw")
+
+		xx,yy=250,100
+
+		x=(w-xx)/2
+		y=(h-yy)/2
+
+
+		im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),(255,0,0),140,255,1)
+		quit_im=ImageTk.PhotoImage(im)
+
+		quit_i[0]=can.create_image(x,y,image=quit_im,anchor="nw")
+
+		quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff0000")
+
+		quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770000")
+
+		quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770000")
+
+		quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff0000")
+
+		quit_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="No",font=("FreeMono",13),fill="#ff0000")
+
+		quit_coord=[x,y+yy-30, x+xx,y+yy]
 
 
 can=tk.Canvas(width=w,height=h,bg="#000000",relief="flat",highlightthickness=0,border=0)
@@ -4962,6 +4818,7 @@ can.bind("<Motion>",draw_move)
 #can.bind("<Left>",left)
 #can.bind("<KeyPress>",char)
 can.bind("<Button-3>",can_b3)
+can.bind("<Escape>",esc)
 
 can.focus_set()
 
