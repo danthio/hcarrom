@@ -4,7 +4,7 @@ from tkinter import font
 import math
 import time
 import random
-
+import traceback
 bg=0
 circle=0
 bg2=0
@@ -965,7 +965,7 @@ def main():
 	#can.create_polygon(w/2-100,h, w/2+100,h, w/2+100-15,h+30, w/2-100+15,h+30,fill="#ff00ff",outline="#ff00ff")
 
 	#can.create_text(w/2,h+15,text=game, font=("FreeMono",13),fill="#ff00ff")
-
+	#draw_boundary()
 
 
 
@@ -1806,6 +1806,7 @@ def collusions(pc):
 			"""
 
 			pieces[p_]["proj_ang"]=aa
+			pieces[p_]["angle"]=aa
 			pieces[p_]["start_time"]=time.time()
 			pieces[p_]["initial_v"]=v_p_
 			pieces[p_]["current_v"]=0
@@ -1824,6 +1825,7 @@ def collusions(pc):
 
 
 			pieces[pc]["proj_ang"]=aa2
+			pieces[pc]["angle"]=aa2
 			pieces[pc]["start_time"]=time.time()
 			pieces[pc]["initial_v"]=v_pc
 			pieces[pc]["current_v"]=0
@@ -2806,7 +2808,14 @@ def can_b3(e):
 	#print(r,cx,cy)
 
 def get_pos(pc,cx,cy,r_,ang,con_mv,con):
-	global boundary
+	global boundary,striker_r,piece_r
+
+
+	if pc=="striker":
+
+		rr=striker_r
+	else:
+		rr=piece_r
 
 	ang=angle(ang)
 
@@ -2879,7 +2888,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 			r=math.sqrt((x-(boundary[1][0]))**2+(y-y)**2)
 
-			if r<=striker_r:
+			if r<=rr:
 				if boundary[1][1]<=y<=boundary[1][3]:
 
 					#print(5)
@@ -2964,7 +2973,10 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 		r=math.sqrt((x-(boundary[1][0]))**2+(y-y)**2)
 
 
+
+
 		if r_==con_mv[2]:
+
 			if boundary[1][1]<=y<=boundary[1][3]:
 
 				return 2
@@ -2993,7 +3005,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 			r=math.sqrt((x-(boundary[1][2]))**2+(y-y)**2)
 
-			if r<=striker_r:
+			if r<=rr:
 
 				if boundary[1][1]<=y<=boundary[1][3]:
 
@@ -3108,7 +3120,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 			r=math.sqrt(((x-x)**2+(y-(boundary[1][1]))**2))
 
 
-			if r<=striker_r:
+			if r<=rr:
 				#print(_r_)
 				if boundary[1][0]<=x<=boundary[1][2]:
 
@@ -3198,7 +3210,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 			r=math.sqrt(((x-x)**2+(y-(boundary[1][3]))**2))
 
 
-			if r<=striker_r:
+			if r<=rr:
 				if boundary[1][0]<=x<=boundary[1][2]:
 
 					#print(8,_r_)
@@ -3306,188 +3318,252 @@ def move_pieces(p):
 	global game_st,game_st2
 	global st
 	global turn
+	global boundary
 
-	
 
-	if pieces[p]["potted"]==1:
-
-		return 2
-	
-
-	if st=="main":
-
-
-		if pieces[p]["move st"]==1 and game_st==2:
-
-			collusions(p)
-
-			
-
-			if pieces[p]["st"]==0:
-
-				
-
-				try:
-
-					#print(pieces[p]["proj_ang"])
-
-					pieces[p]["coord_"]=pieces[p]["coord"]
-					if pieces[p]["proj_ang"]!=None:
-						pieces[p]["data"]=get_pos(p,pieces[p]["coord"][0],pieces[p]["coord"][1],0,angle(pieces[p]["proj_ang"]),0,0)
-
-					else:
-
-						pieces[p]["data"]=get_pos(p,pieces[p]["coord"][0],pieces[p]["coord"][1],0,angle(pieces[p]["angle"]),0,0)
-					
-					pieces[p]["proj_ang"]=None					
-					pieces[p]["angle"]=angle(pieces[p]["data"][3])
-					pieces[p]["coord"]=[pieces[p]["data"][0],pieces[p]["data"][1]]
-
-					draw_piece_(p,1)
-
-					pieces[p]["st"]=1
-
-				except Exception as e:
-					print(p," 1",e)
-			elif pieces[p]["st"]==1:
-				game_st2=1
-
-				pieces[p]["data"]=get_pos(p,pieces[p]["coord_"][0],pieces[p]["coord_"][1],pieces[p]["data"][2],angle(pieces[p]["angle"]),pieces[p]["data"][4],1)
-				
-
-				if pieces[p]["data"]==1:
-
-					if not p=="striker":
-
-						moves.append(p)
-
-					pieces[p]["start_time"]=0
-					pieces[p]["potted"]=1
-					pieces[p]["coord"]=[-100,100]
-					pieces[p]["speed"]=0
-					pieces[p]["initial_v"]=0
-					pieces[p]["current_v"]=0
-
-					pieces[p]["proj_ang"]=None
-					pieces[p]["move st"]=0
-
-					#game_st=0
-					pieces[p]["move st"]=0
-					pieces[p]["st"]=0
-					pieces[p]["initial_v"]=0
-					pieces[p]["angle"]=0
-
-					
-
-
-
-
-					draw_piece_(p ,1)		
-
-					return 200
-
-
-				elif pieces[p]["data"]==2:
-					pieces[p]["st"]=0
-					draw_piece_(p,1)	
-
-					return 2
-
-
-				else:
-
-					pieces[p]["angle"]=angle(pieces[p]["data"][3])
-					pieces[p]["coord"]=[pieces[p]["data"][0],pieces[p]["data"][1]]
-
-
-					try:
-
-
-						if len(pieces[p]["data"][4])==3:
-
-
-
-							pieces[p]["proj_ang"]=angle(pieces[p]["data"][4][1])
-
-					except Exception as e:
-						print("move_striker() 2",e)
-
-					draw_piece_(p ,1)
-
-
-				pieces[p]["current_v"]=pieces[p]["initial_v"]-0.05*9.8*(time.time()-pieces[p]["start_time"])
-
-				if pieces[p]["current_v"]<0:
-
-
-
-					pieces[p]["start_time"]=0
-
-					pieces[p]["speed"]=0
-					pieces[p]["initial_v"]=0
-					pieces[p]["current_v"]=0
-					pieces[p]["move st"]=0
-
-
-
-					pieces[p]["proj_ang"]=None
-
-					pieces[p]["angle"]=0
-
-					pieces[p]["st"]=0
-					pieces[p]["move st"]=0					
-					#game_st=0
-					pieces[p]["st"]=0
-					pieces[p]["initial_v"]=0
-
-					
-
-
-					draw_piece_(p ,1)		
-
-					return 2
-				else:
-
-					#int(round(pieces[p]["initial_v"]-pieces[p]["current_v"],0))
-
-					pieces[p]["speed"]=int(round((1-pieces[p]["current_v"]/5)*10,0))
-
-					if pieces[p]["speed"]<1:
-						pieces[p]["speed"]=1
-
-				
-
-
-					#print(pieces[p]["speed"])
-
-
-				
-
-				return pieces[p]["speed"]
-
-
-			return 2
-
-
-					
-
-
-
-
-		else:
-			pieces[p]["st"]=0
-			return 2
-
-
-
-
-
+	try:
 
 		
 
-	else:
-		return 2
+		if pieces[p]["potted"]==1:
 
+			return 2
+		
+
+		if st=="main":
+
+
+			if pieces[p]["move st"]==1 and game_st==2:
+
+
+				collusions(p)
+
+				
+
+				
+
+				if pieces[p]["st"]==0:
+
+					
+
+					try:
+
+						#print(pieces[p]["proj_ang"])
+
+						
+
+						pieces[p]["coord_"]=pieces[p]["coord"]
+						if pieces[p]["proj_ang"]!=None:
+							pieces[p]["data"]=get_pos(p,pieces[p]["coord"][0],pieces[p]["coord"][1],0,angle(pieces[p]["proj_ang"]),0,0)
+
+						else:
+
+							pieces[p]["data"]=get_pos(p,pieces[p]["coord"][0],pieces[p]["coord"][1],0,angle(pieces[p]["angle"]),0,0)
+
+						
+						
+						pieces[p]["proj_ang"]=None	
+
+
+						#print(pieces[p]["st"])
+						"""
+						if pieces[p]["data"]==2:
+
+							print(pieces[p]["angle"])
+
+							pieces[p]["st"]=0
+							draw_piece_(p,1)
+								
+
+							return 2
+						else:
+						"""
+
+
+
+						pieces[p]["angle"]=angle(pieces[p]["data"][3])
+						pieces[p]["coord"]=[pieces[p]["data"][0],pieces[p]["data"][1]]
+
+						draw_piece_(p,1)
+
+						pieces[p]["st"]=1
+
+
+
+					except Exception as e:
+						print(pieces[p]["angle"])
+
+						traceback.print_exc()
+
+
+						
+				elif pieces[p]["st"]==1:
+					game_st2=1
+
+					pieces[p]["data"]=get_pos(p,pieces[p]["coord_"][0],pieces[p]["coord_"][1],pieces[p]["data"][2],angle(pieces[p]["angle"]),pieces[p]["data"][4],1)
+					
+
+					if pieces[p]["data"]==1:
+
+						if not p=="striker":
+
+							moves.append(p)
+
+						pieces[p]["start_time"]=0
+						pieces[p]["potted"]=1
+						pieces[p]["coord"]=[-100,100]
+						pieces[p]["speed"]=0
+						pieces[p]["initial_v"]=0
+						pieces[p]["current_v"]=0
+
+						pieces[p]["proj_ang"]=None
+						pieces[p]["move st"]=0
+
+						#game_st=0
+						pieces[p]["move st"]=0
+						pieces[p]["st"]=0
+						pieces[p]["initial_v"]=0
+						pieces[p]["angle"]=0
+
+						
+
+
+
+
+						draw_piece_(p ,1)		
+
+						return 200
+
+
+					elif pieces[p]["data"]==2:
+
+						pieces[p]["st"]=0
+						draw_piece_(p,1)	
+
+						return 2
+
+
+					else:
+
+						pieces[p]["angle"]=angle(pieces[p]["data"][3])
+						pieces[p]["coord"]=[pieces[p]["data"][0],pieces[p]["data"][1]]
+
+
+						try:
+
+
+							if len(pieces[p]["data"][4])==3:
+
+
+
+								pieces[p]["proj_ang"]=angle(pieces[p]["data"][4][1])
+
+						except Exception as e:
+							traceback.print_exc()
+						draw_piece_(p ,1)
+
+
+					pieces[p]["current_v"]=pieces[p]["initial_v"]-0.05*9.8*(time.time()-pieces[p]["start_time"])
+
+
+					def force_p(p):
+						con=0
+
+						if p=="striker":
+							rr=striker_r
+						else:
+							rr=piece_r
+
+						if boundary[1][0]+rr+8<=pieces[p]["coord"][0]<=boundary[1][2]-rr-8:
+
+							if boundary[1][1]+rr+8<=pieces[p]["coord"][1]<=boundary[1][3]-rr-8:
+
+								con=1
+
+						return con
+
+					if pieces[p]["current_v"]<0:
+
+						if force_p(p)==1:
+
+							pieces[p]["start_time"]=0
+
+							pieces[p]["speed"]=0
+							pieces[p]["initial_v"]=0
+							pieces[p]["current_v"]=0
+							pieces[p]["move st"]=0
+
+
+
+							pieces[p]["proj_ang"]=None
+
+							pieces[p]["angle"]=0
+
+							pieces[p]["st"]=0
+							pieces[p]["move st"]=0					
+							#game_st=0
+							pieces[p]["st"]=0
+							pieces[p]["initial_v"]=0
+
+							
+
+
+							draw_piece_(p ,1)		
+
+							return 2
+						else:
+
+							pieces[p]["speed"]=10
+
+					else:
+
+						#int(round(pieces[p]["initial_v"]-pieces[p]["current_v"],0))
+
+						pieces[p]["speed"]=int(round((1-pieces[p]["current_v"]/5)*10,0))
+
+						if pieces[p]["speed"]<1:
+							pieces[p]["speed"]=1
+
+					
+
+
+						#print(pieces[p]["speed"])
+
+
+					draw_piece_(p ,1)	
+
+					return pieces[p]["speed"]
+
+
+
+
+
+				return 2
+
+
+						
+
+
+
+
+			else:
+				pieces[p]["st"]=0
+				return 2
+
+
+
+
+
+
+			
+
+		else:
+			return 2
+	except Exception as e:
+
+		traceback.print_exc()
+
+		return 2
 
 def move_striker():
 
@@ -4862,8 +4938,8 @@ can.focus_set()
 
 
 #500- 7,5
-striker_r=7*w/500
-piece_r=5*w/500
+striker_r=int(round(7*w/500,0))
+piece_r=int(round(5*w/500,0))
 
 
 turn=1
@@ -4880,7 +4956,7 @@ elif turn==1:
 
 #coord=[w/2-100,h/2-100, w/2+100,h/2+100]
 
-boundary=[22,[22*w/500,21*w/500,463*w/500,464*w/500]]
+boundary=[22,[int(round(22*w/500,0)),int(round(21*w/500,0)),int(round(463*w/500,0)),int(round(464*w/500,0))]]
 
 coord=boundary[1]
 
