@@ -1638,13 +1638,14 @@ def det_ang(a_1,a_2):
 			break
 
 
-		_a1_-=1
-
-		acx+=1
 
 		if _a1_==-1:
 
 			_a1_=359
+
+		_a1_-=1
+
+		acx+=1
 
 
 
@@ -1660,14 +1661,15 @@ def det_ang(a_1,a_2):
 
 			break
 
-		_a2_+=1
 
-		acy+=1
 
 		if _a2_==361:
 
 			_a2_=1
 
+		_a2_+=1
+
+		acy+=1
 
 	#print(acx,acy)
 
@@ -1683,7 +1685,7 @@ def collusions(pc):
 	global pieces
 	global striker_r,piece_r
 	global first_move
-	global ccc
+	global boundary
 
 
 	if pieces[pc]["current_v"]==0:
@@ -1714,6 +1716,20 @@ def collusions(pc):
 		if p_ ==pc:
 			continue
 
+
+		if boundary[1][0]+striker_r+1<=x1<=boundary[1][2]-(striker_r+1):
+			if boundary[1][1]+striker_r+1<=y1<=boundary[1][3]-(striker_r+1):
+
+				pass
+
+			else:
+
+
+				continue
+
+
+		else:
+			continue
 
 
 		if pieces[pc]["current_v"]<pieces[p_]["current_v"]:
@@ -2055,6 +2071,25 @@ def draw_move(e):
 
 							con=1
 
+
+							xp,yp=x,y
+
+							if boundary[1][0]+striker_r+1<=xp<=boundary[1][2]-(striker_r+1):
+								if boundary[1][1]+striker_r+1<=yp<=boundary[1][3]-(striker_r+1):
+
+									pass
+
+								else:
+
+
+									con=0
+
+
+							else:
+								con=0
+
+
+
 							a=angle(get_ang([x,y],[x_,y_])+180)
 
 
@@ -2131,6 +2166,8 @@ def draw_move(e):
 
 					x2=(r_+striker_r)*math.sin(math.radians(ang))+cx
 					y2=(r_+striker_r)*math.cos(math.radians(ang))+cy
+
+					
 					
 
 					if boundary[1][0]<=x2<=boundary[1][0]+boundary[0]:
@@ -2473,10 +2510,26 @@ def draw_move_(con=0):
 
 	if st=="main":
 
+		if con==2:
+
+			c=0
+			for i in dm_vs:
+
+				if i!=0:
+					c=1
+
+			if c==0:
+				return
+
 
 		for i in dm_vs:
 
 			can.delete(i)
+
+		for i in range(len(dm_vs)):
+
+			dm_vs[i]=0
+
 
 		if tcon==1 or con==2:
 			return
@@ -2797,11 +2850,15 @@ def can_b3(e):
 	global coord
 
 	global reset_st,pieces
+	global game_st
 
-	reset_st=1
-	pieces["striker"]["initial_v"]=0
 
-	draw_move_(2)
+	if game_st!=2:
+
+		reset_st=1
+		pieces["striker"]["initial_v"]=0
+
+		draw_move_(2)
 
 
 	#print(r,coord)
@@ -2886,7 +2943,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 			y=_r_*math.cos(math.radians(ang))+cy
 
 
-			r=math.sqrt((x-(boundary[1][0]))**2+(y-y)**2)
+			r=math.sqrt((x-(boundary[1][0]+1))**2+(y-y)**2)
 
 			if r<=rr:
 				if boundary[1][1]<=y<=boundary[1][3]:
@@ -2970,7 +3027,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-		r=math.sqrt((x-(boundary[1][0]))**2+(y-y)**2)
+		r=math.sqrt((x-(boundary[1][0]+1))**2+(y-y)**2)
 
 
 
@@ -3003,7 +3060,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-			r=math.sqrt((x-(boundary[1][2]))**2+(y-y)**2)
+			r=math.sqrt((x-(boundary[1][2]-1))**2+(y-y)**2)
 
 			if r<=rr:
 
@@ -3088,7 +3145,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 		#print(r_)
 
 
-		r=math.sqrt((x-(boundary[1][2]))**2+(y-y)**2)
+		r=math.sqrt((x-(boundary[1][2]-1))**2+(y-y)**2)
 
 		if r_==con_mv[2]:
 
@@ -3117,7 +3174,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-			r=math.sqrt(((x-x)**2+(y-(boundary[1][1]))**2))
+			r=math.sqrt(((x-x)**2+(y-(boundary[1][1]+1))**2))
 
 
 			if r<=rr:
@@ -3207,7 +3264,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 			y=_r_*math.cos(math.radians(ang))+cy
 
 
-			r=math.sqrt(((x-x)**2+(y-(boundary[1][3]))**2))
+			r=math.sqrt(((x-x)**2+(y-(boundary[1][3]-1))**2))
 
 
 			if r<=rr:
@@ -3437,6 +3494,11 @@ def move_pieces(p):
 
 					elif pieces[p]["data"]==2:
 
+						pieces[p]["initial_v"]=pieces[p]["current_v"]-0.05*9.8*(time.time()-pieces[p]["start_time"])
+						pieces[p]["current_v"]=0
+						#pieces[p]["start_time"]=time.time()
+
+
 						pieces[p]["st"]=0
 						draw_piece_(p,1)	
 
@@ -3469,14 +3531,16 @@ def move_pieces(p):
 					def force_p(p):
 						con=0
 
+						#return 1
+
 						if p=="striker":
 							rr=striker_r
 						else:
 							rr=piece_r
 
-						if boundary[1][0]+rr+8<=pieces[p]["coord"][0]<=boundary[1][2]-rr-8:
+						if boundary[1][0]+rr+10<=pieces[p]["coord"][0]<=boundary[1][2]-rr-10:
 
-							if boundary[1][1]+rr+8<=pieces[p]["coord"][1]<=boundary[1][3]-rr-8:
+							if boundary[1][1]+rr+10<=pieces[p]["coord"][1]<=boundary[1][3]-rr-10:
 
 								con=1
 
