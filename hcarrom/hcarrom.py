@@ -1447,6 +1447,7 @@ def can_b1(e):
 					if 102<=e.x<=383:
 						if 82-10.36<=e.y<=82+10.36:
 							pieces["striker"]["coord"][0]=e.x
+							pieces["striker"]["coord"][0]=correct_overlay(0,pieces["striker"]["coord"])[0]
 
 
 							for i in dm_vs:
@@ -1465,6 +1466,7 @@ def can_b1(e):
 
 					if r<=10.36:
 						pieces["striker"]["coord"][0]=xrng[0]
+						pieces["striker"]["coord"][0]=correct_overlay(1,pieces["striker"]["coord"])[0]
 
 						for i in dm_vs:
 
@@ -1479,6 +1481,7 @@ def can_b1(e):
 
 					if r<=10.36:
 						pieces["striker"]["coord"][0]=xrng[1]
+						pieces["striker"]["coord"][0]=correct_overlay(1,pieces["striker"]["coord"])[0]
 
 
 
@@ -1496,6 +1499,7 @@ def can_b1(e):
 					if 102<=e.x<=383:
 						if 404-10.36<=e.y<=404+10.36:
 							pieces["striker"]["coord"][0]=e.x
+							pieces["striker"]["coord"][0]=correct_overlay(0,pieces["striker"]["coord"])[0]
 
 
 
@@ -1513,6 +1517,7 @@ def can_b1(e):
 
 					if r<=10.36:
 						pieces["striker"]["coord"][0]=xrng[0]
+						pieces["striker"]["coord"][0]=correct_overlay(1,pieces["striker"]["coord"])[0]
 
 
 						for i in dm_vs:
@@ -1528,6 +1533,7 @@ def can_b1(e):
 
 					if r<=10.36:
 						pieces["striker"]["coord"][0]=xrng[1]
+						pieces["striker"]["coord"][0]=correct_overlay(1,pieces["striker"]["coord"])[0]
 
 
 						for i in dm_vs:
@@ -1574,6 +1580,7 @@ def drag(e):
 			#if r<=striker_r:
 			if xrng[0]<=e.x<=xrng[1]:
 				pieces["striker"]["coord"][0]=e.x
+				pieces["striker"]["coord"][0]=correct_overlay(0,pieces["striker"]["coord"])[0]
 
 
 				for i in dm_vs:
@@ -1717,19 +1724,7 @@ def collusions(pc):
 			continue
 
 
-		if boundary[1][0]+striker_r+1<=x1<=boundary[1][2]-(striker_r+1):
-			if boundary[1][1]+striker_r+1<=y1<=boundary[1][3]-(striker_r+1):
 
-				pass
-
-			else:
-
-
-				continue
-
-
-		else:
-			continue
 
 
 		if pieces[pc]["current_v"]<pieces[p_]["current_v"]:
@@ -1867,6 +1862,10 @@ def get_ang(p1,p2):
 			o=x1-x2
 			a=y2-y1
 
+			if a==0:
+
+				a=0.000001
+
 			ang=math.degrees(math.atan(o/a))
 
 			ang=180-ang
@@ -1878,6 +1877,9 @@ def get_ang(p1,p2):
 			o=x1-x2
 			a=y1-y2
 
+			if a==0:
+
+				a=0.000001
 
 			ang=math.degrees(math.atan(o/a))
 
@@ -1891,6 +1893,11 @@ def get_ang(p1,p2):
 			o=x2-x1
 			a=y2-y1
 
+
+			if a==0:
+
+				a=0.000001
+
 			ang=math.degrees(math.atan(o/a))
 
 			ang=180+ang
@@ -1902,6 +1909,11 @@ def get_ang(p1,p2):
 			o=x2-x1
 			a=y1-y2
 
+
+
+			if a==0:
+
+				a=0.000001
 
 			ang=math.degrees(math.atan(o/a))
 
@@ -2074,19 +2086,6 @@ def draw_move(e):
 
 							xp,yp=x,y
 
-							if boundary[1][0]+striker_r+1<=xp<=boundary[1][2]-(striker_r+1):
-								if boundary[1][1]+striker_r+1<=yp<=boundary[1][3]-(striker_r+1):
-
-									pass
-
-								else:
-
-
-									con=0
-
-
-							else:
-								con=0
 
 
 
@@ -2865,7 +2864,7 @@ def can_b3(e):
 	#print(r,cx,cy)
 
 def get_pos(pc,cx,cy,r_,ang,con_mv,con):
-	global boundary,striker_r,piece_r
+	global pieces,boundary,striker_r,piece_r
 
 
 	if pc=="striker":
@@ -2943,7 +2942,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 			y=_r_*math.cos(math.radians(ang))+cy
 
 
-			r=math.sqrt((x-(boundary[1][0]+1))**2+(y-y)**2)
+			r=math.sqrt((x-(boundary[1][0]))**2+(y-y)**2)
 
 			if r<=rr:
 				if boundary[1][1]<=y<=boundary[1][3]:
@@ -3027,7 +3026,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-		r=math.sqrt((x-(boundary[1][0]+1))**2+(y-y)**2)
+		#r=math.sqrt((x-(boundary[1][0]))**2+(y-y)**2)
 
 
 
@@ -3060,7 +3059,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-			r=math.sqrt((x-(boundary[1][2]-1))**2+(y-y)**2)
+			r=math.sqrt((x-(boundary[1][2]))**2+(y-y)**2)
 
 			if r<=rr:
 
@@ -3068,6 +3067,8 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 					#print(6)
+
+					
 
 
 
@@ -3117,6 +3118,10 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 					con_mv=[6,angle(_a_),_r_]
 
+					#pieces[pc]["proj_ang"]=angle(_a_)
+
+					#print(angle(_a_))
+
 					break
 
 	conx=0
@@ -3145,11 +3150,12 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 		#print(r_)
 
 
-		r=math.sqrt((x-(boundary[1][2]-1))**2+(y-y)**2)
+		#r=math.sqrt((x-(boundary[1][2]))**2+(y-y)**2)
 
 		if r_==con_mv[2]:
 
 			if boundary[1][1]<=y<=boundary[1][3]:
+
 
 				return 2
 
@@ -3174,11 +3180,11 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 
 
 
-			r=math.sqrt(((x-x)**2+(y-(boundary[1][1]+1))**2))
+			r=math.sqrt(((x-x)**2+(y-(boundary[1][1]))**2))
 
 
 			if r<=rr:
-				#print(_r_)
+					#print(_r_)
 				if boundary[1][0]<=x<=boundary[1][2]:
 
 					#print(7)
@@ -3264,7 +3270,7 @@ def get_pos(pc,cx,cy,r_,ang,con_mv,con):
 			y=_r_*math.cos(math.radians(ang))+cy
 
 
-			r=math.sqrt(((x-x)**2+(y-(boundary[1][3]-1))**2))
+			r=math.sqrt(((x-x)**2+(y-(boundary[1][3]))**2))
 
 
 			if r<=rr:
@@ -3419,7 +3425,7 @@ def move_pieces(p):
 
 						
 						
-						pieces[p]["proj_ang"]=None	
+						
 
 
 						#print(pieces[p]["st"])
@@ -3437,6 +3443,11 @@ def move_pieces(p):
 						"""
 
 
+						if pieces[p]["data"]==2:
+							pieces[p]["st"]=0
+							return 2
+
+						pieces[p]["proj_ang"]=None
 
 						pieces[p]["angle"]=angle(pieces[p]["data"][3])
 						pieces[p]["coord"]=[pieces[p]["data"][0],pieces[p]["data"][1]]
@@ -3496,7 +3507,7 @@ def move_pieces(p):
 
 						pieces[p]["initial_v"]=pieces[p]["current_v"]-0.05*9.8*(time.time()-pieces[p]["start_time"])
 						pieces[p]["current_v"]=0
-						#pieces[p]["start_time"]=time.time()
+						pieces[p]["start_time"]=time.time()
 
 
 						pieces[p]["st"]=0
@@ -4416,6 +4427,107 @@ def go(winner):
 
 	go_coord=[x,y+yy-30, x+xx,y+yy]
 
+
+def correct_overlay(c,coord=None):
+	global turn
+	global xrng,yv1,yv2
+
+
+	x=xrng[0]+(xrng[1]-xrng[0])/2
+
+	if turn==0:
+		y=yv1
+	elif turn==1:
+		y=yv2
+
+	if coord!=None:
+
+		x=coord[0]
+
+
+	x1=x
+	x2=x
+
+	for x_ in range(int(round(x-xrng[0],0))):
+
+
+		con=check_overlay(x1,y)
+
+		
+
+
+		if con==0:
+			break
+
+
+		x1-=1
+
+
+	for x_ in range(int(round(xrng[1]-x,0))):
+
+
+		con=check_overlay(x2,y)
+
+
+		if con==0:
+			break
+
+
+		x2+=1
+
+
+	if c==0:
+
+
+		if x1<=x2:
+
+			xx=x1
+		else:
+			xx=x2
+
+	elif c==1:
+
+		if x1>=x2:
+
+			xx=x1
+		else:
+			xx=x2
+
+
+	#print(xx,y)
+
+	return [xx,y]
+
+
+def check_overlay(x,y):
+	global pieces,piece_r,striker_r
+
+
+	con=0
+
+
+	for p in pieces:
+
+		if p=="striker":
+			continue
+
+		if pieces[p]["potted"]==1:
+			continue
+
+		x2,y2=pieces[p]["coord"]
+
+
+		r=math.sqrt((x-x2)**2+(y-y2)**2)
+
+		if r<piece_r+striker_r+2:
+
+			con=1
+
+
+	return con
+
+
+
 moves_=[]
 first_move=[]
 def check_game():
@@ -4535,6 +4647,8 @@ def check_game():
 
 			game_st2=0
 			force=0
+
+
 			
 
 			if con_==1:
@@ -4542,10 +4656,10 @@ def check_game():
 
 				if turn==0:
 					turn=1
-					pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
+					pieces["striker"]["coord"]=correct_overlay(0)
 				elif turn==1:
 					turn=0				
-					pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+					pieces["striker"]["coord"]=correct_overlay(0)
 
 				draw_piece_("striker",1)	
 
@@ -4553,10 +4667,10 @@ def check_game():
 
 
 				if turn==0:
-					pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv1]
+					pieces["striker"]["coord"]=correct_overlay(0)
 					
 				elif turn==1:
-					pieces["striker"]["coord"]=[xrng[0]+(xrng[1]-xrng[0])/2,yv2]
+					pieces["striker"]["coord"]=correct_overlay(0)
 
 				draw_piece_("striker",1)
 
