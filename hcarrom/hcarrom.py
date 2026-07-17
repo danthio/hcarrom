@@ -1628,8 +1628,11 @@ def can_b1_release(e):
 
 def det_ang(a_1,a_2):
 
-	a_1=int(a_1)
-	a_2=int(a_2)
+	a_1=int(angle(a_1))
+	a_2=int(angle(a_2))
+
+
+
 
 	_a1_=a_2
 	_a2_=a_2
@@ -1644,15 +1647,21 @@ def det_ang(a_1,a_2):
 
 			break
 
+		_a1_-=1
+
+		acx+=1
 
 
 		if _a1_==-1:
 
 			_a1_=359
 
-		_a1_-=1
 
-		acx+=1
+		if _a1_<0:
+			print("error 1", _a1_,a_2)
+
+			#root.destroy()
+
 
 
 
@@ -1668,15 +1677,19 @@ def det_ang(a_1,a_2):
 
 			break
 
+		_a2_+=1
 
+		acy+=1
 
 		if _a2_==361:
 
 			_a2_=1
 
-		_a2_+=1
+		if _a2_>360:
+			print("error 2",_a2)
 
-		acy+=1
+			#root.destroy()
+
 
 	#print(acx,acy)
 
@@ -3358,15 +3371,29 @@ def angle(a):
 
 	try:
 
-		a_=360
+
+
+		a_=(int(a/360)+1)*360
+
+		aa=a
+
 
 
 		if a>a_:
 			a=a-a_
 		elif a<0:
 			a=a_+a
+
 		elif a==a_:
 			a=0
+
+
+		if aa>360:
+
+			a=a-a_+360
+
+
+
 
 		return a
 
