@@ -1652,15 +1652,10 @@ def det_ang(a_1,a_2):
 		acx+=1
 
 
-		if _a1_==-1:
-
-			_a1_=359
-
-
 		if _a1_<0:
-			print("error 1", _a1_,a_2)
 
-			#root.destroy()
+			_a1_=360
+
 
 
 
@@ -1681,14 +1676,9 @@ def det_ang(a_1,a_2):
 
 		acy+=1
 
-		if _a2_==361:
-
-			_a2_=1
 
 		if _a2_>360:
-			print("error 2",_a2)
-
-			#root.destroy()
+			_a2_=_a2_-360
 
 
 	#print(acx,acy)
@@ -3394,6 +3384,14 @@ def angle(a):
 
 
 
+		if a<0:
+			print("<0")
+
+		if a>360:
+			print(">360")
+
+
+
 
 		return a
 
@@ -3472,6 +3470,7 @@ def move_pieces(p):
 
 						if pieces[p]["data"]==2:
 							pieces[p]["st"]=0
+							print(pieces[p]["proj_ang"])
 							return 2
 
 						pieces[p]["proj_ang"]=None
