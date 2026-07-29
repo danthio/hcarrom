@@ -34,7 +34,7 @@ def load_im():
 	im=Image.new("RGBA",(500,500),(0,0,0,0))
 	draw=ImageDraw.Draw(im)
 
-	draw.ellipse((16,16,500-16-1,500-16-1),fill=(255,0,255,255),outline=(0,0,0,255),width=32)
+	draw.ellipse((16,16,500-16-1,500-16-1),fill=(255,255,0,255),outline=(0,0,0,255),width=32)
 
 	im=im.resize((int(round(striker_r*2,0)),int(round(striker_r*2,0))), Image.LANCZOS)
 
@@ -339,7 +339,7 @@ def intro2():
 
 	#print(w/2+x/2-25,y-10-25)
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,((255,0,255)),((255,0,255)),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,((255,0,0)),((255,0,0)),255,255,1)
 	intro2_im1=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro2_im1,anchor="nw")
@@ -352,7 +352,7 @@ def intro2():
 	y+=60
 
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,((255,0,255)),((255,0,255)),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,((255,0,0)),((255,0,0)),255,255,1)
 	intro2_im2=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro2_im2,anchor="nw")
@@ -392,7 +392,7 @@ def intro():
 
 	y=(h-90)/2
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,((255,0,255)),((255,0,255)),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,((255,0,0)),((255,0,0)),255,255,1)
 	intro_im1=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro_im1,anchor="nw")
@@ -405,7 +405,7 @@ def intro():
 	y+=60
 
 
-	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,((255,0,255)),((255,0,255)),255,255,1)
+	im=draw_rounded_rect(w/2-x/2,y,w/2+x/2,y+30,15,((255,0,0)),((255,0,0)),255,255,1)
 	intro_im2=ImageTk.PhotoImage(im)
 
 	can.create_image(w/2-x/2,y,image=intro_im2,anchor="nw")
@@ -962,9 +962,9 @@ def main():
 		pblack=can.create_text(w-(10+5+10+5)+(5+10),int(can["height"])-15,text="0",font=("FreeMono",13),fill="#ffffff")
 
 
-	#can.create_polygon(w/2-100,h, w/2+100,h, w/2+100-15,h+30, w/2-100+15,h+30,fill="#ff00ff",outline="#ff00ff")
+	#can.create_polygon(w/2-100,h, w/2+100,h, w/2+100-15,h+30, w/2-100+15,h+30,fill="#ff0000",outline="#ff0000")
 
-	#can.create_text(w/2,h+15,text=game, font=("FreeMono",13),fill="#ff00ff")
+	#can.create_text(w/2,h+15,text=game, font=("FreeMono",13),fill="#ff0000")
 	#draw_boundary()
 
 
@@ -980,7 +980,7 @@ def draw_piece(x,y,r):
 
 	can.delete(p)
 
-	p=can.create_oval(x-r,y-r, x+r,y+r,fill="#000000",outline="#ff00ff")
+	p=can.create_oval(x-r,y-r, x+r,y+r,fill="#000000",outline="#ff0000")
 
 
 def force_():
@@ -1404,20 +1404,20 @@ def can_b1(e):
 				y=(h-yy)/2
 
 
-				im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),((255,0,255)),140,255,1)
+				im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),((255,0,0)),140,255,1)
 				quit_im=ImageTk.PhotoImage(im)
 
 				quit_i[0]=can.create_image(x,y,image=quit_im,anchor="nw")
 
-				quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff00ff")
+				quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff0000")
 
-				quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770077")
+				quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770000")
 
-				quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770077")
+				quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770000")
 
-				quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff00ff")
+				quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff0000")
 
-				quit_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="No",font=("FreeMono",13),fill="#ff00ff")
+				quit_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="No",font=("FreeMono",13),fill="#ff0000")
 
 				quit_coord=[x,y+yy-30, x+xx,y+yy]
 
@@ -2558,7 +2558,7 @@ def draw_move_(con=0):
 
 			rr=100
 
-			dm_vs[0]=can.create_line(cx,cy, x,y,fill="#ff00ff",dash=(1, 3))
+			dm_vs[0]=can.create_line(cx,cy, x,y,fill="#ff0000",dash=(1, 3))
 			
 
 
@@ -2566,7 +2566,7 @@ def draw_move_(con=0):
 
 			draw=ImageDraw.Draw(im)
 
-			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,255,255),width=2)
+			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,0,255),width=2)
 			im=im.resize((int(rr*2),int(rr*2)))
 			dm_vs[5]=ImageTk.PhotoImage(im)
 			dm_vs[2]=can.create_image(cx,cy,image=dm_vs[5])
@@ -2576,7 +2576,7 @@ def draw_move_(con=0):
 
 			draw=ImageDraw.Draw(im)
 
-			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,255,255),width=30)
+			draw.ellipse((0,0, 500,500),fill=(0,0,0,0),outline=(255,0,0,255),width=30)
 
 
 			im=im.resize((int(round(striker_r*2,0)),int(round(striker_r*2,0))))
@@ -2593,7 +2593,7 @@ def draw_move_(con=0):
 
 			draw=ImageDraw.Draw(im)
 
-			draw.ellipse((0,0, 500,500),fill=(255,0,255,80),outline=(255,0,255,80))
+			draw.ellipse((0,0, 500,500),fill=(255,0,0,80),outline=(255,0,0,80))
 
 
 
@@ -2639,8 +2639,8 @@ def draw_move_(con=0):
 				y2=50*math.cos(math.radians(dm_piece_mv[-1]))+dm_piece_mv[2]
 
 
-				dm_vs[4]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x,y,fill="#ff00ff")
-				dm_vs[7]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x2,y2,fill="#ff00ff")
+				dm_vs[4]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x,y,fill="#ff0000")
+				dm_vs[7]=can.create_line(dm_piece_mv[1],dm_piece_mv[2], x2,y2,fill="#ff0000")
 
 			dm_piece_mv=[0,0,0,0]
 
@@ -2721,7 +2721,7 @@ def draw_boundary():
 
 
 
-	boundary_=can.create_line(ar,fill="#ff00ff")
+	boundary_=can.create_line(ar,fill="#ff0000")
 
 
 """
@@ -4423,7 +4423,7 @@ def go(winner):
 	y=(h-yy)/2
 
 
-	im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),((255,0,255)),140,255,1)
+	im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),((255,0,0)),140,255,1)
 	go_im=ImageTk.PhotoImage(im)
 
 	go_i[0]=can.create_image(x,y,image=go_im,anchor="nw")
@@ -4442,15 +4442,15 @@ def go(winner):
 
 
 
-	go_i[1]=can.create_text(x+xx/2,y+20, text=f"{winner} wins!", font=("FreeMono",13),fill="#ff00ff")
+	go_i[1]=can.create_text(x+xx/2,y+20, text=f"{winner} wins!", font=("FreeMono",13),fill="#ff0000")
 
-	go_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770077")
+	go_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770000")
 
-	go_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770077")
+	go_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770000")
 
-	go_i[4]=can.create_text(x+xx/4,y+yy-15,text="Main Menu",font=("FreeMono",13),fill="#ff00ff")
+	go_i[4]=can.create_text(x+xx/4,y+yy-15,text="Main Menu",font=("FreeMono",13),fill="#ff0000")
 
-	go_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="Quit",font=("FreeMono",13),fill="#ff00ff")
+	go_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="Quit",font=("FreeMono",13),fill="#ff0000")
 
 	go_coord=[x,y+yy-30, x+xx,y+yy]
 
@@ -5106,20 +5106,20 @@ def esc(e):
 		y=(h-yy)/2
 
 
-		im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),((255,0,255)),140,255,1)
+		im=draw_rounded_rect(x,y,x+xx,y+yy,15,(0,0,0),((255,0,0)),140,255,1)
 		quit_im=ImageTk.PhotoImage(im)
 
 		quit_i[0]=can.create_image(x,y,image=quit_im,anchor="nw")
 
-		quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff00ff")
+		quit_i[1]=can.create_text(x+xx/2,y+20, text="Quit Game?", font=("FreeMono",13),fill="#ff0000")
 
-		quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770077")
+		quit_i[2]=can.create_line(x+1,y+yy-30, x+xx-1,y+yy-30,fill="#770000")
 
-		quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770077")
+		quit_i[3]=can.create_line(x+xx/2,y+yy-30, x+xx/2,y+yy-1,fill="#770000")
 
-		quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff00ff")
+		quit_i[4]=can.create_text(x+xx/4,y+yy-15,text="Yes",font=("FreeMono",13),fill="#ff0000")
 
-		quit_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="No",font=("FreeMono",13),fill="#ff00ff")
+		quit_i[5]=can.create_text(x+xx-xx/4,y+yy-15,text="No",font=("FreeMono",13),fill="#ff0000")
 
 		quit_coord=[x,y+yy-30, x+xx,y+yy]
 
@@ -5216,4 +5216,3 @@ update()
 
 check_game()
 root.mainloop()
-
